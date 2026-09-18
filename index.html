@@ -21,7 +21,7 @@ body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 Inter,ui-s
 .hero p{max-width:710px;font-size:19px;color:#ccdae5;margin:0}
 .progress{margin-top:34px;display:flex;align-items:center;gap:14px;max-width:540px}
 .rail{height:8px;background:#31506a;border-radius:8px;flex:1;overflow:hidden}
-.rail span{display:block;width:3.33%;height:100%;background:linear-gradient(90deg,var(--cyan),#83f3df)}
+.rail span{display:block;width:6.67%;height:100%;background:linear-gradient(90deg,var(--cyan),#83f3df)}
 .layout{display:grid;grid-template-columns:250px minmax(0,1fr);gap:34px;padding-top:44px;padding-bottom:80px}
 .toc{position:sticky;top:86px;align-self:start}
 .toc h3{text-transform:uppercase;letter-spacing:.12em;font-size:11px;color:var(--muted)}
@@ -83,7 +83,7 @@ body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 Inter,ui-s
 <header class="top">
 <div class="shell">
 <div class="brand">COMPUTE ECONOMICS / FIELD NOTES</div>
-<div class="daypill">DAY 01 OF 30</div>
+<div class="daypill">DAY 02 OF 30</div>
 </div>
 </header>
 <section class="hero">
@@ -96,17 +96,99 @@ body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 Inter,ui-s
 <span>
 </span>
 </div>
-<small>1 / 30 published</small>
+<small>2 / 30 published</small>
 </div>
 </div>
 </section>
 <main class="shell layout">
 <nav class="toc">
 <h3>Course pages</h3>
-<a class="active" href="#day-1">01 · Utilization</a>
+<a class="active" href="#day-2">02 · $/GPU-hour</a>
+<a href="#day-1">01 · Utilization</a>
 <a href="#curriculum">30-day map</a>
 </nav>
 <div>
+<article class="paper" id="day-2" style="margin-bottom:30px">
+<header class="lesson-head">
+<div class="eyebrow" style="color:#168c7f">Day 02 · Unit economics</div>
+<h2>Anatomy of $/GPU-hour</h2>
+<p class="dek">The customer sees one price. Finance sees a revenue meter sitting on top of a cost stack.</p>
+</header>
+<div class="content">
+<h3>Start with two different dollars</h3>
+<p class="lead">
+<strong>Quoted $/GPU-hour is a rate. Realized $/installed-GPU-hour is a yield.</strong> Multiply the quoted rate by billable utilization before comparing it with costs. Otherwise the numerator is full while the denominator quietly assumes every hour sells.</p>
+<div class="equation">
+<div class="metric">
+<b>$3.99</b>
+<span>posted H100 SXM on-demand rate</span>
+</div>
+<div class="metric">
+<b>× 75%</b>
+<span>illustrative billable utilization</span>
+</div>
+<div class="metric">
+<b>= $2.99</b>
+<span>realized revenue per installed hour</span>
+</div>
+</div>
+<div class="diagram">
+<div class="chart-title">Where one customer dollar has to go</div>
+<div style="display:flex;height:62px;border-radius:10px;overflow:hidden;color:white;font-weight:800;text-align:center">
+<div style="width:38%;background:#2463eb;padding:18px 4px">GPU capital</div>
+<div style="width:21%;background:#168c7f;padding:18px 4px">Power + facility</div>
+<div style="width:16%;background:#536b7a;padding:18px 4px">Network</div>
+<div style="width:13%;background:#8b63d3;padding:18px 4px">Ops</div>
+<div style="width:12%;background:#f0a93b;padding:9px 4px;line-height:1.2">Contribution<br>margin</div>
+</div>
+<small>Conceptual stack only. Widths are illustrative, not benchmarks. Actual mix depends on hardware price and life, utilization, power contract, topology, support, and workload.</small>
+</div>
+<h3>Worked example: rate → monthly yield</h3>
+<div class="worked">
+<div class="case">
+<h4>Full-rate ceiling</h4>
+<div class="number">$2,873/mo</div>
+<p>$3.99 × 720 installed hours. This is the maximum monthly billings per GPU if every hour sells.</p>
+</div>
+<div class="case good">
+<h4>At 75% billable utilization</h4>
+<div class="number">$2,154/mo</div>
+<p>$3.99 × 720 × 75%. Idle capacity removes about $718 from the full-rate ceiling.</p>
+</div>
+</div>
+<div class="fact">
+<strong>Power floor:</strong> NVIDIA lists H100 SXM at up to 700W configurable TDP. At EIA's 2025 U.S. industrial average of 8.62¢/kWh, 720 hours at full TDP equals about 504 kWh and $43.44 of GPU electricity. That is not total facility power: cooling, networking, CPUs, storage, and conversion losses sit outside this simple bound.</div>
+<h3>The cost stack finance should model</h3>
+<ul>
+<li>
+<strong>GPU capital:</strong> depreciation or lease expense, financing cost, and obsolescence risk.</li>
+<li>
+<strong>Power + facility:</strong> GPU electricity plus host, cooling, power conversion, rent, and capacity charges.</li>
+<li>
+<strong>Network + storage:</strong> fabric, switches, egress, local storage, and checkpoint traffic.</li>
+<li>
+<strong>Operations:</strong> support, maintenance, spares, orchestration, and credits for downtime.</li>
+</ul>
+<h3>Rules of thumb</h3>
+<div class="rules">
+<div class="rule">
+<b>1 · Normalize the denominator.</b>Compare revenue and costs per installed GPU-hour, not a mix of billable and available hours.</div>
+<div class="rule">
+<b>2 · Separate floors from allocation.</b>Metered power is observable. Depreciation depends on purchase price, useful life, residual value, and accounting policy.</div>
+<div class="rule">
+<b>3 · Bridge rate to yield first.</b>A 25% idle rate turns $3.99 quoted into $2.99 realized before a single cost is deducted.</div>
+</div>
+<h3>Questions for the CFO table</h3>
+<ul>
+<li>Which costs scale with billable hours, installed capacity, reserved megawatts, or customers?</li>
+<li>Does the quoted rate include storage, egress, support, and committed-use discounts?</li>
+<li>What share of margin variance comes from price, utilization, power, or depreciation?</li>
+</ul>
+<div class="sources">
+<strong>Sources and assumptions.</strong> Lambda posts H100 SXM on-demand at $3.99/GPU-hour: <a href="https://lambda.ai/pricing">Lambda pricing</a>. NVIDIA lists H100 SXM at up to 700W configurable TDP: <a href="https://www.nvidia.com/en-us/data-center/h100/">NVIDIA H100 specifications</a>. EIA reports 2025 U.S. industrial electricity at 8.62¢/kWh: <a href="https://www.eia.gov/electricity/monthly/epm_table_grapher.php?t=table_5_03">EIA Table 5.3</a>. The 75% utilization and cost-stack widths are explicitly illustrative. $2.99, $2,873, $2,154, $718, 504 kWh, and $43.44 are calculations from those stated inputs; displayed values are rounded.</div>
+</div>
+</article>
+
 <article class="paper" id="day-1">
 <header class="lesson-head">
 <div class="eyebrow" style="color:#168c7f">Day 01 · Capacity economics</div>
