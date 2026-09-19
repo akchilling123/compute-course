@@ -7,75 +7,145 @@
 <meta name="description" content="A 30-day course on AI infrastructure economics for strategic finance leaders.">
 <style>
 :root{--ink:#102a43;--muted:#627d98;--paper:#f7f5ef;--card:#fff;--blue:#2463eb;--cyan:#13b5a4;--gold:#f0a93b;--line:#d9e2ec;--navy:#071a2b}
+
 *{box-sizing:border-box}
+
 html{scroll-behavior:smooth}
+
 body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+
 .shell{max-width:1180px;margin:auto;padding:0 24px}
+
 .top{background:var(--navy);color:white;padding:18px 0;position:sticky;top:0;z-index:5}
+
 .top .shell{display:flex;align-items:center;justify-content:space-between;gap:20px}
+
 .brand{font-weight:800;letter-spacing:.02em}
+
 .daypill{font-size:13px;background:#163b5c;border:1px solid #315c7d;border-radius:999px;padding:6px 11px}
+
 .hero{background:linear-gradient(135deg,#071a2b 0%,#123a57 65%,#155b65 100%);color:white;padding:64px 0 72px}
+
 .eyebrow{text-transform:uppercase;letter-spacing:.14em;font-size:12px;font-weight:800;color:#74e1d4}
+
 .hero h1{font-size:clamp(38px,6vw,72px);line-height:.98;max-width:820px;margin:14px 0 22px;letter-spacing:-.045em}
+
 .hero p{max-width:710px;font-size:19px;color:#ccdae5;margin:0}
+
 .progress{margin-top:34px;display:flex;align-items:center;gap:14px;max-width:540px}
+
 .rail{height:8px;background:#31506a;border-radius:8px;flex:1;overflow:hidden}
-.rail span{display:block;width:6.67%;height:100%;background:linear-gradient(90deg,var(--cyan),#83f3df)}
+
+.rail span{display:block;width:10%;height:100%;background:linear-gradient(90deg,var(--cyan),#83f3df)}
+
 .layout{display:grid;grid-template-columns:250px minmax(0,1fr);gap:34px;padding-top:44px;padding-bottom:80px}
+
 .toc{position:sticky;top:86px;align-self:start}
+
 .toc h3{text-transform:uppercase;letter-spacing:.12em;font-size:11px;color:var(--muted)}
+
 .toc a{display:block;color:var(--muted);text-decoration:none;padding:10px 12px;border-left:2px solid var(--line)}
+
 .toc a.active{color:var(--blue);border-color:var(--blue);font-weight:750;background:#eaf2ff}
+
 .paper{background:var(--card);border:1px solid #e7e2d8;border-radius:18px;box-shadow:0 10px 34px rgba(16,42,67,.08);overflow:hidden}
+
 .lesson-head{padding:38px 42px 28px;border-bottom:1px solid var(--line)}
+
 .lesson-head h2{font-size:clamp(30px,4vw,50px);line-height:1.05;letter-spacing:-.035em;margin:8px 0 10px}
+
 .dek{font-size:20px;color:var(--muted);max-width:760px}
+
 .content{padding:34px 42px 46px}
+
 .content h3{font-size:23px;margin:32px 0 12px;letter-spacing:-.015em}
+
 .content h3:first-child{margin-top:0}
+
 .lead{font-size:19px}
+
 .equation{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:24px 0}
+
 .metric{background:#f1f5f9;border-radius:12px;padding:18px}
+
 .metric b{display:block;font-size:25px;color:var(--blue)}
+
 .metric span{font-size:13px;color:var(--muted)}
+
 .diagram{border:1px solid var(--line);background:#fbfdff;border-radius:14px;padding:18px;margin:22px 0}
+
 .chart-title{font-weight:800;margin-bottom:14px}
+
 .chart-grid{display:grid;grid-template-columns:74px 1fr;gap:10px 12px;align-items:center}
+
 .bar{height:34px;background:#e6edf5;border-radius:8px;overflow:hidden;position:relative}
+
 .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--blue),#5791ff)}
+
 .bar em{position:absolute;left:12px;top:6px;color:white;font-style:normal;font-weight:800;font-size:14px}
+
 .bar .dark{color:var(--ink);left:auto;right:10px}
+
 .worked{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+
 .case{padding:20px;border:1px solid var(--line);border-radius:14px}
+
 .case.good{border-color:#a7dfd6;background:#f2fbf9}
+
 .case h4{margin:0 0 8px;font-size:18px}
+
 .number{font-size:30px;font-weight:850;letter-spacing:-.03em}
+
 .rules{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}
+
 .rule{background:var(--navy);color:#e8f0f6;padding:18px;border-radius:13px}
+
 .rule b{color:#7be5d6;display:block;margin-bottom:6px}
+
 .fact{border-left:4px solid var(--gold);background:#fff9e9;padding:16px 18px;margin:22px 0}
+
 .sources{font-size:13px;color:var(--muted);border-top:1px solid var(--line);margin-top:34px;padding-top:20px}
+
 .sources a{color:var(--blue)}
+
 .curriculum{margin-top:30px;background:white;border-radius:18px;border:1px solid #e7e2d8;padding:34px}
+
 .curriculum h2{margin-top:0;font-size:30px}
+
 .weeks{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+
 .week{border:1px solid var(--line);border-radius:13px;padding:18px}
+
 .week h3{margin:0 0 10px}
+
 .week ol{padding-left:23px;margin:0}
+
 .week li{margin:5px 0;color:var(--muted)}
+
 .week li:first-child{color:var(--ink);font-weight:750}
+
 .footer{background:var(--navy);color:#9fb3c3;padding:30px 0;font-size:13px}
+
 @media(max-width:800px){.layout{display:block}
+
 .toc{position:static;display:flex;overflow:auto;margin-bottom:18px}
+
 .toc h3{display:none}
+
 .toc a{white-space:nowrap;border-left:0;border-bottom:2px solid var(--line)}
+
 .lesson-head,.content{padding:28px 22px}
+
 .equation,.worked,.rules,.weeks{grid-template-columns:1fr}
+
 .hero{padding:48px 0}
+
 .hero h1{font-size:44px}
+
 .shell{padding:0 16px}
+
 }
+
 
 </style>
 </head>
@@ -83,7 +153,7 @@ body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 Inter,ui-s
 <header class="top">
 <div class="shell">
 <div class="brand">COMPUTE ECONOMICS / FIELD NOTES</div>
-<div class="daypill">DAY 02 OF 30</div>
+<div class="daypill">DAY 03 OF 30</div>
 </div>
 </header>
 <section class="hero">
@@ -96,18 +166,110 @@ body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 Inter,ui-s
 <span>
 </span>
 </div>
-<small>2 / 30 published</small>
+<small>3 / 30 published</small>
 </div>
 </div>
 </section>
 <main class="shell layout">
 <nav class="toc">
 <h3>Course pages</h3>
-<a class="active" href="#day-2">02 · $/GPU-hour</a>
+<a class="active" href="#day-3">03 · Power cost</a>
+<a href="#day-2">02 · $/GPU-hour</a>
 <a href="#day-1">01 · Utilization</a>
 <a href="#curriculum">30-day map</a>
 </nav>
 <div>
+<article class="paper" id="day-3" style="margin-bottom:30px">
+<header class="lesson-head">
+<div class="eyebrow" style="color:#168c7f">Day 03 · Power economics</div>
+<h2>Power cost per GPU-hour</h2>
+<p class="dek">The GPU's watts are only the first meter. The facility multiplies them, and utilization decides how many billable hours absorb the bill.</p>
+</header>
+<div class="content">
+<h3>Three layers, three denominators</h3>
+<p class="lead">
+<strong>Chip power is not facility power, and facility power is not power cost per billable hour.</strong> Start with IT load, apply PUE for facility overhead, then divide by billable utilization to connect electricity spend to revenue-producing hours.</p>
+<div class="equation">
+<div class="metric">
+<b>0.70 kW</b>
+<span>H100 SXM max TDP</span>
+</div>
+<div class="metric">
+<b>× 1.09 PUE</b>
+<span>illustrative efficient facility</span>
+</div>
+<div class="metric">
+<b>= 0.763 kW</b>
+<span>facility load per GPU at this bound</span>
+</div>
+</div>
+<div class="diagram">
+<div class="chart-title">From wall power to billable power</div>
+<div style="display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:10px;align-items:center;text-align:center">
+<div class="metric">
+<b>700W</b>
+<span>GPU IT load</span>
+</div>
+<b>→</b>
+<div class="metric">
+<b>763W</b>
+<span>with 1.09 PUE</span>
+</div>
+<b>→</b>
+<div class="metric">
+<b>1.017 kWh</b>
+<span>per billable GPU-hour at 75% utilization</span>
+</div>
+</div>
+<small>This is a simplified lower bound: it applies fleet PUE to GPU TDP only. CPUs, memory, storage, and networking add IT load before PUE.</small>
+</div>
+<h3>Worked example: one H100 for one month</h3>
+<div class="worked">
+<div class="case">
+<h4>GPU electricity only</h4>
+<div class="number">$43.44/mo</div>
+<p>0.70 kW × 720 hours × 8.62¢/kWh.</p>
+</div>
+<div class="case good">
+<h4>GPU plus facility overhead</h4>
+<div class="number">$47.35/mo</div>
+<p>0.70 kW × 1.09 PUE × 720 hours × 8.62¢/kWh.</p>
+</div>
+</div>
+<div class="fact">
+<strong>Utilization bridge:</strong> at an illustrative 75% billable utilization, that 0.763 kWh of facility energy per installed hour becomes 1.017 kWh, or about 8.76¢, per billable GPU-hour. The power bill follows installed time; revenue follows billable time.</div>
+<h3>What the simple formula misses</h3>
+<ul>
+<li>
+<strong>Other IT load:</strong> CPUs, DRAM, NICs, switches, storage, and fans draw power too.</li>
+<li>
+<strong>Demand and capacity charges:</strong> many contracts charge for peak kW or reserved MW, not only consumed kWh.</li>
+<li>
+<strong>Load shape:</strong> TDP is a ceiling, not measured average workload power.</li>
+<li>
+<strong>Location and contract:</strong> EIA's national industrial average is a reference point, not a data-center tariff.</li>
+</ul>
+<h3>Rules of thumb</h3>
+<div class="rules">
+<div class="rule">
+<b>1 · Use PUE on total IT load.</b>Applying PUE to GPU watts alone is a floor. Build the server and network power budget first.</div>
+<div class="rule">
+<b>2 · Keep kW and kWh separate.</b>kW is instantaneous capacity; kWh is energy over time. Capacity procurement often binds before energy cost does.</div>
+<div class="rule">
+<b>3 · Divide by utilization last.</b>Electricity per installed hour can look small; per billable hour rises as idle capacity increases.</div>
+</div>
+<h3>Questions for the CFO table</h3>
+<ul>
+<li>What is measured average kW per GPU by workload, not nameplate TDP?</li>
+<li>Which charges are energy, demand, transmission, capacity reservation, or pass-through?</li>
+<li>Is PUE measured at the same boundary across sites, and at what load level?</li>
+<li>Who bears curtailment risk when power is available but compute cannot run?</li>
+</ul>
+<div class="sources">
+<strong>Sources and assumptions.</strong> NVIDIA lists H100 SXM at up to 700W configurable TDP: <a href="https://www.nvidia.com/en-us/data-center/h100/">NVIDIA H100 specifications</a>. Google's 2025 fleet-wide PUE was 1.09: <a href="https://www.google.com/about/datacenters/efficiency/">Google data-center efficiency</a>. EIA reports 2025 U.S. industrial electricity at 8.62¢/kWh: <a href="https://www.eia.gov/electricity/monthly/epm_table_grapher.php?t=table_5_03">EIA Table 5.3</a>. The 75% utilization is illustrative; Google's PUE is an efficiency reference, not assumed to describe every provider. All dollar and energy figures are calculations from these stated inputs and are rounded.</div>
+</div>
+</article>
+
 <article class="paper" id="day-2" style="margin-bottom:30px">
 <header class="lesson-head">
 <div class="eyebrow" style="color:#168c7f">Day 02 · Unit economics</div>
