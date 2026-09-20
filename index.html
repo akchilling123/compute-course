@@ -36,7 +36,7 @@ body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 Inter,ui-s
 
 .rail{height:8px;background:#31506a;border-radius:8px;flex:1;overflow:hidden}
 
-.rail span{display:block;width:10%;height:100%;background:linear-gradient(90deg,var(--cyan),#83f3df)}
+.rail span{display:block;width:13.3%;height:100%;background:linear-gradient(90deg,var(--cyan),#83f3df)}
 
 .layout{display:grid;grid-template-columns:250px minmax(0,1fr);gap:34px;padding-top:44px;padding-bottom:80px}
 
@@ -153,7 +153,7 @@ body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 Inter,ui-s
 <header class="top">
 <div class="shell">
 <div class="brand">COMPUTE ECONOMICS / FIELD NOTES</div>
-<div class="daypill">DAY 03 OF 30</div>
+<div class="daypill">DAY 04 OF 30</div>
 </div>
 </header>
 <section class="hero">
@@ -166,19 +166,92 @@ body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 Inter,ui-s
 <span>
 </span>
 </div>
-<small>3 / 30 published</small>
+<small>4 / 30 published</small>
 </div>
 </div>
 </section>
 <main class="shell layout">
 <nav class="toc">
 <h3>Course pages</h3>
-<a class="active" href="#day-3">03 · Power cost</a>
+<a class="active" href="#day-4">04 · Depreciation</a>
+<a href="#day-3">03 · Power cost</a>
 <a href="#day-2">02 · $/GPU-hour</a>
 <a href="#day-1">01 · Utilization</a>
 <a href="#curriculum">30-day map</a>
 </nav>
 <div>
+<article class="paper" id="day-4" style="margin-bottom:30px">
+<header class="lesson-head">
+<div class="eyebrow" style="color:#168c7f">Day 04 · Capital recovery</div>
+<h2>Depreciation and useful life</h2>
+<p class="dek">One accounting assumption quietly decides how much capital cost lands in every GPU-hour you sell. Recently, every hyperscaler has moved it, in both directions.</p>
+</header>
+<div class="content">
+<h3>The assumption that moves billions</h3>
+<p class="lead">
+<strong>Depreciation is a non-cash charge, but the useful-life estimate behind it is a pricing decision.</strong> Spread a server over more years and each year's reported cost falls; shorten the life and the bill arrives sooner. The hardware, the workload, and the cash are identical. Only the P&amp;L changes.</p>
+<div class="equation">
+<div class="metric">
+<b>&minus;$3.9B</b>
+<span>Alphabet 2023 depreciation after moving servers to 6 years</span>
+</div>
+<div class="metric">
+<b>&minus;$2.92B</b>
+<span>Meta 2025 depreciation after moving to 5.5 years</span>
+</div>
+<div class="metric">
+<b>+$1.4B</b>
+<span>Amazon 2025 depreciation after shortening a subset to 5 years</span>
+</div>
+</div>
+<h3>Worked example: one GPU, three accountants</h3>
+<div class="worked">
+<div class="case">
+<h4>Same GPU, 3-year life</h4>
+<div class="number">$1.14/hr</div>
+<p>$30,000 &divide; (3 &times; 8,760 hours), straight-line to zero salvage.</p>
+</div>
+<div class="case good">
+<h4>Same GPU, 6-year life</h4>
+<div class="number">$0.57/hr</div>
+<p>$30,000 &divide; (6 &times; 8,760 hours). The metal and the cash did not change.</p>
+</div>
+</div>
+<div class="fact">
+<strong>Utilization bridge:</strong> at an illustrative 75% billable utilization, the 6-year assumption prices capital at about $0.76 per billable GPU-hour; the 3-year assumption prices the same GPU at $1.52. A one-line change in an accounting policy note doubles the reported capital cost per sold hour.</div>
+<div class="diagram">
+<div class="chart-title">Capital cost per billable GPU-hour by assumed useful life (illustrative $30,000 GPU, 75% billable utilization)</div>
+<div class="chart-grid">
+<div>3 years</div><div class="bar"><i style="width:100%"></i><em>$1.52</em></div>
+<div>4 years</div><div class="bar"><i style="width:75%"></i><em>$1.14</em></div>
+<div>5 years</div><div class="bar"><i style="width:60%"></i><em>$0.91</em></div>
+<div>6 years</div><div class="bar"><i style="width:50%"></i><em>$0.76</em></div>
+</div>
+<small>Calculations from the stated illustrative inputs. Hours per year: 8,760. Billable hours divide installed hours by utilization.</small>
+</div>
+<h3>Accounting life vs. economic life</h3>
+<p>The extension wave is real: Microsoft went from 4 to 6 years in 2022, Alphabet from 4 to 6 in 2023, and Meta to 5.5 in 2025. CoreWeave, a pure-play GPU cloud, depreciates its technology equipment straight-line over 6 years. The bulls point to retention evidence: CoreWeave's CEO says its 2020-vintage A100s are fully booked, and 2022 H100s that rolled off a contract were immediately rebooked at about 95% of their original price. Skeptics, including short seller Michael Burry, argue the extensions understate how fast AI chips actually lose value. Amazon is the counter-signal: in 2025 it shortened a subset of servers from 6 years back to 5, citing "the increased pace of technology development, particularly in the area of artificial intelligence and machine learning."</p>
+<h3>Rules of thumb</h3>
+<div class="rules">
+<div class="rule">
+<b>1 &middot; Cash left on day one.</b>Depreciation allocates a past outlay across years; it never spends anything. Read capex and free cash flow alongside the P&amp;L charge.</div>
+<div class="rule">
+<b>2 &middot; Ask for the life first.</b>A margin or floor price quoted without its depreciation life is not comparable across providers.</div>
+<div class="rule">
+<b>3 &middot; Match life to evidence.</b>Contract tenor, rebooking rates, and resale prices are the audit trail for how long a GPU really earns.</div>
+</div>
+<h3>Questions for the CFO table</h3>
+<ul>
+<li>What useful life is embedded in our $/GPU-hour floor, and how much does the floor move if the life shortens by one year?</li>
+<li>What rebooking and resale evidence supports the life we claim, and is it current-generation data or last cycle's?</li>
+<li>Are customer contract tenors longer or shorter than the depreciation life, and who absorbs the mismatch?</li>
+<li>If we followed Amazon's reversal, what is the hit to earnings, covenants, and pricing?</li>
+</ul>
+<div class="sources">
+<strong>Sources and assumptions.</strong> Alphabet's 2023 10-K discloses the move to 6-year server lives and the $3.9B depreciation reduction ($3.0B net income): <a href="https://www.sec.gov/Archives/edgar/data/1652044/000165204424000022/R10.htm">Alphabet 10-K, accounting policies note</a>. Meta's 2025 10-K discloses the 5.5-year life effective January 1, 2025 and the $2.92B depreciation reduction ($2.59B net income, $1.00 per diluted share): <a href="https://www.sec.gov/Archives/edgar/data/1326801/000162828026003942/meta-20251231.htm">Meta 2025 10-K</a>. Amazon's 2025 10-K discloses shortening a subset of servers from 6 to 5 years and the added $1.4B of depreciation: <a href="https://www.sec.gov/Archives/edgar/data/1018724/000101872426000004/amzn-20251231.htm">Amazon 2025 10-K</a>. CoreWeave's 6-year straight-line life for technology equipment: <a href="https://www.sec.gov/Archives/edgar/data/1769628/000176962826000104/crwv-20251231.htm">CoreWeave 2025 10-K</a>. Rebooking evidence and the skeptic case: <a href="https://www.cnbc.com/2025/11/14/ai-gpu-depreciation-coreweave-nvidia-michael-burry.html">CNBC on the GPU depreciation debate</a>. Microsoft's 2022 extension: <a href="https://finance.yahoo.com/news/meta-accounting-move-ai-servers-124059775.html">Bloomberg via Yahoo Finance</a>. The $30,000 GPU cost and 75% utilization are illustrative; hourly figures are calculations from those inputs, rounded.</div>
+</div>
+</article>
+
 <article class="paper" id="day-3" style="margin-bottom:30px">
 <header class="lesson-head">
 <div class="eyebrow" style="color:#168c7f">Day 03 · Power economics</div>
