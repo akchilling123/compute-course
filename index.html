@@ -36,7 +36,7 @@ body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 Inter,ui-s
 
 .rail{height:8px;background:#31506a;border-radius:8px;flex:1;overflow:hidden}
 
-.rail span{display:block;width:13.3%;height:100%;background:linear-gradient(90deg,var(--cyan),#83f3df)}
+.rail span{display:block;width:16.7%;height:100%;background:linear-gradient(90deg,var(--cyan),#83f3df)}
 
 .layout{display:grid;grid-template-columns:250px minmax(0,1fr);gap:34px;padding-top:44px;padding-bottom:80px}
 
@@ -153,7 +153,7 @@ body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 Inter,ui-s
 <header class="top">
 <div class="shell">
 <div class="brand">COMPUTE ECONOMICS / FIELD NOTES</div>
-<div class="daypill">DAY 04 OF 30</div>
+<div class="daypill">DAY 05 OF 30</div>
 </div>
 </header>
 <section class="hero">
@@ -166,20 +166,93 @@ body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 Inter,ui-s
 <span>
 </span>
 </div>
-<small>4 / 30 published</small>
+<small>5 / 30 published</small>
 </div>
 </div>
 </section>
 <main class="shell layout">
 <nav class="toc">
 <h3>Course pages</h3>
-<a class="active" href="#day-4">04 · Depreciation</a>
+<a class="active" href="#day-5">05 · HBM</a>
+<a href="#day-4">04 · Depreciation</a>
 <a href="#day-3">03 · Power cost</a>
 <a href="#day-2">02 · $/GPU-hour</a>
 <a href="#day-1">01 · Utilization</a>
 <a href="#curriculum">30-day map</a>
 </nav>
 <div>
+<article class="paper" id="day-5" style="margin-bottom:30px">
+<header class="lesson-head">
+<div class="eyebrow" style="color:#168c7f">Day 05 &middot; Memory economics</div>
+<h2>HBM capacity and bandwidth</h2>
+<p class="dek">On a modern AI accelerator the binding constraint is often memory, not compute. Capacity decides what fits. Bandwidth decides how fast it answers. Both are priced into every GPU-hour.</p>
+</header>
+<div class="content">
+<h3>Two numbers that gate the business</h3>
+<p class="lead">
+<strong>Gigabytes decide which models you can serve; terabytes per second decide how fast.</strong> NVIDIA's H100 to H200 upgrade changed almost nothing except memory: same 700W envelope, nearly double the capacity and 1.4x the bandwidth, and roughly 2x LLM inference throughput on Llama2 70B.</p>
+<div class="equation">
+<div class="metric">
+<b>80 GB / 3.35 TB/s</b>
+<span>H100 SXM: HBM3 capacity / bandwidth</span>
+</div>
+<div class="metric">
+<b>141 GB / 4.8 TB/s</b>
+<span>H200 SXM: HBM3e capacity / bandwidth</span>
+</div>
+<div class="metric">
+<b>~2x</b>
+<span>NVIDIA's claimed Llama2 70B inference gain, H100 to H200</span>
+</div>
+</div>
+<h3>Worked example: one 70B model</h3>
+<div class="worked">
+<div class="case">
+<h4>Capacity is a hard gate</h4>
+<div class="number">2 GPUs or 1</div>
+<p>70B parameters at FP16 is about 140 GB of weights: it does not fit on one 80 GB H100, so you buy two GPUs or quantize. At FP8 it is about 70 GB: tight on an H100 once the KV cache lands, comfortable on one 141 GB H200.</p>
+</div>
+<div class="case good">
+<h4>Bandwidth is the speed limit</h4>
+<div class="number">48 vs 68 tok/s</div>
+<p>Decoding re-reads the weights for every token. Simplified single-stream roofline: 3.35 TB/s &divide; 70 GB &asymp; 48 tokens/s on an H100; 4.8 TB/s &divide; 70 GB &asymp; 68 on an H200. Same model, about 1.4x faster from memory alone.</p>
+</div>
+</div>
+<div class="fact">
+<strong>Why the rental premium:</strong> an H200 costs more per hour than an H100 not because its math units are faster, but because its memory lets one GPU do what used to take two, and serve each token faster. Memory upgrades convert directly into throughput and capacity revenue.</div>
+<div class="diagram">
+<div class="chart-title">One generation, mostly a memory upgrade (H100 = 100)</div>
+<div class="chart-grid">
+<div>H100 capacity</div><div class="bar"><i style="width:57%"></i><em>80 GB</em></div>
+<div>H200 capacity</div><div class="bar"><i style="width:100%"></i><em>141 GB</em></div>
+<div>H100 bandwidth</div><div class="bar"><i style="width:70%"></i><em>3.35 TB/s</em></div>
+<div>H200 bandwidth</div><div class="bar"><i style="width:100%"></i><em>4.8 TB/s</em></div>
+</div>
+<small>Bar lengths indexed to the H200. Same 700W configurable TDP on both parts.</small>
+</div>
+<h3>Why HBM costs what it costs</h3>
+<p>HBM is stacked DRAM packaged next to the compute die, and it is now the most expensive ingredient in an AI accelerator. One bill-of-materials model puts HBM at about $1,350 of an H100's roughly $3,320 manufacturing cost, and 30-64% of manufacturing cost across flagship parts, with HBM3e contract pricing near $17 per GB. Supply is an oligopoly: Counterpoint's Q2 2025 HBM revenue shares are SK hynix 64%, Micron 21%, and Samsung 15%. And it is largely presold: Micron has said its calendar-2026 HBM supply is fully committed under price-and-volume agreements. When the memory is the margin, the memory market is your market.</p>
+<h3>Rules of thumb</h3>
+<div class="rules">
+<div class="rule">
+<b>1 &middot; Capacity before bandwidth.</b>If model plus KV cache does not fit, you are buying a second GPU. Quantization is usually the cheaper lever.</div>
+<div class="rule">
+<b>2 &middot; Bandwidth sets decode speed.</b>Tokens per second per stream &asymp; bandwidth &divide; model bytes. Batch requests to amortize each weight read.</div>
+<div class="rule">
+<b>3 &middot; Watch HBM like a commodity input.</b>It is the largest single cost line in the GPU and is contracted years ahead; price moves flow straight into future hardware cost.</div>
+</div>
+<h3>Questions for the CFO table</h3>
+<ul>
+<li>For our target models, how many GPUs does the capacity gate force at FP16 vs FP8, and what does that do to unit cost?</li>
+<li>What is our achieved tokens/s per GPU against the bandwidth roofline, and how much paid-for headroom sits idle?</li>
+<li>In multi-year hardware deals, who bears HBM price moves, the buyer or the vendor?</li>
+<li>Does the next platform upgrade buy us capacity, bandwidth, or both, and which one actually binds our workload?</li>
+</ul>
+<div class="sources">
+<strong>Sources and assumptions.</strong> H100 SXM (80 GB HBM3, 3.35 TB/s): <a href="https://resources.nvidia.com/en-us-data-center-overview/nvidia-tensor-core-gpu-datasheet">NVIDIA H100 GPU datasheet</a>. H200 SXM (141 GB HBM3e, 4.8 TB/s, 700W TDP, 2x Llama2 70B inference claim): <a href="https://www.nvidia.com/en-us/data-center/h200/">NVIDIA H200 specifications</a>. HBM cost estimates ($1,350 of ~$3,320 H100 manufacturing cost, 30-64% share, ~$17/GB HBM3e): <a href="https://siliconanalysts.com/data/ai-chip-costs">Silicon Analysts accelerator cost model</a> (an estimate drawing on Epoch AI, Raymond James, and TrendForce). Supplier shares (Q2 2025 HBM revenue): <a href="https://counterpointresearch.com/en/insights/global-dram-and-hbm-market-share">Counterpoint Research</a>. Micron's sold-out 2026 HBM supply and ~$8B HBM run-rate, reported via Reuters: <a href="https://www.astutegroup.com/news/general/sk-hynix-holds-62-of-hbm-micron-overtakes-samsung-2026-battle-pivots-to-hbm4/">Astute Group summary</a>. The 70B model sizes and tokens/s rooflines are simplified calculations from the stated inputs; real throughput depends on batch size, attention, and software.</div>
+</div>
+</article>
+
 <article class="paper" id="day-4" style="margin-bottom:30px">
 <header class="lesson-head">
 <div class="eyebrow" style="color:#168c7f">Day 04 · Capital recovery</div>
