@@ -36,7 +36,7 @@ body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 Inter,ui-s
 
 .rail{height:8px;background:#31506a;border-radius:8px;flex:1;overflow:hidden}
 
-.rail span{display:block;width:16.7%;height:100%;background:linear-gradient(90deg,var(--cyan),#83f3df)}
+.rail span{display:block;width:20%;height:100%;background:linear-gradient(90deg,var(--cyan),#83f3df)}
 
 .layout{display:grid;grid-template-columns:250px minmax(0,1fr);gap:34px;padding-top:44px;padding-bottom:80px}
 
@@ -153,7 +153,7 @@ body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 Inter,ui-s
 <header class="top">
 <div class="shell">
 <div class="brand">COMPUTE ECONOMICS / FIELD NOTES</div>
-<div class="daypill">DAY 05 OF 30</div>
+<div class="daypill">DAY 06 OF 30</div>
 </div>
 </header>
 <section class="hero">
@@ -166,14 +166,15 @@ body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 Inter,ui-s
 <span>
 </span>
 </div>
-<small>5 / 30 published</small>
+<small>6 / 30 published</small>
 </div>
 </div>
 </section>
 <main class="shell layout">
 <nav class="toc">
 <h3>Course pages</h3>
-<a class="active" href="#day-5">05 · HBM</a>
+<a class="active" href="#day-6">06 · Fabric</a>
+<a href="#day-5">05 · HBM</a>
 <a href="#day-4">04 · Depreciation</a>
 <a href="#day-3">03 · Power cost</a>
 <a href="#day-2">02 · $/GPU-hour</a>
@@ -181,6 +182,76 @@ body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 Inter,ui-s
 <a href="#curriculum">30-day map</a>
 </nav>
 <div>
+<article class="paper" id="day-6" style="margin-bottom:30px">
+<header class="lesson-head">
+<div class="eyebrow" style="color:#168c7f">Day 06 &middot; Interconnect economics</div>
+<h2>NVLink, fabric, and stranded compute</h2>
+<p class="dek">A GPU you cannot connect is revenue you cannot book. Interconnect turns chips into clusters; fragmentation turns clusters back into chips.</p>
+</header>
+<div class="content">
+<h3>Three tiers of bandwidth</h3>
+<p class="lead">
+<strong>Sellable capacity is defined by the fabric, not the chip count.</strong> Inside a server, NVLink moves data between GPUs at 900 GB/s, seven times PCIe Gen5's 128 GB/s. Across a rack, systems like GB200 NVL72 fuse 72 GPUs into one NVLink domain with 130 TB/s of aggregate bandwidth. Across the data center, InfiniBand or RoCE Ethernet ties thousands of those islands into a training fleet.</p>
+<div class="equation">
+<div class="metric">
+<b>128 GB/s</b>
+<span>PCIe Gen5 per GPU</span>
+</div>
+<div class="metric">
+<b>900 GB/s</b>
+<span>NVLink per GPU, 7x PCIe</span>
+</div>
+<div class="metric">
+<b>130 TB/s</b>
+<span>aggregate NVLink inside one NVL72 rack</span>
+</div>
+</div>
+<div class="diagram">
+<div class="chart-title">Per-GPU interconnect bandwidth (NVLink = 100)</div>
+<div class="chart-grid">
+<div>PCIe Gen5</div><div class="bar"><i style="width:14%"></i><em class="dark">128 GB/s</em></div>
+<div>NVLink 4</div><div class="bar"><i style="width:100%"></i><em>900 GB/s</em></div>
+</div>
+<small>NVIDIA H200 spec sheet figures. Scale-out fabrics (InfiniBand, RoCE) are the third tier, linking racks at hundreds of gigabits per GPU.</small>
+</div>
+<h3>Worked example: available is not sellable</h3>
+<div class="worked">
+<div class="case">
+<h4>Fragmented fleet</h4>
+<div class="number">600 free, 0 sellable</div>
+<p>A cloud has 600 H100s free, scattered across fabric islands of 300 or fewer. A customer wants 512 tightly coupled GPUs for a two-week training run. Illustrative result: the job cannot be placed, and the 600 GPUs are stranded for that workload.</p>
+</div>
+<div class="case good">
+<h4>Fused rack</h4>
+<div class="number">72 as 1</div>
+<p>A GB200 NVL72 presents its 72 GPUs as a single NVLink domain that "acts as a single, massive GPU." One placement decision sells the whole rack, and trillion-parameter inference jobs fit inside it.</p>
+</div>
+</div>
+<div class="fact">
+<strong>The goodput tax:</strong> when the fabric is slow, GPUs wait on communication instead of computing. Every percentage point of step time spent waiting on all-reduce is a percentage point of GPU capex burned, at fleet scale, forever.</div>
+<h3>What Meta's two clusters tell us</h3>
+<p>Meta built two 24k clusters of 24,576 H100 GPUs each for Llama 3 training: one on RoCE Ethernet, one on InfiniBand. At an illustrative $30,000 per GPU, that is roughly $737 million of GPUs per cluster, before switches, optics, and cabling. Running both fabrics side by side was a deliberate hedge: at this scale the interconnect choice is a nine-figure bet, and the largest buyer in the room paid to keep both options alive. Smaller buyers do not get to hedge. They pick one fabric and live with it.</p>
+<h3>Rules of thumb</h3>
+<div class="rules">
+<div class="rule">
+<b>1 &middot; Sell domains, not GPUs.</b>The unit of training inventory is the largest contiguous fabric domain, not the fleet total.</div>
+<div class="rule">
+<b>2 &middot; Track stranded capacity separately.</b>Idle GPUs that cannot host the jobs in your pipeline are not inventory; they are deferred revenue with a power bill.</div>
+<div class="rule">
+<b>3 &middot; Fabric is a structural bet.</b>Ethernet vs InfiniBand vs NVLink domain size locks in which workloads you can serve for the life of the cluster.</div>
+</div>
+<h3>Questions for the CFO table</h3>
+<ul>
+<li>What is our largest sellable contiguous domain, and how does it compare with the jobs our customers actually bring?</li>
+<li>What share of GPU-hours is lost to communication wait, and who measures goodput rather than uptime?</li>
+<li>Which customer jobs pay a premium for NVLink-domain placement, and do we price that scarcity?</li>
+<li>What is the switching cost if our fabric bet (Ethernet vs InfiniBand) is wrong for the next model generation?</li>
+</ul>
+<div class="sources">
+<strong>Sources and assumptions.</strong> NVLink 900 GB/s and PCIe Gen5 128 GB/s per GPU: <a href="https://www.nvidia.com/en-us/data-center/h200/">NVIDIA H200 specifications</a>. NVL72 rack (36 Grace CPUs, 72 Blackwell GPUs, one 72-GPU NVLink domain, "acts as a single, massive GPU"): <a href="https://www.nvidia.com/en-us/data-center/gb200-nvl72/">NVIDIA GB200 NVL72</a>; 130 TB/s aggregate NVLink bandwidth: <a href="https://developer.nvidia.com/blog/unlock-exascale-performance-on-nvidia-gb200-nvl72-with-slurm-topology-aware-job-scheduling/">NVIDIA developer blog</a>. Meta's two 24k GPU clusters for Llama 3 training: <a href="https://engineering.fb.com/2024/03/12/data-center-engineering/building-metas-genai-infrastructure/">Engineering at Meta</a>; 24,576 H100s per cluster: <a href="https://www.sdxcentral.com/news/meta-reveals-details-of-two-new-24k-gpu-ai-clusters/">SDxCentral</a>; Meta's RoCE fabric work at tens of thousands of GPUs: <a href="https://engineering.fb.com/2024/08/05/data-center-engineering/roce-network-distributed-ai-training-at-scale/">Engineering at Meta, RoCE</a>. The 600-GPU fragmentation example, $30,000 GPU price, and cluster capex math are illustrative calculations from stated inputs.</div>
+</div>
+</article>
+
 <article class="paper" id="day-5" style="margin-bottom:30px">
 <header class="lesson-head">
 <div class="eyebrow" style="color:#168c7f">Day 05 &middot; Memory economics</div>
