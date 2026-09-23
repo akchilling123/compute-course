@@ -36,7 +36,7 @@ body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 Inter,ui-s
 
 .rail{height:8px;background:#31506a;border-radius:8px;flex:1;overflow:hidden}
 
-.rail span{display:block;width:20%;height:100%;background:linear-gradient(90deg,var(--cyan),#83f3df)}
+.rail span{display:block;width:23.3%;height:100%;background:linear-gradient(90deg,var(--cyan),#83f3df)}
 
 .layout{display:grid;grid-template-columns:250px minmax(0,1fr);gap:34px;padding-top:44px;padding-bottom:80px}
 
@@ -153,7 +153,7 @@ body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 Inter,ui-s
 <header class="top">
 <div class="shell">
 <div class="brand">COMPUTE ECONOMICS / FIELD NOTES</div>
-<div class="daypill">DAY 06 OF 30</div>
+<div class="daypill">DAY 07 OF 30</div>
 </div>
 </header>
 <section class="hero">
@@ -166,14 +166,15 @@ body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 Inter,ui-s
 <span>
 </span>
 </div>
-<small>6 / 30 published</small>
+<small>7 / 30 published</small>
 </div>
 </div>
 </section>
 <main class="shell layout">
 <nav class="toc">
 <h3>Course pages</h3>
-<a class="active" href="#day-6">06 · Fabric</a>
+<a class="active" href="#day-7">07 · Cluster margin</a>
+<a href="#day-6">06 · Fabric</a>
 <a href="#day-5">05 · HBM</a>
 <a href="#day-4">04 · Depreciation</a>
 <a href="#day-3">03 · Power cost</a>
@@ -182,6 +183,88 @@ body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 Inter,ui-s
 <a href="#curriculum">30-day map</a>
 </nav>
 <div>
+<article class="paper" id="day-7" style="margin-bottom:30px">
+<header class="lesson-head">
+<div class="eyebrow" style="color:#168c7f">Day 07 &middot; Putting the unit together</div>
+<h2>Cluster-level contribution margin</h2>
+<p class="dek">Week 1 in one line: price times utilization, minus the costs that run whether or not anyone is billing. A 70% gross margin can still be a loss.</p>
+</header>
+<div class="content">
+<h3>Three margins, three different businesses</h3>
+<p class="lead">
+<strong>GPU clouds look like software above the line and like utilities below it.</strong> In fiscal 2025 CoreWeave booked $5.13 billion of revenue against $1.45 billion of reported cost of revenue, a 72% gross margin. Adjusted EBITDA was $3.09 billion, a 60% margin. Then depreciation and amortization took $2.45 billion and net interest took $1.23 billion. GAAP operating income was a $46 million loss, and the net loss was $1.17 billion.</p>
+<div class="equation">
+<div class="metric">
+<b>60%</b>
+<span>adjusted EBITDA margin, FY2025</span>
+</div>
+<div class="metric">
+<b>48%</b>
+<span>of revenue went to depreciation and amortization</span>
+</div>
+<div class="metric">
+<b>24%</b>
+<span>of revenue went to net interest</span>
+</div>
+</div>
+<div class="diagram">
+<div class="chart-title">CoreWeave FY2025, share of revenue</div>
+<div class="chart-grid">
+<div>Cost of revenue</div><div class="bar"><i style="width:28%"></i><em class="dark">28%</em></div>
+<div>Adj. EBITDA</div><div class="bar"><i style="width:60%"></i><em>60%</em></div>
+<div>D&amp;A</div><div class="bar"><i style="width:48%"></i><em>48%</em></div>
+<div>Net interest</div><div class="bar"><i style="width:24%"></i><em class="dark">24%</em></div>
+<div>Net loss</div><div class="bar"><i style="width:23%;background:#c0492f"></i><em class="dark">&minus;23%</em></div>
+</div>
+<small>Calculated from CoreWeave's FY2025 results release ($ millions: revenue 5,131; cost of revenue 1,453; adjusted EBITDA 3,093; D&amp;A 2,454; interest expense, net 1,229; net loss 1,167). Adjusted EBITDA is non-GAAP.</small>
+</div>
+<div class="fact">
+<strong>Read the stack, not the headline:</strong> EBITDA answers "does the cluster cover its running costs?" Operating income answers "does it pay back the hardware?" Net income answers "does it pay back the lenders too?" In AI infrastructure those can be three different answers.</div>
+<h3>Worked example: one billable GPU-hour</h3>
+<p>Stack the Week 1 lessons into a single cluster P&amp;L. All inputs are illustrative: $2.99 realized price (Day 2), 75% billable utilization (Day 1), $0.50 per billable hour for power, colocation, and site operations (Day 3 showed GPU power alone is a floor), $45,000 all-in capex per GPU including its share of servers and fabric (Days 5 and 6), a 6-year life (Day 4), and 9% interest on the full balance, as in an early contract year.</p>
+<div class="worked">
+<div class="case">
+<h4>Contribution before capital</h4>
+<div class="number">$2.49/hr</div>
+<p>$2.99 price minus $0.50 of running costs. 83% margin. This is what the cluster earns each billable hour once it exists.</p>
+</div>
+<div class="case good">
+<h4>After capital and financing</h4>
+<div class="number">$0.73/hr</div>
+<p>Minus $1.14 depreciation ($45,000 &divide; 6 years &divide; 6,570 billable hours) and $0.62 interest ($4,050 a year &divide; 6,570 hours). 24% margin.</p>
+</div>
+</div>
+<div class="diagram">
+<div class="chart-title">Margin per billable GPU-hour after depreciation and interest (illustrative)</div>
+<div class="chart-grid">
+<div>60% utilized</div><div class="bar"><i style="width:15%"></i><em class="dark">$0.17 &middot; 6%</em></div>
+<div>75% utilized</div><div class="bar"><i style="width:66%"></i><em>$0.73 &middot; 24%</em></div>
+<div>90% utilized</div><div class="bar"><i style="width:100%"></i><em>$1.11 &middot; 37%</em></div>
+</div>
+<small>Same illustrative inputs. Running costs, depreciation, and interest all accrue on installed hours, so each is divided by fewer billable hours as utilization falls. Break-even is about 57% utilization.</small>
+</div>
+<p>The shape matters more than the numbers. About 78% of the cost stack in this example is depreciation and interest, fixed the day the GPU is bought and financed. That is why a 15-point swing in utilization moves the margin from 6% to 37%, and why the backlog matters so much: CoreWeave reported a $66.8 billion revenue backlog at year-end 2025, about 13 times its annual revenue. Contracted hours are what turn the 75% case from an assumption into a forecast.</p>
+<h3>Rules of thumb</h3>
+<div class="rules">
+<div class="rule">
+<b>1 &middot; Margin is a utilization function.</b>Quote cluster margin as a curve over utilization, never as a single point. Know the break-even percentage.</div>
+<div class="rule">
+<b>2 &middot; EBITDA flatters capital-heavy compute.</b>When depreciation plus interest runs near 70% of revenue, a 60% EBITDA margin can coexist with a net loss.</div>
+<div class="rule">
+<b>3 &middot; Contract before you build.</b>With most costs fixed at purchase, the committed contract, not the spot price, sets the real return.</div>
+</div>
+<h3>Questions for the CFO table</h3>
+<ul>
+<li>What is each cluster's break-even utilization after depreciation and interest, and how far above it are we running?</li>
+<li>Which margin do we manage to: contribution, EBITDA, operating, or after financing? Does the board see all four?</li>
+<li>How much of next year's installed capacity is already covered by committed contracts at known prices?</li>
+<li>If realized price fell 20% on contract renewal, which clusters would drop below break-even?</li>
+</ul>
+<div class="sources">
+<strong>Sources and assumptions.</strong> CoreWeave FY2025 revenue ($5,131M), cost of revenue ($1,453M), adjusted EBITDA ($3,093M, 60% margin), depreciation and amortization ($2,454M), interest expense, net ($1,229M), operating loss ($46M), net loss ($1,167M), and $66.8B revenue backlog: <a href="https://investors.coreweave.com/news/news-details/2026/CoreWeave-Reports-Strong-Fourth-Quarter-and-Fiscal-Year-2025-Results/">CoreWeave Q4 and FY2025 results release</a>; full statements in the <a href="https://www.sec.gov/Archives/edgar/data/1769628/000176962826000104/crwv-20251231.htm">CoreWeave 2025 10-K</a>. Percent-of-revenue figures and the 13x backlog multiple are calculations from those numbers. The $2.99 price, 75% utilization, $0.50 running cost, $45,000 capex, 6-year life, and 9% interest rate are illustrative assumptions; the per-hour margins and 57% break-even are calculations from them, rounded.</div>
+</div>
+</article>
+
 <article class="paper" id="day-6" style="margin-bottom:30px">
 <header class="lesson-head">
 <div class="eyebrow" style="color:#168c7f">Day 06 &middot; Interconnect economics</div>
