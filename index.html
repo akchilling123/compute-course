@@ -36,7 +36,7 @@ body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 Inter,ui-s
 
 .rail{height:8px;background:#31506a;border-radius:8px;flex:1;overflow:hidden}
 
-.rail span{display:block;width:23.3%;height:100%;background:linear-gradient(90deg,var(--cyan),#83f3df)}
+.rail span{display:block;width:26.7%;height:100%;background:linear-gradient(90deg,var(--cyan),#83f3df)}
 
 .layout{display:grid;grid-template-columns:250px minmax(0,1fr);gap:34px;padding-top:44px;padding-bottom:80px}
 
@@ -153,7 +153,7 @@ body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 Inter,ui-s
 <header class="top">
 <div class="shell">
 <div class="brand">COMPUTE ECONOMICS / FIELD NOTES</div>
-<div class="daypill">DAY 07 OF 30</div>
+<div class="daypill">DAY 08 OF 30</div>
 </div>
 </header>
 <section class="hero">
@@ -166,14 +166,15 @@ body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 Inter,ui-s
 <span>
 </span>
 </div>
-<small>7 / 30 published</small>
+<small>8 / 30 published</small>
 </div>
 </div>
 </section>
 <main class="shell layout">
 <nav class="toc">
 <h3>Course pages</h3>
-<a class="active" href="#day-7">07 · Cluster margin</a>
+<a class="active" href="#day-8">08 · Training vs. inference</a>
+<a href="#day-7">07 · Cluster margin</a>
 <a href="#day-6">06 · Fabric</a>
 <a href="#day-5">05 · HBM</a>
 <a href="#day-4">04 · Depreciation</a>
@@ -183,6 +184,92 @@ body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 Inter,ui-s
 <a href="#curriculum">30-day map</a>
 </nav>
 <div>
+<article class="paper" id="day-8" style="margin-bottom:30px">
+<header class="lesson-head">
+<div class="eyebrow" style="color:#168c7f">Day 08 &middot; Week 2 begins: workloads</div>
+<h2>Training vs. inference economics</h2>
+<p class="dek">Training is a factory you pay for once. Inference is a meter that never stops running. Which one dominates is a volume question, and volume is a forecast.</p>
+</header>
+<div class="content">
+<h3>Two cost shapes, one model</h3>
+<p class="lead">
+<strong>A model's cost comes in two shapes.</strong> Training is a lump: Meta pretrained Llama 3 405B on 15.6 trillion tokens using 3.8 &times; 10<sup>25</sup> FLOPs of compute on more than 16,000 H100 GPUs, a cumulative 7.7 million H100 GPU-hours. Inference is a stream: every token a customer generates costs compute, forever, at a volume that grows with the product. The money has already flipped. Managed inference was $23.1 billion of AI platform infrastructure spend in 2025 against $16.3 billion for training, an inversion from 2022, when training held 74%. Futurum's 2030 base case puts inference at $106.8 billion, 71.7% of the total.</p>
+<div class="diagram">
+<div class="chart-title">Inference share of AI platform infrastructure spend (Futurum)</div>
+<div class="chart-grid">
+<div>2022</div><div class="bar"><i style="width:26%"></i><em class="dark">26% &middot; $1.2B</em></div>
+<div>2025</div><div class="bar"><i style="width:59%"></i><em>59% &middot; $23.1B</em></div>
+<div>2030 forecast</div><div class="bar"><i style="width:72%"></i><em>72% &middot; $106.8B</em></div>
+</div>
+<small>Futurum Group 1H 2026 AI Platforms forecast, managed inference vs. training. Training was 73.9% of the CY2022 split, fell to 41.4% by CY2025, and is projected at 28.3% in CY2030. Inference compounds at 35.8% a year, training at 21.0%.</small>
+</div>
+<div class="fact">
+<strong>Training behaves like capex, inference like cost of goods sold.</strong> Training is lumpy, sunk, and financed. Inference is per-unit, recurring, and tied to revenue. The same model is a capital story on the way in and a volume story on the way out.</div>
+<h3>The rule of thumb that links them</h3>
+<p>A standard scaling heuristic for dense models: training a model costs about 6 &times; parameters &times; training tokens of compute, and serving it costs about 2 &times; parameters per generated token. Set them equal and model size cancels: one training run equals the serving compute of 3&times; its training tokens. For Llama 3 405B, trained on 15.6 trillion tokens, that crossover is about 47 trillion served tokens. Check the arithmetic: 6 &times; 405 billion &times; 15.6 trillion &asymp; 3.8 &times; 10<sup>25</sup> FLOPs, exactly the training compute Meta reports for the run.</p>
+<div class="equation">
+<div class="metric">
+<b>6ND</b>
+<span>training FLOPs: 6 &times; parameters &times; tokens trained</span>
+</div>
+<div class="metric">
+<b>2N</b>
+<span>serving FLOPs per generated token</span>
+</div>
+<div class="metric">
+<b>3&times;</b>
+<span>served vs. trained tokens where the two compute totals are equal</span>
+</div>
+</div>
+<h3>What the meter charges, and where it is heading</h3>
+<p>Published API prices put the meter in dollars. Anthropic's list prices run from Haiku 4.5 at $1 / $5 per million input / output tokens, through Sonnet 5 at $2 / $10, up to Opus 5 at $5 / $25, with cache reads at 10% of input price and batch jobs at half price. Meanwhile the floor keeps moving: Stanford's AI Index found the cost of querying a GPT-3.5-level model fell from $20 per million tokens in November 2022 to $0.07 by October 2024, a 280-fold drop in 18 months, with per-task declines of 9 to 900&times; per year. Training runs the other way: Epoch AI estimates frontier training costs have grown about 2.4&times; per year since 2016, passing $1 billion for the largest runs by 2027, with hardware at 47&ndash;67% of model development cost, R&amp;D staff at 29&ndash;49%, and energy at 2&ndash;6%.</p>
+<div class="equation">
+<div class="metric">
+<b>$20 &rarr; $0.07</b>
+<span>price per million tokens, GPT-3.5-level, Nov 2022 to Oct 2024 (Stanford AI Index)</span>
+</div>
+<div class="metric">
+<b>2.4&times;/yr</b>
+<span>frontier training cost growth since 2016 (Epoch AI)</span>
+</div>
+<div class="metric">
+<b>$1B+</b>
+<span>largest training runs by 2027 (Epoch AI)</span>
+</div>
+</div>
+<p>Read those two curves together: the fixed side inflates while the variable side deflates. Margin accrues to whoever buys training efficiently and rides the inference deflation curve without locking yesterday's prices into tomorrow's contracts.</p>
+<h3>Worked example: amortizing one training run</h3>
+<p>Illustrative inputs: the 7.7 million H100 GPU-hours at $2.00 per GPU-hour (Day 2 rates) gives about $15.4 million of compute for the run, before staff, experiments, and failed attempts. All-in development cost is a multiple of that; Epoch's breakdown implies hardware is roughly half the total. Spread the $15.4 million over lifetime served tokens:</p>
+<div class="diagram">
+<div class="chart-title">Amortized training cost per million tokens served (illustrative)</div>
+<div class="chart-grid">
+<div>4.7T tokens served</div><div class="bar"><i style="width:100%"></i><em>$3.28</em></div>
+<div>47T tokens served</div><div class="bar"><i style="width:10%"></i><em class="dark">$0.33</em></div>
+<div>470T tokens served</div><div class="bar"><i style="width:1%;min-width:3px"></i><em class="dark">$0.03</em></div>
+</div>
+<small>Calculations: $15.4M divided by lifetime served tokens. 47 trillion tokens is the 3&times; crossover for a 15.6T-token run.</small>
+</div>
+<p>At 4.7 trillion tokens served, the amortized training run alone costs $3.28 per million tokens, two-thirds of Haiku 4.5's entire $5 output price. At 470 trillion, it is $0.03, noise against Sonnet 5's $10. Same run, same model. Volume decides whether the business lives in the training budget or the serving budget.</p>
+<h3>Rules of thumb</h3>
+<div class="rules">
+<div class="rule">
+<b>1 &middot; Never recover training in the token price.</b>The run is sunk once spent. Price serving off marginal cost and market, and recover training in the volume plan.</div>
+<div class="rule">
+<b>2 &middot; Contract along the deflation curve.</b>A multi-year fixed token price signed against today's serving cost looks rich next year. Index, reprice, or keep terms short.</div>
+<div class="rule">
+<b>3 &middot; Know your crossover volume.</b>Below roughly 3&times; training tokens served, the training run is the bigger compute line. Above it, serving dominates. The crossover says whether you are managing a factory or a meter.</div>
+</div>
+<h3>Questions for the CFO table</h3>
+<ul>
+<li>What is the crossover volume for each model we run, and which side of it are our current contracts on?</li>
+<li>Which token contracts are fixed-price beyond a year, and what happens to them if serving costs fall another 10&times; during the term?</li>
+<li>When we amortize training into unit cost, what served volume does each model need to clear its own economics?</li>
+</ul>
+<div class="sources">
+<strong>Sources and assumptions.</strong> Llama 3 405B trained on 15.6T tokens with 3.8 &times; 10<sup>25</sup> FLOPs and 405B parameters: <a href="https://arxiv.org/abs/2407.21783">The Llama 3 Herd of Models (Meta, 2024)</a>; 16K H100 cluster and 15T+ tokens: <a href="https://ai.meta.com/blog/meta-llama-3-1/">Meta's Llama 3.1 announcement</a>; 7.7M cumulative H100 GPU-hours: <a href="https://github.com/meta-llama/llama3/blob/main/MODEL_CARD.md">Llama 3 model card</a>. Infrastructure spend split ($23.1B inference vs. $16.3B training in CY2025; 73.9% training in CY2022; $106.8B and 71.7% inference by CY2030; 35.8% vs. 21.0% CAGRs): <a href="https://futurumgroup.com/press-release/inference-climbs-to-71-7-of-ai-platforms-infrastructure-spend-by-2030/">Futurum Group, 1H 2026 AI Platforms forecast</a>. Token prices (Haiku 4.5 $1/$5, Sonnet 5 $2/$10, Opus 5 $5/$25 per million input/output tokens; 0.1&times; cache reads; 50% batch discount): <a href="https://platform.claude.com/docs/en/about-claude/pricing">Anthropic API pricing</a>. Inference cost decline ($20 to $0.07 per million tokens, Nov 2022 to Oct 2024; 9&ndash;900&times; per year): <a href="https://hai.stanford.edu/news/ai-index-2025-state-of-ai-in-10-charts">Stanford AI Index 2025</a>. Training cost growth (2.4&times;/yr since 2016; $1B+ runs by 2027; hardware 47&ndash;67%, staff 29&ndash;49%, energy 2&ndash;6%): <a href="https://epoch.ai/publications/how-much-does-it-cost-to-train-frontier-ai-models">Epoch AI</a>. The 6ND / 2N compute heuristic is a standard scaling approximation for dense transformers (MoE, quantization, and utilization overhead shift the constants, not the shape). The $2.00/GPU-hour rate is the illustrative Day 2 price; the $15.4M run cost and amortization tiers are calculations from it.</div>
+</div>
+</article>
+
 <article class="paper" id="day-7" style="margin-bottom:30px">
 <header class="lesson-head">
 <div class="eyebrow" style="color:#168c7f">Day 07 &middot; Putting the unit together</div>
