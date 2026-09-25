@@ -36,7 +36,7 @@ body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 Inter,ui-s
 
 .rail{height:8px;background:#31506a;border-radius:8px;flex:1;overflow:hidden}
 
-.rail span{display:block;width:26.7%;height:100%;background:linear-gradient(90deg,var(--cyan),#83f3df)}
+.rail span{display:block;width:30.0%;height:100%;background:linear-gradient(90deg,var(--cyan),#83f3df)}
 
 .layout{display:grid;grid-template-columns:250px minmax(0,1fr);gap:34px;padding-top:44px;padding-bottom:80px}
 
@@ -153,7 +153,7 @@ body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 Inter,ui-s
 <header class="top">
 <div class="shell">
 <div class="brand">COMPUTE ECONOMICS / FIELD NOTES</div>
-<div class="daypill">DAY 08 OF 30</div>
+<div class="daypill">DAY 09 OF 30</div>
 </div>
 </header>
 <section class="hero">
@@ -166,14 +166,15 @@ body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 Inter,ui-s
 <span>
 </span>
 </div>
-<small>8 / 30 published</small>
+<small>9 / 30 published</small>
 </div>
 </div>
 </section>
 <main class="shell layout">
 <nav class="toc">
 <h3>Course pages</h3>
-<a class="active" href="#day-8">08 · Training vs. inference</a>
+<a class="active" href="#day-9">09 · Tokens &amp; FLOPs</a>
+<a href="#day-8">08 · Training vs. inference</a>
 <a href="#day-7">07 · Cluster margin</a>
 <a href="#day-6">06 · Fabric</a>
 <a href="#day-5">05 · HBM</a>
@@ -184,6 +185,66 @@ body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 Inter,ui-s
 <a href="#curriculum">30-day map</a>
 </nav>
 <div>
+<article class="paper" id="day-9" style="margin-bottom:30px">
+<header class="lesson-head">
+<div class="eyebrow" style="color:#168c7f">Day 09 &middot; Week 2 &middot; workloads</div>
+<h2>Tokens, FLOPs, and finance translation</h2>
+<p class="dek">Product speaks tokens, infrastructure speaks GPU-hours, finance speaks dollars. The conversion is three multiplications and one leak called MFU.</p>
+</header>
+<div class="content">
+<h3>The translation chain</h3>
+<p class="lead">
+<strong>Every AI P&amp;L is the same conversion done twice, once for training and once for serving.</strong> Tokens of demand become FLOPs of compute (about 2 &times; parameters per token, from Day 8), FLOPs become GPU-seconds (through the chip's peak rate, discounted by efficiency), and GPU-seconds become dollars (at the $/GPU-hour from Day 2). Get the chain right and a product forecast drops straight into a capacity plan and a cost line.</p>
+<div class="equation">
+<div class="metric">
+<b>2N</b>
+<span>FLOPs per token: 2 &times; parameter count (dense models, Day 8)</span>
+</div>
+<div class="metric">
+<b>990</b>
+<span>dense BF16 TFLOPS peak per H100</span>
+</div>
+<div class="metric">
+<b>38&ndash;43%</b>
+<span>MFU Meta achieved training Llama 3 405B: the leak between peak and delivered</span>
+</div>
+</div>
+<div class="fact">
+<strong>Never price off datasheet peak.</strong> Model FLOPs utilization is the share of peak compute a real workload actually extracts. Meta's flagship training run converted only 38&ndash;43% of peak; the rest went to communication, memory stalls, and restarts. A cost model built on peak specs understates cost by more than 2&times;.</div>
+<h3>Worked example: the serving side</h3>
+<p>Product asks: what does a billion tokens a day of 405B-class serving cost? Work the chain with illustrative inputs. One token costs 2 &times; 405 billion = 8.1 &times; 10<sup>11</sup> FLOPs, so a billion tokens a day is 8.1 &times; 10<sup>20</sup> FLOPs daily. An H100 at 40% MFU delivers about 1.43 &times; 10<sup>18</sup> FLOPs per hour, so the workload needs about 568 GPU-hours a day, or 24 H100s running around the clock. At $2.00 per GPU-hour that is roughly $1,140 a day, or <strong>$1.14 per million tokens</strong>.</p>
+<div class="diagram">
+<div class="chart-title">Serving cost floor per million tokens by model size (illustrative)</div>
+<div class="chart-grid">
+<div>8B model</div><div class="bar"><i style="width:2%;min-width:3px"></i><em class="dark">$0.02</em></div>
+<div>70B model</div><div class="bar"><i style="width:18%"></i><em class="dark">$0.20</em></div>
+<div>405B model</div><div class="bar"><i style="width:100%"></i><em>$1.14</em></div>
+</div>
+<small>Calculations: $2.00 per H100-hour &divide; (990 TFLOPS &times; 40% MFU &times; 3,600 s &divide; 2N FLOPs per token). FLOP-floor only: real decode is memory-bandwidth bound (Day 12), so treat these as lower bounds that model routing and quantization (Day 13) push down.</small>
+</div>
+<p>Sanity-check the floor against the market: Anthropic sells Haiku 4.5 at $1 per million input tokens and Sonnet 5 at $2. The floor and the price list live in the same neighborhood, which is the point: frontier-class serving costs measure in single dollars per million tokens, and small models in cents.</p>
+<h3>Worked example: the training side</h3>
+<p>The same chain runs backward from a training budget. Llama 3 405B used 3.8 &times; 10<sup>25</sup> FLOPs. At 40% MFU on 990-TFLOPS H100s that is about 26 million H100-hours; at $2.00 per GPU-hour, roughly $53 million of compute, with Meta's disclosed 38&ndash;43% MFU putting the range near $50 to $56 million. That is the conversion Day 8's amortization example needs before training cost can be spread over served tokens: budget FLOPs, translate to GPU-hours, then to dollars, then to $ per million tokens at the volume you forecast.</p>
+<h3>Rules of thumb</h3>
+<div class="rules">
+<div class="rule">
+<b>1 &middot; Speak one unit.</b>Convert GPU-hours, FLOPs, and list prices into $ per million tokens before comparing anything. It is the only unit product, infrastructure, and finance all recognize.</div>
+<div class="rule">
+<b>2 &middot; Apply MFU before money.</b>Peak specs overstate delivered compute by 2&times; or more. Anchor on about 40% for frontier training, then stack Day 1 utilization on top.</div>
+<div class="rule">
+<b>3 &middot; Parameters are the cost dial.</b>Per-token cost scales linearly with model size. Halving the model halves the floor; routing small queries to small models is a margin decision, not an engineering nicety.</div>
+</div>
+<h3>Questions for the CFO table</h3>
+<ul>
+<li>Who owns the tokens-to-GPU-hours conversion in our planning model, what MFU does it assume, and when was that assumption validated against the fleet?</li>
+<li>What is our actual served cost per million tokens by model, and how does it compare to the prices we charge per million?</li>
+<li>If product volume grows 10&times;, does our cost per million tokens fall, hold, or rise, and which term in the chain moves it?</li>
+</ul>
+<div class="sources">
+<strong>Sources and assumptions.</strong> H100 dense BF16 peak (~990 TFLOPS): <a href="https://en.wikipedia.org/wiki/Hopper_(microarchitecture)">Hopper microarchitecture specifications</a>. Llama 3 405B (15.6T training tokens, 3.8 &times; 10<sup>25</sup> FLOPs, 38&ndash;43% MFU): <a href="https://arxiv.org/abs/2407.21783">The Llama 3 Herd of Models (Meta, 2024)</a>. Market price reference (Haiku 4.5 $1/$5, Sonnet 5 $2/$10 per million input/output tokens): <a href="https://platform.claude.com/docs/en/about-claude/pricing">Anthropic API pricing</a>. The 2N FLOPs-per-token rule is the dense-model heuristic from Day 8. The 40% MFU and $2.00/GPU-hour inputs are illustrative anchors (Meta's reported range and Day 2 rates); all per-token costs, GPU-hour totals, and dollar figures are calculations from those inputs, rounded.</div>
+</div>
+</article>
+
 <article class="paper" id="day-8" style="margin-bottom:30px">
 <header class="lesson-head">
 <div class="eyebrow" style="color:#168c7f">Day 08 &middot; Week 2 begins: workloads</div>
@@ -193,7 +254,7 @@ body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 Inter,ui-s
 <div class="content">
 <h3>Two cost shapes, one model</h3>
 <p class="lead">
-<strong>A model's cost comes in two shapes.</strong> Training is a lump: Meta pretrained Llama 3 405B on 15.6 trillion tokens using 3.8 &times; 10<sup>25</sup> FLOPs of compute on more than 16,000 H100 GPUs, a cumulative 7.7 million H100 GPU-hours. Inference is a stream: every token a customer generates costs compute, forever, at a volume that grows with the product. The money has already flipped. Managed inference was $23.1 billion of AI platform infrastructure spend in 2025 against $16.3 billion for training, an inversion from 2022, when training held 74%. Futurum's 2030 base case puts inference at $106.8 billion, 71.7% of the total.</p>
+<strong>A model's cost comes in two shapes.</strong> Training is a lump: Meta pretrained Llama 3 405B on 15.6 trillion tokens using 3.8 &times; 10<sup>25</sup> FLOPs of compute on more than 16,000 H100 GPUs; at the 38&ndash;43% MFU Meta reports, that is roughly 25 million H100 GPU-hours. Inference is a stream: every token a customer generates costs compute, forever, at a volume that grows with the product. The money has already flipped. Managed inference was $23.1 billion of AI platform infrastructure spend in 2025 against $16.3 billion for training, an inversion from 2022, when training held 74%. Futurum's 2030 base case puts inference at $106.8 billion, 71.7% of the total.</p>
 <div class="diagram">
 <div class="chart-title">Inference share of AI platform infrastructure spend (Futurum)</div>
 <div class="chart-grid">
@@ -239,7 +300,7 @@ body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 Inter,ui-s
 </div>
 <p>Read those two curves together: the fixed side inflates while the variable side deflates. Margin accrues to whoever buys training efficiently and rides the inference deflation curve without locking yesterday's prices into tomorrow's contracts.</p>
 <h3>Worked example: amortizing one training run</h3>
-<p>Illustrative inputs: the 7.7 million H100 GPU-hours at $2.00 per GPU-hour (Day 2 rates) gives about $15.4 million of compute for the run, before staff, experiments, and failed attempts. All-in development cost is a multiple of that; Epoch's breakdown implies hardware is roughly half the total. Spread the $15.4 million over lifetime served tokens:</p>
+<p>Illustrative inputs: Meta's model card reports 7.7 million cumulative H100 GPU-hours for pretraining the Llama 3 8B and 70B models; at $2.00 per GPU-hour (Day 2 rates) that is about $15.4 million of compute, before staff, experiments, and failed attempts. All-in development cost is a multiple of that; Epoch's breakdown implies hardware is roughly half the total. Spread the $15.4 million over lifetime served tokens:</p>
 <div class="diagram">
 <div class="chart-title">Amortized training cost per million tokens served (illustrative)</div>
 <div class="chart-grid">
@@ -247,7 +308,7 @@ body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 Inter,ui-s
 <div>47T served</div><div class="bar"><i style="width:10%"></i><em class="dark">$0.33</em></div>
 <div>470T served</div><div class="bar"><i style="width:1%;min-width:3px"></i><em class="dark">$0.03</em></div>
 </div>
-<small>Calculations: $15.4M divided by lifetime served tokens. 47 trillion tokens is the 3&times; crossover for a 15.6T-token run.</small>
+<small>Calculations: $15.4M divided by lifetime served tokens. the 3&times; crossover for a 15T-token training run is about 45 trillion served tokens.</small>
 </div>
 <p>At 4.7 trillion tokens served, the amortized training run alone costs $3.28 per million tokens, two-thirds of Haiku 4.5's entire $5 output price. At 470 trillion, it is $0.03, noise against Sonnet 5's $10. Same run, same model. Volume decides whether the business lives in the training budget or the serving budget.</p>
 <h3>Rules of thumb</h3>
@@ -266,7 +327,7 @@ body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 Inter,ui-s
 <li>When we amortize training into unit cost, what served volume does each model need to clear its own economics?</li>
 </ul>
 <div class="sources">
-<strong>Sources and assumptions.</strong> Llama 3 405B trained on 15.6T tokens with 3.8 &times; 10<sup>25</sup> FLOPs and 405B parameters: <a href="https://arxiv.org/abs/2407.21783">The Llama 3 Herd of Models (Meta, 2024)</a>; 16K H100 cluster and 15T+ tokens: <a href="https://ai.meta.com/blog/meta-llama-3-1/">Meta's Llama 3.1 announcement</a>; 7.7M cumulative H100 GPU-hours: <a href="https://github.com/meta-llama/llama3/blob/main/MODEL_CARD.md">Llama 3 model card</a>. Infrastructure spend split ($23.1B inference vs. $16.3B training in CY2025; 73.9% training in CY2022; $106.8B and 71.7% inference by CY2030; 35.8% vs. 21.0% CAGRs): <a href="https://futurumgroup.com/press-release/inference-climbs-to-71-7-of-ai-platforms-infrastructure-spend-by-2030/">Futurum Group, 1H 2026 AI Platforms forecast</a>. Token prices (Haiku 4.5 $1/$5, Sonnet 5 $2/$10, Opus 5 $5/$25 per million input/output tokens; 0.1&times; cache reads; 50% batch discount): <a href="https://platform.claude.com/docs/en/about-claude/pricing">Anthropic API pricing</a>. Inference cost decline ($20 to $0.07 per million tokens, Nov 2022 to Oct 2024; 9&ndash;900&times; per year): <a href="https://hai.stanford.edu/news/ai-index-2025-state-of-ai-in-10-charts">Stanford AI Index 2025</a>. Training cost growth (2.4&times;/yr since 2016; $1B+ runs by 2027; hardware 47&ndash;67%, staff 29&ndash;49%, energy 2&ndash;6%): <a href="https://epoch.ai/publications/how-much-does-it-cost-to-train-frontier-ai-models">Epoch AI</a>. The 6ND / 2N compute heuristic is a standard scaling approximation for dense transformers (MoE, quantization, and utilization overhead shift the constants, not the shape). The $2.00/GPU-hour rate is the illustrative Day 2 price; the $15.4M run cost and amortization tiers are calculations from it.</div>
+<strong>Sources and assumptions.</strong> Llama 3 405B trained on 15.6T tokens with 3.8 &times; 10<sup>25</sup> FLOPs, 405B parameters, 38&ndash;43% MFU: <a href="https://arxiv.org/abs/2407.21783">The Llama 3 Herd of Models (Meta, 2024)</a>; 16K H100 cluster and 15T+ tokens: <a href="https://ai.meta.com/blog/meta-llama-3-1/">Meta's Llama 3.1 announcement</a>; 7.7M cumulative H100 GPU-hours for Llama 3 8B and 70B pretraining: <a href="https://github.com/meta-llama/llama3/blob/main/MODEL_CARD.md">Llama 3 model card</a>. Infrastructure spend split ($23.1B inference vs. $16.3B training in CY2025; 73.9% training in CY2022; $106.8B and 71.7% inference by CY2030; 35.8% vs. 21.0% CAGRs): <a href="https://futurumgroup.com/press-release/inference-climbs-to-71-7-of-ai-platforms-infrastructure-spend-by-2030/">Futurum Group, 1H 2026 AI Platforms forecast</a>. Token prices (Haiku 4.5 $1/$5, Sonnet 5 $2/$10, Opus 5 $5/$25 per million input/output tokens; 0.1&times; cache reads; 50% batch discount): <a href="https://platform.claude.com/docs/en/about-claude/pricing">Anthropic API pricing</a>. Inference cost decline ($20 to $0.07 per million tokens, Nov 2022 to Oct 2024; 9&ndash;900&times; per year): <a href="https://hai.stanford.edu/news/ai-index-2025-state-of-ai-in-10-charts">Stanford AI Index 2025</a>. Training cost growth (2.4&times;/yr since 2016; $1B+ runs by 2027; hardware 47&ndash;67%, staff 29&ndash;49%, energy 2&ndash;6%): <a href="https://epoch.ai/publications/how-much-does-it-cost-to-train-frontier-ai-models">Epoch AI</a>. The 6ND / 2N compute heuristic is a standard scaling approximation for dense transformers (MoE, quantization, and utilization overhead shift the constants, not the shape). The $2.00/GPU-hour rate is the illustrative Day 2 price; the $15.4M run cost and amortization tiers are calculations from it.</div>
 </div>
 </article>
 
