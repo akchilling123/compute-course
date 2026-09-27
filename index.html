@@ -36,7 +36,7 @@ body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 Inter,ui-s
 
 .rail{height:8px;background:#31506a;border-radius:8px;flex:1;overflow:hidden}
 
-.rail span{display:block;width:30.0%;height:100%;background:linear-gradient(90deg,var(--cyan),#83f3df)}
+.rail span{display:block;width:33.3%;height:100%;background:linear-gradient(90deg,var(--cyan),#83f3df)}
 
 .layout{display:grid;grid-template-columns:250px minmax(0,1fr);gap:34px;padding-top:44px;padding-bottom:80px}
 
@@ -153,7 +153,7 @@ body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 Inter,ui-s
 <header class="top">
 <div class="shell">
 <div class="brand">COMPUTE ECONOMICS / FIELD NOTES</div>
-<div class="daypill">DAY 09 OF 30</div>
+<div class="daypill">DAY 10 OF 30</div>
 </div>
 </header>
 <section class="hero">
@@ -166,14 +166,15 @@ body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 Inter,ui-s
 <span>
 </span>
 </div>
-<small>9 / 30 published</small>
+<small>10 / 30 published</small>
 </div>
 </div>
 </section>
 <main class="shell layout">
 <nav class="toc">
 <h3>Course pages</h3>
-<a class="active" href="#day-9">09 · Tokens &amp; FLOPs</a>
+<a class="active" href="#day-10">10 · Batching</a>
+<a href="#day-9">09 · Tokens &amp; FLOPs</a>
 <a href="#day-8">08 · Training vs. inference</a>
 <a href="#day-7">07 · Cluster margin</a>
 <a href="#day-6">06 · Fabric</a>
@@ -185,6 +186,64 @@ body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 Inter,ui-s
 <a href="#curriculum">30-day map</a>
 </nav>
 <div>
+<article class="paper" id="day-10" style="margin-bottom:30px">
+<header class="lesson-head">
+<div class="eyebrow" style="color:#168c7f">Day 10 &middot; Week 2 &middot; workloads</div>
+<h2>Batching and throughput</h2>
+<p class="dek">An unbatched GPU is a truck hauling one box at a time. Batching multiplies the tokens each GPU-hour produces, and unit cost is just the hourly price divided by that number.</p>
+</header>
+<div class="content">
+<h3>The biggest lever in serving cost</h3>
+<p class="lead">
+<strong>Day 9 gave the formula: cost per million tokens = $/GPU-hour &divide; achieved tokens per hour.</strong> Batching is how you move the denominator. A GPU serving one request spends most of each second waiting on memory; serving many requests in the same pass keeps it fed. The serving stack learned this twice over. Orca introduced iteration-level scheduling in 2022, batching at every generation step instead of every request, and showed a 36.9&times; throughput gain over NVIDIA FasterTransformer on GPT-3 175B at the same latency. vLLM's PagedAttention then attacked the memory side, cutting KV-cache waste to under 4% and delivering up to 24&times; the throughput of HuggingFace Transformers.</p>
+<div class="equation">
+<div class="metric">
+<b>36.9&times;</b>
+<span>Orca throughput gain at equal latency (OSDI 2022, GPT-3 175B)</span>
+</div>
+<div class="metric">
+<b>up to 24&times;</b>
+<span>vLLM vs. HuggingFace Transformers throughput</span>
+</div>
+<div class="metric">
+<b>&lt;4%</b>
+<span>KV-cache memory waste with PagedAttention</span>
+</div>
+</div>
+<div class="fact">
+<strong>Memory sets the batch, the batch sets the cost.</strong> How many requests can share one GPU is capped by KV-cache space in HBM (Day 5), not by compute. That is why the serving stack spends its cleverness on memory management: every sequence squeezed in is throughput gained at zero extra hardware cost.</div>
+<h3>Worked example: one GPU, three regimes</h3>
+<p>Illustrative inputs: a 70B model on one H100 at $2.00 per hour. Serve it three ways: a single interactive stream at 30 tokens per second, a modest batch at 300, and a full continuous batch at 1,500. Same GPU, same model, same hourly price. Only the achieved throughput changes.</p>
+<div class="diagram">
+<div class="chart-title">Cost per million tokens by serving regime (illustrative)</div>
+<div class="chart-grid">
+<div>Single stream &middot; 30 tok/s</div><div class="bar"><i style="width:100%"></i><em>$18.50</em></div>
+<div>Modest batch &middot; 300 tok/s</div><div class="bar"><i style="width:10%"></i><em class="dark">$1.85</em></div>
+<div>Full batch &middot; 1,500 tok/s</div><div class="bar"><i style="width:2%;min-width:3px"></i><em class="dark">$0.37</em></div>
+</div>
+<small>Calculations: $2.00 &divide; (tokens/s &times; 3,600), scaled to a million tokens. Throughput figures are illustrative serving regimes, not benchmarks; the shape, a 50&times; cost swing on one GPU, is the point.</small>
+</div>
+<p>A 50&times; cost swing with zero change in hardware, model, or price list. This is why two providers can sell the same open model at very different prices and both be rational: they are running different batch regimes, and the cheaper one has the traffic to keep batches full. Throughput economics favor the busy, a serving-side echo of Day 1's utilization lesson.</p>
+<h3>Rules of thumb</h3>
+<div class="rules">
+<div class="rule">
+<b>1 &middot; Price the achieved, not the peak.</b>Serving unit cost is hourly price divided by achieved tokens per hour. Benchmarks give peaks; production gives the number that belongs in the model.</div>
+<div class="rule">
+<b>2 &middot; Batch what can wait.</b>Evals, extraction, summaries, and overnight jobs belong in throughput mode. Every request that tolerates delay is cheaper to serve; Day 11 prices the ones that cannot.</div>
+<div class="rule">
+<b>3 &middot; Full batches need full order books.</b>Batching gains only exist with enough concurrent demand. A quiet cluster in throughput mode is just an idle cluster: utilization first, batching second.</div>
+</div>
+<h3>Questions for the CFO table</h3>
+<ul>
+<li>What achieved tokens per second per GPU do we get in production, by model, and how far is that from the assumption in our unit-cost model?</li>
+<li>What share of our traffic is delay-tolerant and could shift into high-throughput serving or off-peak batch windows?</li>
+<li>When we quote $/million tokens internally, which batching regime produced the number, and would it survive losing our largest customer's traffic?</li>
+</ul>
+<div class="sources">
+<strong>Sources and assumptions.</strong> Orca iteration-level scheduling and selective batching, 36.9&times; throughput over FasterTransformer on GPT-3 175B at equal latency: <a href="https://www.usenix.org/conference/osdi22/presentation/yu">Orca: A Distributed Serving System for Transformer-Based Generative Models (OSDI 2022)</a>. vLLM up to 24&times; HuggingFace Transformers and 3.5&times; TGI throughput, PagedAttention KV-cache waste under 4%: <a href="https://blog.vllm.ai/2023/06/20/vllm.html">vLLM: Easy, Fast, and Cheap LLM Serving with PagedAttention</a> and the <a href="https://arxiv.org/abs/2309.06180">PagedAttention paper</a>. The $2.00/GPU-hour input is the illustrative Day 2 rate; the 30 / 300 / 1,500 tokens-per-second regimes and resulting per-token costs are illustrative calculations, not benchmarks.</div>
+</div>
+</article>
+
 <article class="paper" id="day-9" style="margin-bottom:30px">
 <header class="lesson-head">
 <div class="eyebrow" style="color:#168c7f">Day 09 &middot; Week 2 &middot; workloads</div>
