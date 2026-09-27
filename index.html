@@ -36,7 +36,7 @@ body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 Inter,ui-s
 
 .rail{height:8px;background:#31506a;border-radius:8px;flex:1;overflow:hidden}
 
-.rail span{display:block;width:33.3%;height:100%;background:linear-gradient(90deg,var(--cyan),#83f3df)}
+.rail span{display:block;width:36.7%;height:100%;background:linear-gradient(90deg,var(--cyan),#83f3df)}
 
 .layout{display:grid;grid-template-columns:250px minmax(0,1fr);gap:34px;padding-top:44px;padding-bottom:80px}
 
@@ -153,7 +153,7 @@ body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 Inter,ui-s
 <header class="top">
 <div class="shell">
 <div class="brand">COMPUTE ECONOMICS / FIELD NOTES</div>
-<div class="daypill">DAY 10 OF 30</div>
+<div class="daypill">DAY 11 OF 30</div>
 </div>
 </header>
 <section class="hero">
@@ -166,14 +166,15 @@ body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 Inter,ui-s
 <span>
 </span>
 </div>
-<small>10 / 30 published</small>
+<small>11 / 30 published</small>
 </div>
 </div>
 </section>
 <main class="shell layout">
 <nav class="toc">
 <h3>Course pages</h3>
-<a class="active" href="#day-10">10 · Batching</a>
+<a class="active" href="#day-11">11 · Latency</a>
+<a href="#day-10">10 · Batching</a>
 <a href="#day-9">09 · Tokens &amp; FLOPs</a>
 <a href="#day-8">08 · Training vs. inference</a>
 <a href="#day-7">07 · Cluster margin</a>
@@ -186,6 +187,50 @@ body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 Inter,ui-s
 <a href="#curriculum">30-day map</a>
 </nav>
 <div>
+<article class="paper" id="day-11" style="margin-bottom:30px">
+<header class="lesson-head">
+<div class="eyebrow" style="color:#168c7f">Day 11 &middot; Week 2 &middot; workloads</div>
+<h2>Latency as a paid feature</h2>
+<p class="dek">Day 10 bought throughput with waiting. The market sells the reverse: the same tokens, faster, at a premium. A latency SLA is a cost commitment with a price tag on both sides.</p>
+</header>
+<div class="content">
+<h3>One model, three prices, set by the clock</h3>
+<p class="lead">
+<strong>Anthropic's price list already sells time.</strong> Opus 5 costs $5 / $25 per million input / output tokens at standard speed. Its fast mode, a research preview promising significantly faster output, costs exactly double: $10 / $50. Its Batch API, which processes asynchronously, costs exactly half. Same model, same tokens: a 4&times; price band set purely by when the answer arrives.</p>
+<div class="diagram">
+<div class="chart-title">Price per million output tokens by speed tier (Anthropic Opus 5)</div>
+<div class="chart-grid">
+<div>Batch &middot; async</div><div class="bar"><i style="width:25%"></i><em class="dark">$12.50 &middot; 0.5&times;</em></div>
+<div>Standard</div><div class="bar"><i style="width:50%"></i><em class="dark">$25 &middot; 1&times;</em></div>
+<div>Fast mode</div><div class="bar"><i style="width:100%"></i><em>$50 &middot; 2&times;</em></div>
+</div>
+<small>Anthropic list prices: fast mode is a research preview on Opus 5 and 4.8; Batch API pricing is 50% off standard. The 2&times; and 0.5&times; multipliers are the market's current read on what speed and delay are worth.</small>
+</div>
+<p>Customers pay for speed because latency converts to money on their side too. A Google and Deloitte study of mobile commerce found a 0.1-second speed improvement lifted retail conversions 8.4% and travel conversions 10.1%. Interactive AI products sit on the same curve: time-to-first-token decides whether a chat product feels alive, and stream rate decides whether a coding assistant keeps a developer in flow.</p>
+<h3>Why speed is expensive to sell</h3>
+<p>Speed is unbatched capacity. Day 10 showed the cost of a single stream can run 50&times; a full batch; a fast lane is a promise to keep batches small and accelerators reserved, which means sacrificing the throughput that made serving cheap. The provider's math: illustrative cost of $1.14 per million output tokens in a standard mixed regime becomes roughly $3&ndash;4 in a small-batch fast lane. The price doubles while cost triples off a small base, so the speed premium is mostly margin for whoever owns the scheduler. The batch discount runs the other way: half price for requests that fill idle off-peak capacity, turning Day 1's utilization problem into a product.</p>
+<div class="fact">
+<strong>Time-to-first-token and stream rate are different products.</strong> TTFT is set by prefill and queue depth; tokens-per-second is set by decode, which is memory-bandwidth bound (Day 12). A latency SLA should say which one it buys, because they cost different things.</div>
+<h3>Rules of thumb</h3>
+<div class="rules">
+<div class="rule">
+<b>1 &middot; Price speed from sacrificed throughput.</b>A fast tier costs what the lost batching cost. Never set a latency SLA before you know its fleet footprint.</div>
+<div class="rule">
+<b>2 &middot; Sell waiting.</b>A 50% async discount costs little if it fills hours that would idle anyway. Discounting delay is utilization management wearing a price tag.</div>
+<div class="rule">
+<b>3 &middot; Route by latency need, not by model habit.</b>Chat needs TTFT; nightly jobs need nothing. Sending delay-tolerant traffic through the fast lane is pure cost with no revenue attached.</div>
+</div>
+<h3>Questions for the CFO table</h3>
+<ul>
+<li>Which of our traffic actually pays a latency premium, and what multiple of standard price does it carry?</li>
+<li>What would our latency SLA cost in sacrificed throughput and reserved fleet if every customer exercised it at once?</li>
+<li>What share of volume could move to async batch at half price, and what would that do to off-peak utilization?</li>
+</ul>
+<div class="sources">
+<strong>Sources and assumptions.</strong> Opus 5 standard ($5/$25 per million input/output tokens), fast mode ($10/$50, research preview on Opus 5 and 4.8), Batch API 50% discount, and cache reads at 0.1&times; input price: <a href="https://platform.claude.com/docs/en/about-claude/pricing">Anthropic API pricing</a>. Latency-to-conversion evidence (0.1s mobile speed improvement: retail conversions +8.4%, travel +10.1%): <a href="https://www2.deloitte.com/ie/en/pages/consulting/articles/milliseconds-make-millions.html">Deloitte and Google, Milliseconds Make Millions (2020)</a>. The fast-lane cost figures ($1.14 standard, $3&ndash;4 small-batch per million output tokens) are illustrative calculations built on Day 9's floor and Day 10's regimes, not benchmarks.</div>
+</div>
+</article>
+
 <article class="paper" id="day-10" style="margin-bottom:30px">
 <header class="lesson-head">
 <div class="eyebrow" style="color:#168c7f">Day 10 &middot; Week 2 &middot; workloads</div>
