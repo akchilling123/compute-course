@@ -36,7 +36,7 @@ body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 Inter,ui-s
 
 .rail{height:8px;background:#31506a;border-radius:8px;flex:1;overflow:hidden}
 
-.rail span{display:block;width:36.7%;height:100%;background:linear-gradient(90deg,var(--cyan),#83f3df)}
+.rail span{display:block;width:43.3%;height:100%;background:linear-gradient(90deg,var(--cyan),#83f3df)}
 
 .layout{display:grid;grid-template-columns:250px minmax(0,1fr);gap:34px;padding-top:44px;padding-bottom:80px}
 
@@ -153,7 +153,7 @@ body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 Inter,ui-s
 <header class="top">
 <div class="shell">
 <div class="brand">COMPUTE ECONOMICS / FIELD NOTES</div>
-<div class="daypill">DAY 11 OF 30</div>
+<div class="daypill">DAY 13 OF 30</div>
 </div>
 </header>
 <section class="hero">
@@ -166,14 +166,16 @@ body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 Inter,ui-s
 <span>
 </span>
 </div>
-<small>11 / 30 published</small>
+<small>13 / 30 published</small>
 </div>
 </div>
 </section>
 <main class="shell layout">
 <nav class="toc">
 <h3>Course pages</h3>
-<a class="active" href="#day-11">11 · Latency</a>
+<a class="active" href="#day-13">13 · Quantization</a>
+<a href="#day-12">12 · Memory</a>
+<a href="#day-11">11 · Latency</a>
 <a href="#day-10">10 · Batching</a>
 <a href="#day-9">09 · Tokens &amp; FLOPs</a>
 <a href="#day-8">08 · Training vs. inference</a>
@@ -187,6 +189,39 @@ body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 Inter,ui-s
 <a href="#curriculum">30-day map</a>
 </nav>
 <div>
+<article class="paper" id="day-13" style="margin-bottom:30px">
+<header class="lesson-head"><div class="eyebrow" style="color:#168c7f">Day 13 &middot; Week 2 &middot; workloads</div><h2>Quantization changes the replica</h2><p class="dek">Compression is not a free speed button. It is a way to move a model across a hardware boundary, then test whether lower precision pays after quality, cache, and serving overhead.</p></header>
+<div class="content">
+<h3>From bits to the bill</h3><p class="lead">Yesterday's 70B model needs roughly <strong>140 GB of BF16 weight memory</strong>. At idealized FP8, its weights shrink to about 70 GB; at idealized 4-bit weight precision, 35 GB. These are <em>weight-only lower bounds</em>. Scales, metadata, activations, and KV cache consume additional memory, and the storage format may not match the arithmetic exactly. NVIDIA's TensorRT-LLM guide says lower precision can improve throughput and latency, but output quality must be checked.</p>
+<div class="equation"><div class="metric"><b>140 GB</b><span>70B at 16 bits, weights only</span></div><div class="metric"><b>70 GB</b><span>70B at 8 bits, idealized</span></div><div class="metric"><b>35 GB</b><span>70B at 4 bits, idealized</span></div></div>
+<div class="diagram"><div class="chart-title">70B model weight memory by precision (illustrative)</div><div class="chart-grid"><div>BF16</div><div class="bar"><i style="width:100%"></i><em>140 GB &middot; 2 H100 floor</em></div><div>FP8</div><div class="bar"><i style="width:50%"></i><em class="dark">70 GB &middot; 1 H100 floor*</em></div><div>4-bit</div><div class="bar"><i style="width:25%"></i><em class="dark">35 GB &middot; 1 H100 floor*</em></div></div><small>*Floor counts only weights relative to an 80 GB H100 SXM. FP8 leaves nominally 10 GB for all other memory, often too little at target context and concurrency. Four-bit weights offer more room, but scale overhead and kernel support matter. Neither floor proves a practical single-GPU serving design.</small></div>
+<h3>The gain is discrete, the tradeoff is continuous</h3><p>Take an illustrative $2/H100-hour rental rate. If a working BF16 replica needs two H100s, its GPU floor is $4/hour. If a quantized implementation <em>fits with the required context and concurrency</em> on one H100, its GPU floor is $2/hour: $48/day rather than $96/day for 24-hour operation. This is a conditional 50% hardware-floor cut, not a promised production saving. Throughput, quality, serving software, and actual utilization decide cost per <em>accepted</em> token. FP8's 70 GB of weights may still leave too little cache to satisfy the workload; four-bit compression buys more headroom but is not automatically faster on every kernel.</p>
+<div class="diagram"><div class="chart-title">Conditional replica GPU floor at $2/H100-hour (illustrative)</div><div class="chart-grid"><div>BF16 &middot; 2 GPUs</div><div class="bar"><i style="width:100%"></i><em>$4/hour</em></div><div>Quantized &middot; 1 GPU</div><div class="bar"><i style="width:50%"></i><em class="dark">$2/hour</em></div></div><small>Assumes a working one-H100 quantized configuration, identical $2 GPU-hour pricing, and excludes all other costs. Check live fit, quality, and achieved tokens/hour before using this for a purchase or forecast.</small></div>
+<p>There is measured upside, but not a universal multiplier. In one NVIDIA TensorRT-LLM Llama 3.3 70B case study distributed over <strong>four H100 SXM 80GB GPUs</strong>, tuned FP16 throughput was 2,474 tokens/s and tuned FP8 throughput 6,049 tokens/s, about 2.44&times;. Its FP8 KV cache change separately raised a reported baseline from 3,390 to 5,300 tokens/s, about 1.56&times;. Different tuned configurations, workloads, and quality gates can give different answers. That benchmark is evidence that quantization can materially change realized economics, <em>not</em> proof that a 70B model will meet this lesson's illustrative single-H100 case.</p>
+<div class="fact"><strong>Do not compress only the weights on a spreadsheet.</strong> NVIDIA's guide notes that its KV cache is not quantized by default; enabling FP8 KV-cache quantization may improve throughput but raises quality risk. Memory freed in weights can be spent on longer contexts or more parallel requests, which may be more valuable than removing a GPU.</div>
+<h3>Rules of thumb</h3><div class="rules"><div class="rule"><b>1 &middot; Model the step function.</b>Ask which precision crosses a feasible GPU-per-replica boundary with enough cache left over.</div><div class="rule"><b>2 &middot; Gate on answer quality.</b>A cheaper token that fails your evaluation or needs a retry is not a cheaper useful answer.</div><div class="rule"><b>3 &middot; Measure cost per accepted token.</b>Use the real workload's context, batch, quality pass rate, and achieved throughput, not the format's theoretical compression ratio.</div></div>
+<h3>Questions for the CFO table</h3><ul><li>Which precision gives us the best measured cost per accepted output on our actual prompts?</li><li>Does the compressed model really fit one GPU at target concurrency, or did the KV cache consume the savings?</li><li>Could the same freed HBM produce more revenue as longer context or higher batch capacity?</li></ul>
+<div class="sources"><strong>Sources and assumptions.</strong> 70B parameter count: <a href="https://arxiv.org/abs/2407.21783">Meta, The Llama 3 Herd of Models</a>. H100 SXM 80 GB: <a href="https://www.nvidia.com/en-us/data-center/h100/">NVIDIA H100 specifications</a>. Quantization quality caveats, four-GPU Llama 3.3 70B performance table (2,474 vs. 6,049 tokens/s), FP8 KV-cache table (3,390 vs. 5,300 tokens/s rounded), and default cache behavior: <a href="https://nvidia.github.io/TensorRT-LLM/performance/performance-tuning-guide/fp8-quantization.html">NVIDIA TensorRT-LLM FP8 quantization guide</a>. Format support and the memory tradeoff: <a href="https://docs.vllm.ai/en/latest/features/quantization/">vLLM quantization documentation</a>. Weight bytes, percentages, GPU floors, daily costs, and ratios are arithmetic; $2/GPU-hour and single-GPU feasibility are illustrative assumptions, not benchmarks.</div>
+</div></article>
+
+<article class="paper" id="day-12" style="margin-bottom:30px">
+<header class="lesson-head"><div class="eyebrow" style="color:#168c7f">Day 12 &middot; Week 2 &middot; workloads</div><h2>Model size is a fleet decision</h2><p class="dek">Parameter count becomes a memory bill before it becomes an intelligence claim. If the weights do not fit, the serving plan changes: more GPUs per replica, less room for concurrent requests, or a smaller representation.</p></header>
+<div class="content">
+<h3>Translate parameters into hardware</h3>
+<p class="lead">A simple first pass: <strong>weight memory = parameters &times; bytes per parameter.</strong> At BF16, each parameter takes 2 bytes. Meta's Llama 3 family spans 8B, 70B, and 405B parameters. Their <em>weights alone</em> would occupy about 16, 140, and 810 decimal GB. This is a lower bound, not a deployment requirement: KV cache, activations, runtime buffers, and fragmentation need extra HBM.</p>
+<div class="equation"><div class="metric"><b>2 bytes</b><span>per BF16 parameter</span></div><div class="metric"><b>80 GB</b><span>H100 SXM GPU memory</span></div><div class="metric"><b>141 GB</b><span>H200 SXM GPU memory</span></div></div>
+<div class="diagram"><div class="chart-title">BF16 weight footprint vs. one 80 GB H100 (weights only)</div><div class="chart-grid"><div>8B</div><div class="bar"><i style="width:2%"></i><em class="dark">16 GB &middot; 0.2 H100</em></div><div>70B</div><div class="bar"><i style="width:17.3%"></i><em class="dark">140 GB &middot; 1.75 H100s</em></div><div>405B</div><div class="bar"><i style="width:100%"></i><em>810 GB &middot; 10.1 H100s</em></div></div><small>Bar lengths scale to the 405B footprint; the H100 multiples divide weight bytes by nominal 80 GB. They are <em>not</em> a practical GPU count. The integer weight-only floors are 1, 2, and 11 H100s; real serving needs headroom and compatible sharding.</small></div>
+<p>A 70B BF16 model cannot fit on one 80 GB H100; it crosses the two-GPU floor before serving a request. It nominally fits in a 141 GB H200 with only 1 GB left for everything else, so that is not a viable one-GPU serving design as stated. This is the trap in sizing a fleet from parameter count alone. The 405B model needs at least 11 H100s or 6 H200s just for weights, before any serving headroom, and practical tensor parallelism may require a different count.</p>
+<h3>Memory speed becomes output speed</h3>
+<p>During single-stream autoregressive decode, weights are repeatedly accessed to generate tokens. A rough <em>optimistic</em> roofline is memory bandwidth divided by model weight bytes, not a throughput guarantee. On an H100 SXM with 3.35 TB/s and an 8B BF16 model with 16 GB of weights: 3,350 &divide; 16 &asymp; <strong>209 tokens/second</strong>. On an H200 SXM, 4,800 &divide; 140 &asymp; <strong>34 tokens/second</strong> for 70B BF16 <em>if it could fit with headroom</em>. It cannot as a full serving stack on nominal 141 GB, so this second figure isolates bandwidth only, not a deployable configuration. Actual speed is lower and depends on implementation, context, batching, and interconnect.</p>
+<div class="diagram"><div class="chart-title">Illustrative single-stream weight-read ceilings</div><div class="chart-grid"><div>8B &middot; H100</div><div class="bar"><i style="width:100%"></i><em>&le;209 tok/s</em></div><div>70B &middot; H200</div><div class="bar"><i style="width:16.3%"></i><em class="dark">&le;34 tok/s*</em></div></div><small>*Bandwidth-only arithmetic for 70B on one H200; no KV-cache headroom, not a serving benchmark or feasible full configuration. Decimal GB and TB/s. Batch processing amortizes weight reads across requests, so aggregate tokens/s can exceed these <em>single-stream</em> estimates.</small></div>
+<div class="fact"><strong>Why H200 exists:</strong> NVIDIA specifies 141 GB at 4.8 TB/s for H200 SXM against H100 SXM's 80 GB at 3.35 TB/s. That is 76% more memory capacity and 43% more bandwidth by the cited specifications. NVIDIA reports 1.9&times; Llama 2 70B inference speed in its highlighted comparison, but that vendor benchmark is workload-specific. More HBM is a product feature with a direct effect on replica economics, not just a spec-sheet trophy.</div>
+<h3>Worked fleet floor</h3><p><strong>Illustrative GPU rental assumption: $2 per GPU-hour.</strong> At 70B BF16, two H100s start at $4 per replica-hour, or $96 per continuous day, before networking, CPU, energy, reserved slack, and cache. A single H200 is not the $2 alternative for an uncompressed 70B model without room for cache. The finance question is not "how big is the model?" but "what is the cheapest <em>working</em> replica with our context and concurrency?" Tomorrow's quantization lesson changes that threshold.</p>
+<div class="rules"><div class="rule"><b>1 &middot; Fit weights plus working memory.</b>Nominal capacity is not usable serving capacity. Reserve space for context and concurrency before declaring a one-GPU design.</div><div class="rule"><b>2 &middot; Count whole replicas.</b>A model that crosses an HBM boundary can double the minimum GPUs per serving replica. Price the discrete step, not only gigabytes.</div><div class="rule"><b>3 &middot; Separate stream and fleet rates.</b>Bandwidth caps single-stream decode; batching shares the same reads. Measure achieved aggregate tokens per dollar for fleet plans.</div></div>
+<h3>Questions for the CFO table</h3><ul><li>What is the smallest <em>working</em> GPU configuration for our model at target context length and concurrency?</li><li>At our actual batch and stream mix, are we buying HBM capacity, HBM bandwidth, or compute?</li><li>How much of the budget disappears when a model upgrade crosses a GPU-per-replica boundary?</li></ul>
+<div class="sources"><strong>Sources and assumptions.</strong> 8B/70B/405B model sizes: <a href="https://arxiv.org/abs/2407.21783">Meta, The Llama 3 Herd of Models</a>. H100 SXM 80 GB and 3.35 TB/s: <a href="https://www.nvidia.com/en-us/data-center/h100/">NVIDIA H100 specifications</a>. H200 SXM 141 GB, 4.8 TB/s, and vendor Llama 2 benchmark: <a href="https://www.nvidia.com/en-us/data-center/h200/">NVIDIA H200 specifications</a>. BF16's 2 bytes per parameter, model weight footprints, ratios, integer GPU floors, and bandwidth ceilings are arithmetic from those inputs. All footprints omit overhead; the $2/GPU-hour rate and fleet floor are illustrative, not a market quote.</div>
+</div></article>
+
 <article class="paper" id="day-11" style="margin-bottom:30px">
 <header class="lesson-head">
 <div class="eyebrow" style="color:#168c7f">Day 11 &middot; Week 2 &middot; workloads</div>
@@ -1053,4 +1088,4 @@ body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 Inter,ui-s
 <div class="shell">One page a day. Numbers sourced. Economics first.</div>
 </footer>
 </body>
-</html>
+  </html>
