@@ -36,7 +36,7 @@ body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 Inter,ui-s
 
 .rail{height:8px;background:#31506a;border-radius:8px;flex:1;overflow:hidden}
 
-.rail span{display:block;width:43.3%;height:100%;background:linear-gradient(90deg,var(--cyan),#83f3df)}
+.rail span{display:block;width:46.7%;height:100%;background:linear-gradient(90deg,var(--cyan),#83f3df)}
 
 .layout{display:grid;grid-template-columns:250px minmax(0,1fr);gap:34px;padding-top:44px;padding-bottom:80px}
 
@@ -155,7 +155,7 @@ article[id]{scroll-margin-top:112px}
 <header class="top">
 <div class="shell">
 <div class="brand">COMPUTE ECONOMICS / FIELD NOTES</div>
-<div class="daypill">DAY 13 OF 30</div>
+<div class="daypill">DAY 14 OF 30</div>
 </div>
 </header>
 <section class="hero">
@@ -168,14 +168,15 @@ article[id]{scroll-margin-top:112px}
 <span>
 </span>
 </div>
-<small>13 / 30 published</small>
+<small>14 / 30 published</small>
 </div>
 </div>
 </section>
 <main class="shell layout">
 <nav class="toc">
 <h3>Course pages</h3>
-<a class="active" href="#day-13">13 · Quantization</a>
+<a class="active" href="#day-14">14 · Fine-tuning</a>
+<a href="#day-13">13 · Quantization</a>
 <a href="#day-12">12 · Memory</a>
 <a href="#day-11">11 · Latency</a>
 <a href="#day-10">10 · Batching</a>
@@ -191,6 +192,20 @@ article[id]{scroll-margin-top:112px}
 <a href="#curriculum">30-day map</a>
 </nav>
 <div>
+<article class="paper" id="day-14" style="margin-bottom:30px">
+<header class="lesson-head"><div class="eyebrow" style="color:#168c7f">Day 14 &middot; Week 2 &middot; workloads</div><h2>Fine-tuning needs a payback case</h2><p class="dek">Adaptation is a fixed investment. The business case is the recurring value of better answers, shorter prompts, or a smaller serving model, after evaluation and upkeep.</p></header>
+<div class="content">
+<h3>Buy a behavior, not a training run</h3><p class="lead">Day 13 reduced the bytes in a replica. Today changes what that replica does. Full fine-tuning updates the base model's weights. LoRA freezes those weights and trains small low-rank updates instead. QLoRA combines a frozen, quantized base with trainable LoRA updates. Less trainable state lowers the adaptation burden; it does <strong>not</strong> remove the base model from the serving bill.</p>
+<div class="fact"><strong>A real memory boundary:</strong> the QLoRA paper reports fine-tuning a <strong>65B-parameter model on one 48 GB GPU</strong>, versus more than 780 GB for regular 16-bit fine-tuning in its comparison. That is a research configuration, not a promise that any dataset, sequence length, or training stack fits the same GPU. LoRA's original GPT-3 175B comparison reports 10,000&times; fewer trainable parameters but only 3&times; lower GPU memory requirements. Trainable parameter count and total memory are different denominators.</div>
+<h3>The fixed cost must earn its way back</h3><p><strong>Illustrative assumptions, not vendor prices:</strong> a project uses 24 GPU-hours at $3/hour ($72), plus $4,000 of data and engineering work and $1,000 of evaluation. Total upfront investment is <strong>$5,072</strong>. If the accepted-output cost falls from $0.020 to $0.012 per task at unchanged quality, the saving is $0.008 per task. Assume $200/month for upkeep and 100,000 tasks/month.</p>
+<div class="equation"><div class="metric"><b>$5,072</b><span>upfront project investment</span></div><div class="metric"><b>$600</b><span>monthly net saving</span></div><div class="metric"><b>8.45 months</b><span>simple payback, no discounting</span></div></div>
+<div class="diagram"><div class="chart-title">Monthly net saving by task volume (illustrative)</div><div class="chart-grid"><div>50k</div><div class="bar"><i style="width:14.3%"></i><em class="dark">$200</em></div><div>100k</div><div class="bar"><i style="width:42.9%"></i><em class="dark">$600</em></div><div>200k</div><div class="bar"><i style="width:100%"></i><em>$1,400</em></div></div><small>Net saving = monthly tasks &times; $0.008 minus $200 upkeep. Assumes constant accepted-output quality, linear unit savings, and no extra serving overhead. The operating break-even is 25,000 tasks/month; recovering the upfront investment takes longer.</small></div>
+<p>At 100,000 tasks/month: ($0.020 &minus; $0.012) &times; 100,000 &minus; $200 = $600. Payback = $5,072 &divide; $600. GPU rental is only about <strong>1.4% of this illustrative upfront budget</strong>. A cheap training run can still be an expensive experiment if labels, failed trials, evaluation, or maintenance dominate. A shorter prompt or smaller model counts as savings only when the held-out task evaluation still passes.</p>
+<h3>Rules of thumb</h3><div class="rules"><div class="rule"><b>1 &middot; Benchmark the cheapest baseline.</b>Compare against prompting and retrieval before funding adaptation. Use the same tasks and acceptance test.</div><div class="rule"><b>2 &middot; Budget the lifecycle.</b>Include data work, failed runs, regression tests, retraining, and any added serving cost. Version the adapter and base together.</div><div class="rule"><b>3 &middot; Underwrite volume and useful life.</b>Ask whether the model or workflow will change before payback. Quality gains may earn revenue rather than save tokens; measure that separately.</div></div>
+<h3>Question for the CFO table</h3><p>What measured improvement pays back the complete adaptation budget before the next model migration, and who owns the recurring evaluation bill?</p>
+<div class="sources"><strong>Sources and assumptions.</strong> Frozen weights, low-rank updates, and the GPT-3 175B comparison (10,000&times; trainable-parameter reduction; 3&times; GPU-memory reduction): <a href="https://arxiv.org/abs/2106.09685">Hu et al., LoRA</a>. Quantized-base adaptation, 65B on one 48 GB GPU, and the &gt;780 GB regular 16-bit comparison: <a href="https://arxiv.org/abs/2305.14314">Dettmers et al., QLoRA</a>. These are paper-specific results, not current pricing or universal production benchmarks. All dollar amounts, task volumes, GPU-hours, savings, percentages, and payback figures are labeled illustrative assumptions or arithmetic from them.</div>
+</div></article>
+
 <article class="paper" id="day-13" style="margin-bottom:30px">
 <header class="lesson-head"><div class="eyebrow" style="color:#168c7f">Day 13 &middot; Week 2 &middot; workloads</div><h2>Quantization changes the replica</h2><p class="dek">Compression is not a free speed button. It is a way to move a model across a hardware boundary, then test whether lower precision pays after quality, cache, and serving overhead.</p></header>
 <div class="content">
