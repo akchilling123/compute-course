@@ -36,7 +36,7 @@ body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 Inter,ui-s
 
 .rail{height:8px;background:#31506a;border-radius:8px;flex:1;overflow:hidden}
 
-.rail span{display:block;width:46.7%;height:100%;background:linear-gradient(90deg,var(--cyan),#83f3df)}
+.rail span{display:block;width:50%;height:100%;background:linear-gradient(90deg,var(--cyan),#83f3df)}
 
 .layout{display:grid;grid-template-columns:250px minmax(0,1fr);gap:34px;padding-top:44px;padding-bottom:80px}
 
@@ -155,7 +155,7 @@ article[id]{scroll-margin-top:112px}
 <header class="top">
 <div class="shell">
 <div class="brand">COMPUTE ECONOMICS / FIELD NOTES</div>
-<div class="daypill">DAY 14 OF 30</div>
+<div class="daypill">DAY 15 OF 30</div>
 </div>
 </header>
 <section class="hero">
@@ -168,14 +168,15 @@ article[id]{scroll-margin-top:112px}
 <span>
 </span>
 </div>
-<small>14 / 30 published</small>
+<small>15 / 30 published</small>
 </div>
 </div>
 </section>
 <main class="shell layout">
 <nav class="toc">
 <h3>Course pages</h3>
-<a class="active" href="#day-14">14 · Fine-tuning</a>
+<a class="active" href="#day-15">15 · Commitments</a>
+<a href="#day-14">14 · Fine-tuning</a>
 <a href="#day-13">13 · Quantization</a>
 <a href="#day-12">12 · Memory</a>
 <a href="#day-11">11 · Latency</a>
@@ -192,6 +193,20 @@ article[id]{scroll-margin-top:112px}
 <a href="#curriculum">30-day map</a>
 </nav>
 <div>
+<article class="paper" id="day-15" style="margin-bottom:30px">
+<header class="lesson-head"><div class="eyebrow" style="color:#168c7f">Day 15 &middot; Week 3 &middot; capacity</div><h2>A discount is a utilization bet</h2><p class="dek">Reserved vs. on-demand pricing: a lower hourly rate can buy a higher total bill. Commit the demand floor, not the demand forecast.</p></header>
+<div class="content">
+<h3>Price flexibility as an asset</h3><p class="lead">On-demand buys the right to stop paying when usage stops. A commitment trades that option for a lower rate. After Day 14's adaptation payback, the next question is whether recurring demand is stable enough to underwrite the serving capacity. Separate <strong>the discount, the payment obligation, and the capacity guarantee</strong>; they are different products.</p>
+<div class="fact"><strong>Real contract shapes:</strong> AWS lists Compute Savings Plans at up to 66% off On-Demand and EC2 Instance Savings Plans at up to 72%, with 1- or 3-year terms. These are advertised ceilings, not GPU quotes. Savings Plans commit dollars per hour and cannot be cancelled during the term. They do not reserve capacity. AWS regional Reserved Instances also do not reserve capacity; zonal Reserved Instances reserve it in the specified Availability Zone.</div>
+<h3>The break-even is usage, not the headline discount</h3><p><strong>Illustrative single-GPU contract:</strong> on-demand costs $4 per used hour; a dedicated commitment costs $2.40 for every hour in a 30-day month, whether used or idle. Assume identical hardware and performance, no upfront fee, and no other costs. The commitment costs $2.40 &times; 720 = <strong>$1,728/month</strong>. On-demand costs $4 &times; 720 &times; utilization. They tie at <strong>60% utilization</strong>.</p>
+<div class="equation"><div class="metric"><b>40%</b><span>illustrative hourly discount</span></div><div class="metric"><b>60%</b><span>break-even paid usage</span></div><div class="metric"><b>$1,728</b><span>fixed monthly GPU bill</span></div></div>
+<div class="diagram"><div class="chart-title">Monthly bill at each paid-usage level (illustrative)</div><div class="chart-grid"><div>30% OD</div><div class="bar"><i style="width:30%"></i><em class="dark">$864</em></div><div>60% OD</div><div class="bar"><i style="width:60%"></i><em class="dark">$1,728</em></div><div>90% OD</div><div class="bar"><i style="width:90%"></i><em>$2,592</em></div><div>Commit</div><div class="bar"><i style="width:60%;background:#13b5a4"></i><em class="dark">$1,728</em></div></div><small>OD = on-demand. Shared scale: $0 to $2,880. The commitment bill is fixed at every usage level. The utilization here is hours you would otherwise buy, not GPU kernel occupancy or billable customer utilization.</small></div>
+<p>At 30% usage, the discounted commitment costs twice as much as on-demand. At 90%, it saves $864/month. Its effective cost per used hour is $2.40 &divide; utilization: <strong>$8 at 30%</strong>, versus about <strong>$2.67 at 90%</strong>. The simple threshold is committed rate &divide; on-demand rate. Add upfront fees, financing, performance differences, or residual resale value before applying it to a real deal.</p>
+<h3>Rules of thumb</h3><div class="rules"><div class="rule"><b>1 &middot; Commit the floor.</b>Use durable minimum demand for commitments; leave uncertain peaks on flexible capacity. Averages hide idle months.</div><div class="rule"><b>2 &middot; Match the exit risk.</b>Test a model migration, customer loss, and region change against what the discount actually covers.</div><div class="rule"><b>3 &middot; Price access separately.</b>A billing discount does not prove GPUs will be available. Verify SKU, region, start date, and capacity rights.</div></div>
+<h3>Question for the CFO table</h3><p>If demand falls below the threshold or moves to different hardware, what do we still owe, and can we use the commitment elsewhere? Tomorrow: take-or-pay makes that obligation explicit.</p>
+<div class="sources"><strong>Sources and assumptions, checked October 1, 2026.</strong> Discount ceilings, term options, cancellation restriction, and absence of capacity reservation: <a href="https://docs.aws.amazon.com/savingsplans/latest/userguide/sp-ris.html">AWS, Savings Plans vs. Reserved Instances</a>. Regional vs. zonal capacity rights: <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/reserved-instances-scope.html">AWS, Reserved Instance scope</a>. All rates, utilization levels, month length, dollar amounts, and break-even calculations are illustrative assumptions or arithmetic, not AWS GPU pricing. The dedicated-GPU example is not the dollar-per-hour pooling mechanism of an AWS Savings Plan.</div>
+</div></article>
+
 <article class="paper" id="day-14" style="margin-bottom:30px">
 <header class="lesson-head"><div class="eyebrow" style="color:#168c7f">Day 14 &middot; Week 2 &middot; workloads</div><h2>Fine-tuning needs a payback case</h2><p class="dek">Adaptation is a fixed investment. The business case is the recurring value of better answers, shorter prompts, or a smaller serving model, after evaluation and upkeep.</p></header>
 <div class="content">
@@ -1105,4 +1120,4 @@ article[id]{scroll-margin-top:112px}
 <div class="shell">One page a day. Numbers sourced. Economics first.</div>
 </footer>
 </body>
-</html>
+  </html>
