@@ -36,7 +36,7 @@ body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 Inter,ui-s
 
 .rail{height:8px;background:#31506a;border-radius:8px;flex:1;overflow:hidden}
 
-.rail span{display:block;width:50%;height:100%;background:linear-gradient(90deg,var(--cyan),#83f3df)}
+.rail span{display:block;width:53%;height:100%;background:linear-gradient(90deg,var(--cyan),#83f3df)}
 
 .layout{display:grid;grid-template-columns:250px minmax(0,1fr);gap:34px;padding-top:44px;padding-bottom:80px}
 
@@ -168,14 +168,15 @@ article[id]{scroll-margin-top:112px}
 <span>
 </span>
 </div>
-<small>15 / 30 published</small>
+<small>16 / 30 published</small>
 </div>
 </div>
 </section>
 <main class="shell layout">
 <nav class="toc">
 <h3>Course pages</h3>
-<a class="active" href="#day-15">15 · Commitments</a>
+<a class="active" href="#day-16">16 · Take-or-pay</a>
+<a href="#day-15">15 · Commitments</a>
 <a href="#day-14">14 · Fine-tuning</a>
 <a href="#day-13">13 · Quantization</a>
 <a href="#day-12">12 · Memory</a>
@@ -193,6 +194,19 @@ article[id]{scroll-margin-top:112px}
 <a href="#curriculum">30-day map</a>
 </nav>
 <div>
+<article class="paper" id="day-16" style="margin-bottom:30px">
+<header class="lesson-head"><div class="eyebrow" style="color:#168c7f">Day 16 &middot; Week 3 &middot; capacity</div><h2>Take-or-pay turns volume risk into a floor</h2><p class="dek">A take-or-pay clause makes the customer pay for a minimum volume whether or not it uses it. The supplier gets a revenue floor. The customer gets a lower price and a fixed obligation.</p></header>
+<div class="content">
+<h3>Who holds the volume risk</h3><p class="lead">Day 15 asked what you still owe if demand falls. Take-or-pay is the contract that answers it. The customer either takes the product or pays anyway, up to an agreed ceiling. Wikipedia describes it as common in energy, especially gas sales. For a GPU supplier, the same structure supports financing a build. For a buyer, it is <strong>debt-like spending in an operating-expense wrapper</strong>.</p>
+<div class="fact"><strong>The classic shape:</strong> Wikipedia's example: the customer pays $50 per ton for product it takes, and up to a ceiling pays a lower "penalty" price, say $40 per ton, on product it does not take. The supplier trades some price for volume certainty. Wikipedia also notes that outside oil and gas, courts often examine such terms as possible penalties, while US gas courts tend to treat the shortfall payment as an alternative way to perform. Enforceability depends on jurisdiction and drafting. Ask counsel.</div>
+<h3>The bill has a floor, not a slope</h3><p><strong>Illustrative GPU contract:</strong> 100,000 contracted GPU-hours per month at $2.50, with a minimum of 80% (80,000 hours) payable regardless of use. The bill is $2.50 &times; the larger of actual hours or 80,000. The floor is <strong>$200,000/month</strong>. Full use costs $250,000. Assume a $3.50 on-demand alternative with the same hardware and availability.</p>
+<div class="equation"><div class="metric"><b>80%</b><span>illustrative minimum take</span></div><div class="metric"><b>$200K</b><span>monthly floor, paid at any usage</span></div><div class="metric"><b>57%</b><span>usage where on-demand costs the same</span></div></div>
+<div class="diagram"><div class="chart-title">Monthly bill by hours actually used (illustrative)</div><div class="chart-grid"><div>50k hours</div><div class="bar"><i style="width:80%"></i><em>$200K floor</em></div><div>80k hours</div><div class="bar"><i style="width:80%"></i><em>$200K</em></div><div>100k hours</div><div class="bar"><i style="width:100%"></i><em>$250K</em></div></div><small>Shared scale: $0 to $250K. Below 80,000 hours the bill is flat. Above it, each extra hour costs $2.50.</small></div>
+<p>The floor matters most when usage falls short. At 50,000 hours the effective price is $200,000 &divide; 50,000 = <strong>$4.00 per used hour</strong>, above the $3.50 on-demand rate. At 80,000 hours it is $2.50. The break-even against on-demand is $200,000 &divide; $3.50 = <strong>57,143 hours, or 57% of the contract</strong>. Below that, the discount was a bad trade.</p>
+<h3>Rules of thumb</h3><div class="rules"><div class="rule"><b>1 &middot; Floor = minimum % &times; rate.</b>Model the shortfall bill, not the headline rate. It is the number the CFO signs.</div><div class="rule"><b>2 &middot; Test the downside.</b>Run usage at 50%, not the forecast. If the floor breaks the margin, the take level is too high.</div><div class="rule"><b>3 &middot; Read the escape clauses.</b>Check make-up rights, force majeure, supplier delivery failure, resale or assignment, and what counts as a shortfall.</div></div>
+<h3>Question for the CFO table</h3><p>If the supplier delivers late or the hardware is superseded, do we still owe the floor? Tomorrow: customer concentration, the revenue-side mirror of this obligation.</p>
+<div class="sources"><strong>Sources and assumptions, checked October 2, 2026.</strong> Take-or-pay definition, the $50 and $40 per-ton example, energy-industry usage, and enforceability notes: <a href="https://en.wikipedia.org/wiki/Take-or-pay_contract">Wikipedia, Take-or-pay contract</a>. The contract size, $2.50 and $3.50 rates, 80% minimum, usage levels, and every bill and break-even are illustrative assumptions or arithmetic, not a real GPU contract or market price. The GPU-supply financing comment is an interpretation, not a sourced claim. Not legal advice.</div>
+</div></article>
 <article class="paper" id="day-15" style="margin-bottom:30px">
 <header class="lesson-head"><div class="eyebrow" style="color:#168c7f">Day 15 &middot; Week 3 &middot; capacity</div><h2>A discount is a utilization bet</h2><p class="dek">Reserved vs. on-demand pricing: a lower hourly rate can buy a higher total bill. Commit the demand floor, not the demand forecast.</p></header>
 <div class="content">
