@@ -36,7 +36,7 @@ body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 Inter,ui-s
 
 .rail{height:8px;background:#31506a;border-radius:8px;flex:1;overflow:hidden}
 
-.rail span{display:block;width:53%;height:100%;background:linear-gradient(90deg,var(--cyan),#83f3df)}
+.rail span{display:block;width:57%;height:100%;background:linear-gradient(90deg,var(--cyan),#83f3df)}
 
 .layout{display:grid;grid-template-columns:250px minmax(0,1fr);gap:34px;padding-top:44px;padding-bottom:80px}
 
@@ -155,7 +155,7 @@ article[id]{scroll-margin-top:112px}
 <header class="top">
 <div class="shell">
 <div class="brand">COMPUTE ECONOMICS / FIELD NOTES</div>
-<div class="daypill">DAY 16 OF 30</div>
+<div class="daypill">DAY 17 OF 30</div>
 </div>
 </header>
 <section class="hero">
@@ -168,14 +168,15 @@ article[id]{scroll-margin-top:112px}
 <span>
 </span>
 </div>
-<small>16 / 30 published</small>
+<small>17 / 30 published</small>
 </div>
 </div>
 </section>
 <main class="shell layout">
 <nav class="toc">
 <h3>Course pages</h3>
-<a class="active" href="#day-16">16 · Take-or-pay</a>
+<a class="active" href="#day-17">17 · Concentration</a>
+<a href="#day-16">16 · Take-or-pay</a>
 <a href="#day-15">15 · Commitments</a>
 <a href="#day-14">14 · Fine-tuning</a>
 <a href="#day-13">13 · Quantization</a>
@@ -194,6 +195,22 @@ article[id]{scroll-margin-top:112px}
 <a href="#curriculum">30-day map</a>
 </nav>
 <div>
+<article class="paper" id="day-17" style="margin-bottom:30px">
+<header class="lesson-head"><div class="eyebrow" style="color:#168c7f">Day 17 &middot; Week 3 &middot; capacity</div><h2>The anchor tenant is the business model</h2><p class="dek">Customer concentration: when one buyer is most of your revenue, the contract from Day 16 stops being a clause and becomes the whole company. Read it in the 10-K before the story.</p></header>
+<div class="content">
+<h3>Read concentration straight out of the filing</h3>
+<p class="lead">Day 16 priced the floor a take-or-pay contract gives a supplier. Today is the supplier-side question: what is that floor worth when one customer holds most of it? US accounting rules make this easy to check. Under ASC 280-10-50-42, if a single external customer is 10% or more of revenue, a public company must disclose the fact and the total revenue from each such customer - though not the customer's name.</p>
+<div class="fact"><strong>CoreWeave's FY2025 10-K is the live case study:</strong> approximately 67% of 2025 revenue came from its top customer, Microsoft, and no other customer reached 10%. In 2024 the top two customers were approximately 77% of revenue; in 2023 the top three were approximately 73%. Revenue grew from $229 million in 2023 to $1.9 billion in 2024 to $5.1 billion in 2025 - concentration funded the build, and it is slowly diluting as new anchors sign (an OpenAI order form from September 2025 commits up to approximately $6.5 billion through May 2031).</div>
+<h3>Backlog coverage is only as strong as the names in it</h3>
+<p>CoreWeave reported $60.7 billion of remaining performance obligations at the end of 2025, up from $15.1 billion a year earlier, with a weighted-average committed contract duration of about five years. Against $5.1 billion of 2025 revenue, that is roughly 12 years of booked business. But RPO is a promise, not cash: when 67% of current revenue is one buyer, a large share of that backlog is one buyer's credit, one buyer's roadmap, one buyer's renewal decision.</p>
+<div class="equation"><div class="metric"><b>67%</b><span>of CoreWeave FY2025 revenue from Microsoft (10-K)</span></div><div class="metric"><b>77%</b><span>from the top two customers in FY2024</span></div><div class="metric"><b>~12x</b><span>RPO coverage: $60.7B backlog vs. $5.1B revenue</span></div></div>
+<div class="diagram"><div class="chart-title">CoreWeave customer concentration by year (per its 10-K)</div><div class="chart-grid"><div>2023 &middot; top 3</div><div class="bar"><i style="width:73%"></i><em>73%</em></div><div>2024 &middot; top 2</div><div class="bar"><i style="width:77%"></i><em>77%</em></div><div>2025 &middot; top 1</div><div class="bar"><i style="width:67%"></i><em>67%</em></div></div><small>Shared scale: 0 to 100% of annual revenue. Share of revenue from the largest customers, as disclosed in CoreWeave's FY2025 Form 10-K.</small></div>
+<p><strong>Illustrative downside math:</strong> picture a neocloud with $500M revenue, 65% from one anchor, and $300M of fixed annual costs (debt service plus data-center leases). With the anchor, operating cushion is $500M - $300M = <strong>+$200M</strong>. If the anchor walks at renewal, revenue falls to 35% &times; $500M = $175M against the same $300M fixed base, a <strong>-$125M</strong> hole - a $325M swing decided by one signature. That is why lenders size neocloud debt to the anchor's balance sheet, not the operator's.</p>
+<h3>Rules of thumb</h3>
+<div class="rules"><div class="rule"><b>1 &middot; 10% is disclosed, 30%+ is priced.</b> Above 10% the 10-K must tell you. Above roughly a third from one name, treat revenue quality as contract-dependent and haircut the multiple.</div><div class="rule"><b>2 &middot; Underwrite the anchor, not the story.</b> Concentration converts customer risk into counterparty risk. The anchor's credit rating and renewal dates matter more than the vendor's growth deck.</div><div class="rule"><b>3 &middot; Watch the trend, not the level.</b> Falling top-customer share while backlog rises - CoreWeave's 77% top-two in 2024 to 67% top-one in 2025 with OpenAI added - is diversification in progress. Rising share on flat backlog is a warning.</div></div>
+<h3>Sources and assumptions</h3>
+<p>CoreWeave figures are from its FY2025 Form 10-K filed with the SEC. The 10% disclosure rule is ASC 280-10-50-42 as quoted in Deloitte's Roadmap. The $500M neocloud, its 65% anchor, and $300M fixed costs are an illustrative example; the 30% pricing threshold is a heuristic, not a standard.</p>
+<div class="sources"><strong>Sources:</strong> <a href="https://www.sec.gov/Archives/edgar/data/1769628/000176962826000104/crwv-20251231.htm">CoreWeave FY2025 Form 10-K (SEC)</a> &middot; <a href="https://dart.deloitte.com/USDART/home/codification/presentation/asc280-10/roadmap-segment-reporting/chapter-5-entity-wide-disclosures/5-7-information-about-major-customers">Deloitte Roadmap: ASC 280 major-customer disclosures</a></div></div></article>
 <article class="paper" id="day-16" style="margin-bottom:30px">
 <header class="lesson-head"><div class="eyebrow" style="color:#168c7f">Day 16 &middot; Week 3 &middot; capacity</div><h2>Take-or-pay turns volume risk into a floor</h2><p class="dek">A take-or-pay clause makes the customer pay for a minimum volume whether or not it uses it. The supplier gets a revenue floor. The customer gets a lower price and a fixed obligation.</p></header>
 <div class="content">
