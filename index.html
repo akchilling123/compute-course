@@ -36,7 +36,7 @@ body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 Inter,ui-s
 
 .rail{height:8px;background:#31506a;border-radius:8px;flex:1;overflow:hidden}
 
-.rail span{display:block;width:57%;height:100%;background:linear-gradient(90deg,var(--cyan),#83f3df)}
+.rail span{display:block;width:60%;height:100%;background:linear-gradient(90deg,var(--cyan),#83f3df)}
 
 .layout{display:grid;grid-template-columns:250px minmax(0,1fr);gap:34px;padding-top:44px;padding-bottom:80px}
 
@@ -155,7 +155,7 @@ article[id]{scroll-margin-top:112px}
 <header class="top">
 <div class="shell">
 <div class="brand">COMPUTE ECONOMICS / FIELD NOTES</div>
-<div class="daypill">DAY 17 OF 30</div>
+<div class="daypill">DAY 18 OF 30</div>
 </div>
 </header>
 <section class="hero">
@@ -168,14 +168,15 @@ article[id]{scroll-margin-top:112px}
 <span>
 </span>
 </div>
-<small>17 / 30 published</small>
+<small>18 / 30 published</small>
 </div>
 </div>
 </section>
 <main class="shell layout">
 <nav class="toc">
 <h3>Course pages</h3>
-<a class="active" href="#day-17">17 · Concentration</a>
+<a class="active" href="#day-18">18 · Lead times</a>
+<a href="#day-17">17 · Concentration</a>
 <a href="#day-16">16 · Take-or-pay</a>
 <a href="#day-15">15 · Commitments</a>
 <a href="#day-14">14 · Fine-tuning</a>
@@ -195,6 +196,22 @@ article[id]{scroll-margin-top:112px}
 <a href="#curriculum">30-day map</a>
 </nav>
 <div>
+<article class="paper" id="day-18" style="margin-bottom:30px">
+<header class="lesson-head"><div class="eyebrow" style="color:#168c7f">Day 18 &middot; Week 3 &middot; capacity</div><h2>The longest lead time sets the schedule</h2><p class="dek">Capacity planning is sequencing capital against lead times that differ by an order of magnitude: GPUs arrive in weeks, transformers take years, and the grid queue holds terawatts. The binding constraint is rarely the chip.</p></header>
+<div class="content">
+<h3>Three clocks, very different speeds</h3>
+<p class="lead">Days 16 and 17 priced committed demand. This page is about the delivery side: once the contract is signed, when can capacity actually serve it? Every capacity plan is a race between three procurement clocks, and the slowest one - usually power, not silicon - sets the revenue start date.</p>
+<div class="fact"><strong>The sourced picture:</strong> NVIDIA H100 delivery lead times fell from about 11 months in late 2023 to 8-12 weeks by April 2024 as supply eased (Digitimes via Tom's Hardware). Going the other way, the IEA reports procurement now takes two to three years for cables and up to four years for large power transformers - twice as long as in 2021 - with transformer prices up about 75% since 2019. And Lawrence Berkeley National Laboratory counts 2,061 gigawatts of generation and storage actively waiting in U.S. grid-interconnection queues at the end of 2025, down from a peak near 2,600 GW in 2023 after more than 750 GW withdrew.</p>
+<h3>Idle silicon is a depreciating asset with no revenue</h3>
+<p><strong>Illustrative sequencing cost:</strong> a 10,000-GPU cluster at an illustrative $2.50 per GPU-hour and 60% utilization generates about $11M of revenue per month once energized (10,000 &times; $2.50 &times; 730 hours &times; 60%). If the GPUs land twelve months before the site has power - a real risk when the transformer alone can take four years - that is roughly $131M of deferred revenue while the hardware burns through a year of useful life (Day 4). The GPU was the easy thing to buy; the megawatts were the schedule.</p>
+<div class="equation"><div class="metric"><b>8-12 wks</b><span>NVIDIA H100 lead time, April 2024 (was ~11 months)</span></div><div class="metric"><b>4 yrs</b><span>large power transformer procurement, IEA</span></div><div class="metric"><b>2,061 GW</b><span>waiting in U.S. interconnection queues, end of 2025</span></div></div>
+<div class="diagram"><div class="chart-title">How long each input takes (sourced figures, not to scale)</div><div class="chart-grid"><div>H100 GPU, Apr 2024</div><div class="bar"><i style="width:12%"></i><em>8-12 weeks</em></div><div>Cables, IEA 2025</div><div class="bar"><i style="width:55%"></i><em>2-3 years</em></div><div>Large transformers, IEA 2025</div><div class="bar"><i style="width:90%"></i><em>up to 4 years</em></div></div><small>Bar lengths are indicative, not linear. Grid interconnection adds its own multi-year queue behind the equipment.</small></div>
+<p>The finance translation: a take-or-pay or reserved-capacity contract whose start date assumes GPU delivery but ignores energization converts a procurement miss into a contractual penalty. Sequence the contract clock against the power clock - delivery, energization, acceptance testing, then revenue start - and price any residual mismatch explicitly.</p>
+<h3>Rules of thumb</h3>
+<div class="rules"><div class="rule"><b>1 &middot; Order the slowest thing first.</b> Queue position, transformers, and switchgear lead the schedule; GPUs can be bought late. Silicon depreciates whether or not it has power.</div><div class="rule"><b>2 &middot; Start contracts at energization.</b> Revenue start = power plus network plus acceptance testing, not delivery. A take-or-pay start ahead of energization is a self-inflicted penalty.</div><div class="rule"><b>3 &middot; Plan on today's quote, not last year's.</b> Lead times move fast in both directions: H100 waits fell ~80% in about a year while transformer waits doubled. Re-price the schedule at every procurement cycle.</div></div>
+<h3>Sources and assumptions</h3>
+<p>GPU lead times: Tom's Hardware citing Digitimes and Dell Taiwan, April 2024. Transformer and cable lead times and price increases: IEA, February 2025. Grid queue volumes: Lawrence Berkeley National Laboratory's Queued Up 2026 edition, July 2026. The $2.50/GPU-hour rate, 10,000-GPU cluster, 60% utilization and the $11M/$131M figures are illustrative arithmetic, not market prices.</p>
+<div class="sources"><strong>Sources:</strong> <a href="https://www.tomshardware.com/pc-components/gpus/nvidias-h100-ai-gpu-shortages-ease-as-lead-times-drop-from-up-to-four-months-to-8-12-weeks">Tom's Hardware: H100 lead times, April 2024</a> &middot; <a href="https://www.iea.org/news/rising-component-prices-and-supply-chain-pressures-are-hindering-the-development-of-transmission-grid-infrastructure">IEA: grid component lead times, February 2025</a> &middot; <a href="https://emp.lbl.gov/news/backlog-power-plants-seeking-transmission-grid-connection-eased-somewhat-2025-amidst">Berkeley Lab: Queued Up 2026 edition</a></div></div></article>
 <article class="paper" id="day-17" style="margin-bottom:30px">
 <header class="lesson-head"><div class="eyebrow" style="color:#168c7f">Day 17 &middot; Week 3 &middot; capacity</div><h2>The anchor tenant is the business model</h2><p class="dek">Customer concentration: when one buyer is most of your revenue, the contract from Day 16 stops being a clause and becomes the whole company. Read it in the 10-K before the story.</p></header>
 <div class="content">
@@ -1151,4 +1168,4 @@ article[id]{scroll-margin-top:112px}
 <div class="shell">One page a day. Numbers sourced. Economics first.</div>
 </footer>
 </body>
-</html>
+           </html>
