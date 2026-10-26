@@ -36,7 +36,7 @@ body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 Inter,ui-s
 
 .rail{height:8px;background:#31506a;border-radius:8px;flex:1;overflow:hidden}
 
-.rail span{display:block;width:60%;height:100%;background:linear-gradient(90deg,var(--cyan),#83f3df)}
+.rail span{display:block;width:63%;height:100%;background:linear-gradient(90deg,var(--cyan),#83f3df)}
 
 .layout{display:grid;grid-template-columns:250px minmax(0,1fr);gap:34px;padding-top:44px;padding-bottom:80px}
 
@@ -155,7 +155,7 @@ article[id]{scroll-margin-top:112px}
 <header class="top">
 <div class="shell">
 <div class="brand">COMPUTE ECONOMICS / FIELD NOTES</div>
-<div class="daypill">DAY 18 OF 30</div>
+<div class="daypill">DAY 19 OF 30</div>
 </div>
 </header>
 <section class="hero">
@@ -168,14 +168,15 @@ article[id]{scroll-margin-top:112px}
 <span>
 </span>
 </div>
-<small>18 / 30 published</small>
+<small>19 / 30 published</small>
 </div>
 </div>
 </section>
 <main class="shell layout">
 <nav class="toc">
 <h3>Course pages</h3>
-<a class="active" href="#day-18">18 · Lead times</a>
+<a class="active" href="#day-19">19 · Power constraint</a>
+<a href="#day-18">18 · Lead times</a>
 <a href="#day-17">17 · Concentration</a>
 <a href="#day-16">16 · Take-or-pay</a>
 <a href="#day-15">15 · Commitments</a>
@@ -196,6 +197,22 @@ article[id]{scroll-margin-top:112px}
 <a href="#curriculum">30-day map</a>
 </nav>
 <div>
+<article class="paper" id="day-19" style="margin-bottom:30px">
+<header class="lesson-head"><div class="eyebrow" style="color:#168c7f">Day 19 &middot; Week 3 &middot; capacity</div><h2>Capacity is delivered in megawatts, not GPUs</h2><p class="dek">Power as the constraint: clusters are sold in GPU counts but built in megawatts. The electricity is a small line item with a veto over the whole P&amp;L.</p></header>
+<div class="content">
+<h3>The demand curve is steep and concentrating</h3>
+<p class="lead">Day 18 showed power equipment has the longest lead times. Today: why the megawatt itself became the scarce input. The IEA's Energy and AI report puts global data-centre electricity use at 415 TWh in 2024 - about 1.5% of world electricity, with the U.S. holding 45% of it - and projects it to more than double to around 945 TWh by 2030, roughly Japan's total consumption. In the U.S., data centres are set to drive nearly half of all electricity-demand growth this decade.</p>
+<div class="fact"><strong>The U.S. numbers from DOE/LBNL:</strong> data centres consumed 176 TWh in 2023, 4.4% of total U.S. electricity, up from 58 TWh in 2014. By 2028 LBNL estimates 325 to 580 TWh, or 6.7% to 12% of national consumption. Meanwhile the hardware keeps densifying: NVIDIA's DGX GB200 NVL72 rack draws approximately 120 kW for 72 GPUs - about 1.7 kW per GPU - against the roughly 10 kW of a traditional enterprise rack. The IEA also warns that about 20% of planned data-centre projects risk delays from grid strain.</div>
+<h3>What a megawatt is worth</h3>
+<p><strong>Illustrative unit math:</strong> at 1.7 kW per GPU, one megawatt powers about 590 GPUs (1,000 &divide; 1.7). At an illustrative $2.50 per GPU-hour and 60% utilization, each MW can carry about $7.8M of annual revenue (590 &times; $2.50 &times; 8,760 &times; 60%). The electricity to run it at $0.08/kWh costs about $0.7M per MW-year - roughly 9% of that revenue. Power is cheap; power <em>availability</em> is priceless. A year of delay on a 100 MW campus defers on the order of $780M of revenue, which is why operators sign power deals before they order chips.</p>
+<div class="equation"><div class="metric"><b>415 TWh</b><span>global data-centre electricity, 2024 (IEA)</span></div><div class="metric"><b>945 TWh</b><span>projected by 2030, &gt;2x (IEA)</span></div><div class="metric"><b>120 kW</b><span>NVIDIA GB200 NVL72 rack, ~1.7 kW/GPU</span></div></div>
+<div class="diagram"><div class="chart-title">U.S. data-centre electricity use, TWh (DOE/LBNL)</div><div class="chart-grid" style="grid-template-columns:118px 1fr"><div>2014</div><div class="bar"><i style="width:12%;min-width:64px"></i><em>58</em></div><div>2023 (4.4% of U.S.)</div><div class="bar"><i style="width:31%;min-width:64px"></i><em>176</em></div><div>2028 low est.</div><div class="bar"><i style="width:56%;min-width:64px"></i><em>325</em></div><div>2028 high est.</div><div class="bar"><i style="width:100%"></i><em>580</em></div></div><small>Shared scale: 0 to 580 TWh. The 2028 figures are LBNL's low and high estimates, 6.7% to 12% of U.S. electricity.</small></div>
+<p>The finance translation: electricity at $0.08/kWh is about $0.14 of a $2.50 GPU-hour (1.7 kW &times; $0.08) - a 5-6% cost line, echoing Day 3. So the binding decision is not the tariff, it is the interconnection. When a single input is 5% of unit cost but gates 100% of unit revenue, you manage it as a strategic supply contract: multi-year commitments, deposits, and sometimes equity in generation - exactly the take-or-pay structures of Day 16, one layer deeper in the stack.</p>
+<h3>Rules of thumb</h3>
+<div class="rules"><div class="rule"><b>1 &middot; Buy megawatts first.</b> Capacity is delivered in MW. At ~1.7 kW per modern GPU, 1 MW &asymp; 590 GPUs; order power before silicon.</div><div class="rule"><b>2 &middot; Price power delay in revenue, not utility bills.</b> Each MW carries roughly $8M/yr of illustrative GPU revenue. A month of delay costs ~$0.65M per MW in deferral, not the ~$60K power bill.</div><div class="rule"><b>3 &middot; Availability beats tariff.</b> At 5-6% of a GPU-hour's price, a 20% cheaper rate moves margin by ~1 point. A missing megawatt moves revenue to zero. Negotiate for delivery certainty first.</div></div>
+<h3>Sources and assumptions</h3>
+<p>Global figures: IEA Energy and AI report, executive summary, April 2025. U.S. figures: DOE announcement of the 2024 LBNL U.S. Data Center Energy Usage Report, December 2024. Rack power: NVIDIA DGX GB200 User Guide. The 10 kW traditional-rack comparison is a common industry figure, not from these sources; the $2.50/GPU-hour, 60% utilization, $0.08/kWh, $7.8M/MW and $780M figures are illustrative arithmetic.</p>
+<div class="sources"><strong>Sources:</strong> <a href="https://www.iea.org/reports/energy-and-ai/executive-summary">IEA: Energy and AI, executive summary</a> &middot; <a href="https://www.energy.gov/articles/doe-releases-new-report-evaluating-increase-electricity-demand-data-centers">DOE: 2024 LBNL data-center energy report</a> &middot; <a href="https://docs.nvidia.com/dgx/dgxgb200-user-guide/hardware.html">NVIDIA DGX GB200 User Guide</a></div></div></article>
 <article class="paper" id="day-18" style="margin-bottom:30px">
 <header class="lesson-head"><div class="eyebrow" style="color:#168c7f">Day 18 &middot; Week 3 &middot; capacity</div><h2>The longest lead time sets the schedule</h2><p class="dek">Capacity planning is sequencing capital against lead times that differ by an order of magnitude: GPUs arrive in weeks, transformers take years, and the grid queue holds terawatts. The binding constraint is rarely the chip.</p></header>
 <div class="content">
