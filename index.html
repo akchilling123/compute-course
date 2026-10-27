@@ -36,7 +36,7 @@ body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 Inter,ui-s
 
 .rail{height:8px;background:#31506a;border-radius:8px;flex:1;overflow:hidden}
 
-.rail span{display:block;width:63%;height:100%;background:linear-gradient(90deg,var(--cyan),#83f3df)}
+.rail span{display:block;width:67%;height:100%;background:linear-gradient(90deg,var(--cyan),#83f3df)}
 
 .layout{display:grid;grid-template-columns:250px minmax(0,1fr);gap:34px;padding-top:44px;padding-bottom:80px}
 
@@ -155,7 +155,7 @@ article[id]{scroll-margin-top:112px}
 <header class="top">
 <div class="shell">
 <div class="brand">COMPUTE ECONOMICS / FIELD NOTES</div>
-<div class="daypill">DAY 19 OF 30</div>
+<div class="daypill">DAY 20 OF 30</div>
 </div>
 </header>
 <section class="hero">
@@ -168,14 +168,15 @@ article[id]{scroll-margin-top:112px}
 <span>
 </span>
 </div>
-<small>19 / 30 published</small>
+<small>20 / 30 published</small>
 </div>
 </div>
 </section>
 <main class="shell layout">
 <nav class="toc">
 <h3>Course pages</h3>
-<a class="active" href="#day-19">19 · Power constraint</a>
+<a class="active" href="#day-20">20 · PUE</a>
+<a href="#day-19">19 · Power constraint</a>
 <a href="#day-18">18 · Lead times</a>
 <a href="#day-17">17 · Concentration</a>
 <a href="#day-16">16 · Take-or-pay</a>
@@ -197,6 +198,25 @@ article[id]{scroll-margin-top:112px}
 <a href="#curriculum">30-day map</a>
 </nav>
 <div>
+<article class="paper" id="day-20" style="margin-bottom:30px">
+<header class="lesson-head"><div class="eyebrow" style="color:#168c7f">Day 20 &middot; Week 3 &middot; capacity</div><h2>PUE: the overhead tax on every megawatt</h2><p class="dek">Power Usage Effectiveness looks like an engineering metric. For a finance leader it is two levers at once: the margin on every GPU-hour sold, and the amount of sellable compute a constrained grid connection can carry.</p></header>
+<div class="content">
+<h3>The definition, in money</h3>
+<p class="lead">Day 19 established that megawatts are the scarce input. Today: the ratio that decides how much of each megawatt you can sell. <strong>PUE = total facility energy &divide; IT energy.</strong> The metric was introduced by The Green Grid in 2007 and is now the industry's standard efficiency yardstick. A PUE of 1.0 would mean every watt from the utility meter reaches the servers - impossible, since cooling, power conversion and lighting always take a share. At PUE 1.54, every kWh of compute drags 0.54 kWh of overhead behind it; at PUE 1.09, only 0.09 kWh.</p>
+<div class="fact"><strong>The two numbers that frame the industry:</strong> Uptime Institute's 2025 global survey puts the weighted-average PUE at 1.54 - the sixth consecutive year the figure has barely moved, with legacy infrastructure and regional cooling constraints blocking further gains. Google, running one of the most engineered fleets in the world, reports a trailing-twelve-month fleet-wide PUE of 1.09 in 2025 across all its large-scale data centers - 83% less overhead energy than the industry average.</div>
+<div class="diagram"><div class="chart-title">Overhead energy per unit of IT energy (PUE &minus; 1)</div><div class="chart-grid" style="grid-template-columns:118px 1fr"><div>Google fleet 2025</div><div class="bar"><i style="width:16.7%"></i><em style="left:calc(16.7% + 10px);color:#33415c">0.09</em></div><div>Industry average 2025</div><div class="bar"><i style="width:100%"></i><em>0.54</em></div></div><small>Shared scale: 0 to 0.54 kWh of overhead per kWh of IT energy. 0.54 &divide; 0.09 = 6x. Google's 1.09 is trailing-twelve-month across its whole large-scale fleet, all seasons - a harder bar than a vendor's best site in its best month.</small></div>
+<h3>Lever 1: the electricity line</h3>
+<p>PUE multiplies every power bill. Using Day 3's figures - 1.7 kW per GPU and an $0.08/kWh industrial rate - IT electricity is $0.136 per GPU-hour. The facility-inclusive cost is <strong>$0.21/GPU-hr at PUE 1.54 versus $0.15 at PUE 1.09</strong> (illustrative). The $0.06 gap looks small until it scales: 10,000 GPUs at 60% utilization is roughly <strong>$3.2M a year of margin difference</strong> from cooling efficiency alone (illustrative). But note the trap: the industry average has been stuck near 1.54 for six years. Efficiency gains are not a trend to underwrite - legacy halls and hot climates cap what retrofits deliver, so the 1.09-class fleets got there through ground-up design, not upgrades.</p>
+<h3>Lever 2: the constrained megawatt</h3>
+<p>The bigger number is capacity. <strong>IT capacity = utility capacity &divide; PUE.</strong> A 100 MW feed delivers 65 MW of IT load at PUE 1.54, but 92 MW at PUE 1.09 - 42% more sellable compute from the same substation. Valued at Day 19's illustrative $7.8M per MW-year, that 27 MW difference is about <strong>$210M a year of revenue headroom</strong> sitting inside the efficiency design (illustrative). This is why hyperscalers spend billions on liquid cooling and siting: on a constrained grid, PUE is not a sustainability metric, it is a capacity multiplier.</p>
+<div class="equation"><div class="metric"><b>1.54</b><span>industry weighted-average PUE (Uptime, 2025)</span></div><div class="metric"><b>1.09</b><span>Google fleet-wide trailing-12-month PUE, 2025</span></div><div class="metric"><b>65%</b><span>share of facility power reaching IT at PUE 1.54 (1 &divide; 1.54)</span></div></div>
+<h3>What the six-year stall tells you</h3>
+<p>The flat trend is the story. The easy wins - hot-aisle containment, raised setpoints - are already taken, and the installed base is old. Meanwhile AI is pushing rack densities from the 10-30 kW band that Uptime still finds is the norm toward the ~120 kW racks of Day 19, which forces direct liquid cooling. Liquid cooling is why new AI builds can beat the legacy average: heat leaves the rack in water instead of air, cutting fan and chiller load. Expect bifurcation: new AI campuses reporting 1.1-class PUEs while the surveyed average stays pinned near 1.5 by the legacy estate. Underwrite facilities individually, never by the industry average.</p>
+<h3>Rules of thumb</h3>
+<div class="rules"><div class="rule"><b>1 &middot; Divide by PUE to get sellable megawatts.</b> When a developer quotes a "100 MW campus," ask whether that is utility or IT capacity. At the industry average the gap is 35% - two very different revenue models.</div><div class="rule"><b>2 &middot; Near 1.5, each 0.1 of PUE is ~7% of capacity.</b> Cutting PUE from 1.54 to 1.44 raises the IT load a fixed interconnection can carry by about 7% (1/1.44 vs 1/1.54). Price efficiency spend against grid-queue time: buying 0.1 of PUE can be cheaper than waiting years for a bigger feed.</div><div class="rule"><b>3 &middot; Check the boundary before comparing PUEs.</b> Fleet-wide trailing-twelve-month (Google's method) includes old buildings, hot summers and partial load; a nameplate PUE from a new-build deck is a different animal. When a neocloud quotes sub-1.2, ask: which sites, which months, measured or modeled?</div></div>
+<h3>Sources and assumptions</h3>
+<p>Industry average and trend: Uptime Institute Global Data Center Survey 2025 (weighted-average PUE 1.54, sixth year with little change; 10-30 kW racks the growing norm). Google figures: Google's data-center efficiency page (fleet-wide trailing-twelve-month PUE 1.09 in 2025; 83% less overhead energy than the industry average; PUE definition). The PUE metric was introduced by The Green Grid in 2007, per Uptime's survey history. GPU power draw and the electricity rate carry over from Day 3; the $0.21/$0.15 GPU-hour costs, $3.2M margin gap and $210M revenue headroom are illustrative arithmetic from those stated assumptions.</p>
+<div class="sources"><strong>Sources:</strong> <a href="https://uptimeinstitute.com/resources/research-and-reports/annual-data-center-survey-2025">Uptime Institute: Global Data Center Survey 2025</a> &middot; <a href="https://www.google.com/about/datacenters/efficiency/">Google: Data Centers Efficiency</a></div></div></article>
 <article class="paper" id="day-19" style="margin-bottom:30px">
 <header class="lesson-head"><div class="eyebrow" style="color:#168c7f">Day 19 &middot; Week 3 &middot; capacity</div><h2>Capacity is delivered in megawatts, not GPUs</h2><p class="dek">Power as the constraint: clusters are sold in GPU counts but built in megawatts. The electricity is a small line item with a veto over the whole P&amp;L.</p></header>
 <div class="content">
