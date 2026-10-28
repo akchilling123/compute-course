@@ -36,7 +36,7 @@ body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 Inter,ui-s
 
 .rail{height:8px;background:#31506a;border-radius:8px;flex:1;overflow:hidden}
 
-.rail span{display:block;width:67%;height:100%;background:linear-gradient(90deg,var(--cyan),#83f3df)}
+.rail span{display:block;width:70%;height:100%;background:linear-gradient(90deg,var(--cyan),#83f3df)}
 
 .layout{display:grid;grid-template-columns:250px minmax(0,1fr);gap:34px;padding-top:44px;padding-bottom:80px}
 
@@ -155,7 +155,7 @@ article[id]{scroll-margin-top:112px}
 <header class="top">
 <div class="shell">
 <div class="brand">COMPUTE ECONOMICS / FIELD NOTES</div>
-<div class="daypill">DAY 20 OF 30</div>
+<div class="daypill">DAY 21 OF 30</div>
 </div>
 </header>
 <section class="hero">
@@ -168,14 +168,15 @@ article[id]{scroll-margin-top:112px}
 <span>
 </span>
 </div>
-<small>20 / 30 published</small>
+<small>21 / 30 published</small>
 </div>
 </div>
 </section>
 <main class="shell layout">
 <nav class="toc">
 <h3>Course pages</h3>
-<a class="active" href="#day-20">20 · PUE</a>
+<a class="active" href="#day-21">21 · Egress economics</a>
+<a href="#day-20">20 · PUE</a>
 <a href="#day-19">19 · Power constraint</a>
 <a href="#day-18">18 · Lead times</a>
 <a href="#day-17">17 · Concentration</a>
@@ -198,6 +199,23 @@ article[id]{scroll-margin-top:112px}
 <a href="#curriculum">30-day map</a>
 </nav>
 <div>
+<article class="paper" id="day-21" style="margin-bottom:30px">
+<header class="lesson-head"><div class="eyebrow" style="color:#168c7f">Day 21 &middot; Week 3 &middot; capacity</div><h2>Egress: the tollbooth at the cloud exit</h2><p class="dek">Data flows in free and pays to leave. That asymmetry is the quietest and largest switching cost in cloud economics - and regulators just put a ceiling on it. For AI infrastructure, where datasets are measured in petabytes, network pricing decides where compute can go.</p></header>
+<div class="content">
+<h3>The one-way door</h3>
+<p class="lead">Every hyperscaler charges the same way: <strong>ingress is free, egress is metered</strong>. AWS gives the first 100 GB a month free, then charges $0.09 per GB up to 50 TB, stepping down to $0.05 above 150 TB. Google Cloud's Premium tier starts at $0.12 per GiB for the first 1 TiB to North America, Europe and most of Asia, easing to $0.08-0.085 above 10 TiB. Azure starts at $0.087 per GB from North America and Europe after its own free 100 GB. Traffic between regions inside one provider is not free either: $0.02 per GB across North American regions on Azure, and $0.02 to $0.14 per GiB between Google Cloud regions depending on the pair.</p>
+<div class="fact"><strong>Why it is structured this way:</strong> free ingress pulls data in; metered egress makes leaving expensive. Moving 1 PB out at AWS's headline rate costs about $90K (1M GB &times; $0.09, illustrative - tier discounts lower it at real scale). A 100 PB data estate would carry roughly $9M of exit tolls at that rate. The switching cost is not in a contract clause; it is in the price list, which is why it survives every procurement negotiation.</div>
+<div class="diagram"><div class="chart-title">Headline internet egress price, first paid tier, $ per GB (NA / Europe origins)</div><div class="chart-grid" style="grid-template-columns:118px 1fr"><div>Cloudflare R2</div><div class="bar"><i style="width:0%"></i><em style="left:calc(0% + 10px);color:#33415c">$0.00</em></div><div>Azure</div><div class="bar"><i style="width:72.5%"></i><em style="left:calc(72.5% + 10px);color:#33415c">$0.087</em></div><div>AWS</div><div class="bar"><i style="width:75%"></i><em style="left:calc(75% + 10px);color:#33415c">$0.09</em></div><div>Google Cloud Premium</div><div class="bar"><i style="width:100%"></i><em>$0.12</em></div></div><small>Shared linear scale: 0 to $0.12 per GB. First paid tier after each provider's monthly free allowance (100 GB AWS and Azure; 1 GiB Google). Volume tiers and private pricing cut these rates at scale; Cloudflare R2 charges no egress at all.</small></div>
+<h3>The 2024 regulatory crack</h3>
+<p>In March 2024 AWS announced <strong>free data transfer out for customers moving all of their data off AWS</strong> - following Google, with Azure in the same wave - as the EU Data Act pushed providers to remove switching barriers. Read the fine print, because it defines what egress fees still are: the waiver applies to a full exit, is granted through a support request rather than automatically, and outside the EU it comes with a 180-day window to complete the move. Everyday operating traffic - serving users, feeding a second cloud, replicating checkpoints - stays fully tolled. The concession covers the one-time act of leaving, not the ongoing act of straddling.</p>
+<h3>Why this is an AI infrastructure topic</h3>
+<p>Three places network pricing touches the compute P&amp;L directly. <strong>First, training data gravity:</strong> a multi-PB training corpus is moved once into the GPU region because ingress is free, then effectively anchors there - the egress bill to relocate it rivals months of storage cost. <strong>Second, checkpoint and model movement:</strong> copying a 1 PB checkpoint store across regions at $0.02-0.14 per GB is $20K-140K per copy (illustrative), so replication strategy is a budget decision, not just an engineering one. <strong>Third, the multi-cloud arbitrage from Days 15 and 16:</strong> buying GPU-hours wherever they are cheapest only works if the data can follow. Zero-egress object storage like Cloudflare R2 - and its Bandwidth Alliance partners - exists precisely to break the anchor: keep the data outside any one cloud, pay for compute where it is cheapest, and never pay the toll.</p>
+<div class="equation"><div class="metric"><b>$0.09</b><span>AWS egress per GB, first paid tier to 50 TB, after 100 GB free monthly</span></div><div class="metric"><b>$0.00</b><span>Cloudflare R2 egress - the zero-fee wedge built for multi-cloud data</span></div><div class="metric"><b>~$9M</b><span>illustrative toll to exit a 100 PB estate at $0.09/GB (100M GB &times; $0.09)</span></div></div>
+<h3>Rules of thumb</h3>
+<div class="rules"><div class="rule"><b>1 &middot; Price the exit before the entrance.</b> Express egress-to-leave in months of storage cost (at $0.09/GB, leaving once costs roughly 4 months of S3 Standard storage at ~$0.023/GB-month). If the exit is unaffordable, the region choice is a permanent decision - treat it like one.</div><div class="rule"><b>2 &middot; Inter-region traffic is the silent line.</b> $0.02-0.14 per GB between regions taxes every checkpoint copy, replica and failover drill. Architect for data locality first; buy bandwidth second.</div><div class="rule"><b>3 &middot; The switching waiver is an exit visa, not a travel pass.</b> Free-egress programs require a full migration, a support request and a deadline. Ongoing multi-cloud designs still pay retail, so the durable answer is egress-free storage architecture, not one-time credits.</div></div>
+<h3>Sources and assumptions</h3>
+<p>AWS rates and free allowances: AWS News Blog (March 5, 2024: free data transfer out when moving out of AWS; 100 GB/month free aggregated across services; 1 TB free CloudFront; 180-day completion window for non-EU movers) and Cloudflare's summary of published AWS S3 data-transfer tiers ($0.09/GB to 50 TB, $0.07 to 150 TB, $0.05 beyond, US pricing). Google Cloud: VPC network pricing page (Premium tier $0.12/$0.11/$0.08-0.085 per GiB by volume, per-destination rates, free ingress). Azure: Microsoft bandwidth pricing page ($0.087 per GB first paid tier from NA/Europe, free ingress, $0.02 per GB inter-region NA). Zero-egress storage: Cloudflare R2 product page. Dollar figures for PB-scale moves and checkpoint copies are illustrative arithmetic from these headline rates; real bills depend on tiers, regions and negotiated pricing.</p>
+<div class="sources"><strong>Sources:</strong> <a href="https://aws.amazon.com/blogs/aws/free-data-transfer-out-to-internet-when-moving-out-of-aws/">AWS News Blog: free data transfer out when moving out of AWS</a> &middot; <a href="https://www.cloudflare.com/learning/cloud/what-is-aws-data-transfer-pricing/">Cloudflare: what is AWS data transfer pricing</a> &middot; <a href="https://cloud.google.com/vpc/network-pricing">Google Cloud: VPC network pricing</a> &middot; <a href="https://azure.microsoft.com/en-us/pricing/details/bandwidth/">Microsoft Azure: bandwidth pricing</a> &middot; <a href="https://www.cloudflare.com/products/r2/">Cloudflare R2: egress-free object storage</a></div></div></article>
 <article class="paper" id="day-20" style="margin-bottom:30px">
 <header class="lesson-head"><div class="eyebrow" style="color:#168c7f">Day 20 &middot; Week 3 &middot; capacity</div><h2>PUE: the overhead tax on every megawatt</h2><p class="dek">Power Usage Effectiveness looks like an engineering metric. For a finance leader it is two levers at once: the margin on every GPU-hour sold, and the amount of sellable compute a constrained grid connection can carry.</p></header>
 <div class="content">
