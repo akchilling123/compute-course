@@ -36,7 +36,7 @@ body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 Inter,ui-s
 
 .rail{height:8px;background:#31506a;border-radius:8px;flex:1;overflow:hidden}
 
-.rail span{display:block;width:70%;height:100%;background:linear-gradient(90deg,var(--cyan),#83f3df)}
+.rail span{display:block;width:73%;height:100%;background:linear-gradient(90deg,var(--cyan),#83f3df)}
 
 .layout{display:grid;grid-template-columns:250px minmax(0,1fr);gap:34px;padding-top:44px;padding-bottom:80px}
 
@@ -155,7 +155,7 @@ article[id]{scroll-margin-top:112px}
 <header class="top">
 <div class="shell">
 <div class="brand">COMPUTE ECONOMICS / FIELD NOTES</div>
-<div class="daypill">DAY 21 OF 30</div>
+<div class="daypill">DAY 22 OF 30</div>
 </div>
 </header>
 <section class="hero">
@@ -168,14 +168,15 @@ article[id]{scroll-margin-top:112px}
 <span>
 </span>
 </div>
-<small>21 / 30 published</small>
+<small>22 / 30 published</small>
 </div>
 </div>
 </section>
 <main class="shell layout">
 <nav class="toc">
 <h3>Course pages</h3>
-<a class="active" href="#day-21">21 · Egress economics</a>
+<a class="active" href="#day-22">22 · Inventory aging</a>
+<a href="#day-21">21 · Egress economics</a>
 <a href="#day-20">20 · PUE</a>
 <a href="#day-19">19 · Power constraint</a>
 <a href="#day-18">18 · Lead times</a>
@@ -199,6 +200,25 @@ article[id]{scroll-margin-top:112px}
 <a href="#curriculum">30-day map</a>
 </nav>
 <div>
+<article class="paper" id="day-22" style="margin-bottom:30px">
+<header class="lesson-head"><div class="eyebrow" style="color:#168c7f">Day 22 &middot; Week 3 &middot; capacity</div><h2>Inventory aging: a GPU dies three deaths</h2><p class="dek">Every accelerator on the balance sheet is aging on three clocks at once: physical wear, economic obsolescence, and the accounting schedule. The clocks do not agree, and the gap between them is where hundreds of billions of dollars of AI earnings quality now lives.</p></header>
+<div class="content">
+<h3>Clock one: physics</h3>
+<p class="lead">GPUs at AI-fleet utilization run hot and hard. Technical analyses gathered by Princeton's CITP put the useful physical lifespan of AI chips at <strong>one to three years</strong>: one unnamed Google architect assessed that GPUs running at 60-70% utilization - standard for AI workloads - survive one to two years, three at maximum, because thermal and electrical stress is simply too high. This is the clock nobody negotiates with.</p>
+<h3>Clock two: the market</h3>
+<p>NVIDIA moved from a two-year chip cadence to an <strong>annual</strong> one in 2024 - Blackwell following Hopper, Rubin announced behind it - which makes every installed generation "last year's model" within twelve months. The H100 is the first full natural experiment. Silicon Data's market tracking shows asking rents of <strong>$7-10 per GPU-hour in 2023 falling to $2-4 by late 2025</strong> on non-hyperscale and marketplace providers, and AWS cut its H100 price roughly 30% in June 2025 once specialist providers proved the floor was lower. That is a 60-70% revenue-rate decline in about two years - while the H100 kept working. Obsolescence arrived as a price, not a failure. Note the asymmetry though: at $2-4/hr a three-year-old H100 still earns, because inference absorbs older silicon. Economic life ends at zero marginal value, not at the next launch event.</p>
+<div class="fact"><strong>Clock three: the ledger.</strong> Hyperscalers depreciate AI servers over up to six years - Google's, Oracle's and Microsoft's stated schedules, with Microsoft's own filing giving a two-to-six-year range. Short seller Michael Burry's November 2025 broadside put real useful life at two to three years and called the gap an inflation of earnings. The tell: Amazon's February 2025 filing <em>shortened</em> the life of a subset of its servers from six years to five, citing "an increased pace of technology development, particularly in the area of artificial intelligence and machine learning." One of the five just blinked.</div>
+<div class="diagram"><div class="chart-title">How long does an AI GPU live? Estimates vs schedules, years</div><div class="chart-grid" style="grid-template-columns:118px 1fr"><div>Physical stress estimate</div><div class="bar"><i style="width:33.3%"></i><em>1-2 yrs</em></div><div>Short-seller estimate</div><div class="bar"><i style="width:50%"></i><em>2-3 yrs</em></div><div>Amazon revised schedule</div><div class="bar"><i style="width:83.3%"></i><em>5 yrs</em></div><div>Hyperscaler schedules</div><div class="bar"><i style="width:100%"></i><em>up to 6 yrs</em></div></div><small>Shared linear scale: 0 to 6 years; bars drawn at the top of each stated range. Sources: Princeton CITP (Google architect, 1-2 years at 60-70% utilization; technical consensus 1-3), CNBC (Burry 2-3; Google/Oracle/Microsoft up to 6; Amazon reduced a subset from 6 to 5).</small></div>
+<h3>What the gap is worth</h3>
+<p>Depreciation life is a margin dial. Princeton's worked example: on roughly <strong>$80B of annual AI infrastructure spend</strong>, if half goes to computing hardware with a true three-year life, the real replacement cost is about $13B a year - but depreciated over six years the reported charge is $6.5B, an apparent <strong>$6.5B annual cushion</strong> on one company's income statement. Barclays has trimmed AI earnings forecasts by up to 10% on more realistic assumptions; The Economist framed the aggregate as the "$4trn accounting puzzle." For context on scale: NVIDIA's data-center revenue went from $15B to $115B in two fiscal years, so the installed base aging on these clocks is now enormous.</p>
+<div class="equation"><div class="metric"><b>$7-10 &rarr; $2-4</b><span>H100 asking rent per GPU-hour, 2023 to late 2025 (Silicon Data)</span></div><div class="metric"><b>-30%</b><span>AWS H100 price cut, June 2025, after specialists proved lower rates</span></div><div class="metric"><b>6 &rarr; 5 yrs</b><span>Amazon's shortened server useful life, Feb 2025 filing, citing AI's pace</span></div></div>
+<h3>Underwriting inventory that melts</h3>
+<p>For a finance leader the lesson is not that the accountants are wrong - it is that the three clocks measure different things and you need all three on the page. Physics sets the maintenance curve and the failure tail. The market sets the revenue line: every model of a GPU fleet (Days 2 and 7) inherits a rental price path, and the H100 says that path can halve in two years even for the winning chip. The ledger sets reported margin and, through collateral values, the debt terms of Week 4. When a neocloud borrows against GPUs on a six-year schedule, the lender is underwriting clock two whether it says so or not.</p>
+<h3>Rules of thumb</h3>
+<div class="rules"><div class="rule"><b>1 &middot; Underwrite on the shortest clock, report on the longest.</b> If the deal only works at a six-year life, it does not work: rental markets reprice in quarters, ledgers in years. Model three-year economics and treat years four to six as upside.</div><div class="rule"><b>2 &middot; Watch the generation spread, not the headline.</b> The aging signal is last-gen rent as a share of current-gen. H100 at $2-4 against scarce new-generation supply is a healthy cascade into inference; if that spread collapses toward zero before the hardware pays back, obsolescence is winning.</div><div class="rule"><b>3 &middot; Read the useful-life footnote first.</b> A one-year schedule change on a $10B fleet moves roughly $300M of annual depreciation per year of life assumed. Amazon shortening to five years is the direction of travel - any operator still extending lives in 2026 deserves a harder question.</div></div>
+<h3>Sources and assumptions</h3>
+<p>Physical lifespan estimates and the $6.5B Microsoft worked example: Princeton CITP, "Lifespan of AI Chips: The $300 Billion Question" (Oct 2025), citing technical analyses of 1-3 year chip life and The Economist's "$4trn accounting puzzle." Schedules, Burry's critique, Amazon's revision and NVIDIA revenue: CNBC (Nov 2025). H100 rental history and the June 2025 AWS cut: Silicon Data's H100 rental price analysis. Annual cadence: The Verge on NVIDIA's 2024 shift to yearly architectures. Midpoint and spread figures in discussion are arithmetic on these reported ranges; fleet-level depreciation math is illustrative.</p>
+<div class="sources"><strong>Sources:</strong> <a href="https://blog.citp.princeton.edu/2025/10/15/lifespan-of-ai-chips-the-300-billion-question/">Princeton CITP: Lifespan of AI Chips - The $300 Billion Question</a> &middot; <a href="https://www.cnbc.com/2025/11/14/ai-gpu-depreciation-coreweave-nvidia-michael-burry.html">CNBC: How long before a GPU depreciates?</a> &middot; <a href="https://www.silicondata.com/blog/h100-rental-price-over-time">Silicon Data: H100 rental price over time</a> &middot; <a href="https://www.theverge.com/2024/5/22/24162860/nvidia-ai-chip-every-year-blackwell-rubin">The Verge: NVIDIA's annual chip cadence</a></div></div></article>
 <article class="paper" id="day-21" style="margin-bottom:30px">
 <header class="lesson-head"><div class="eyebrow" style="color:#168c7f">Day 21 &middot; Week 3 &middot; capacity</div><h2>Egress: the tollbooth at the cloud exit</h2><p class="dek">Data flows in free and pays to leave. That asymmetry is the quietest and largest switching cost in cloud economics - and regulators just put a ceiling on it. For AI infrastructure, where datasets are measured in petabytes, network pricing decides where compute can go.</p></header>
 <div class="content">
