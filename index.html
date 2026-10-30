@@ -1,0 +1,1264 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Compute Economics Field Notes</title>
+<meta name="description" content="A 30-day course on AI infrastructure economics for strategic finance leaders.">
+<style>
+:root{--ink:#102a43;--muted:#627d98;--paper:#f7f5ef;--card:#fff;--blue:#2463eb;--cyan:#13b5a4;--gold:#f0a93b;--line:#d9e2ec;--navy:#071a2b}
+
+*{box-sizing:border-box}
+
+html{scroll-behavior:smooth}
+
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+
+.shell{max-width:1180px;margin:auto;padding:0 24px}
+
+.top{background:var(--navy);color:white;padding:18px 0;position:sticky;top:0;z-index:5}
+
+.top .shell{display:flex;align-items:center;justify-content:space-between;gap:20px}
+
+.brand{font-weight:800;letter-spacing:.02em}
+
+.daypill{font-size:13px;background:#163b5c;border:1px solid #315c7d;border-radius:999px;padding:6px 11px}
+
+.hero{background:linear-gradient(135deg,#071a2b 0%,#123a57 65%,#155b65 100%);color:white;padding:64px 0 72px}
+
+.eyebrow{text-transform:uppercase;letter-spacing:.14em;font-size:12px;font-weight:800;color:#74e1d4}
+
+.hero h1{font-size:clamp(38px,6vw,72px);line-height:.98;max-width:820px;margin:14px 0 22px;letter-spacing:-.045em}
+
+.hero p{max-width:710px;font-size:19px;color:#ccdae5;margin:0}
+
+.progress{margin-top:34px;display:flex;align-items:center;gap:14px;max-width:540px}
+
+.rail{height:8px;background:#31506a;border-radius:8px;flex:1;overflow:hidden}
+
+.rail span{display:block;width:77%;height:100%;background:linear-gradient(90deg,var(--cyan),#83f3df)}
+
+.layout{display:grid;grid-template-columns:250px minmax(0,1fr);gap:34px;padding-top:44px;padding-bottom:80px}
+
+.toc{position:sticky;top:86px;align-self:start}
+
+.toc h3{text-transform:uppercase;letter-spacing:.12em;font-size:11px;color:var(--muted)}
+
+.toc a{display:block;color:var(--muted);text-decoration:none;padding:10px 12px;border-left:2px solid var(--line)}
+
+.toc a.active{color:var(--blue);border-color:var(--blue);font-weight:750;background:#eaf2ff}
+
+article[id]{scroll-margin-top:112px}
+
+.paper{background:var(--card);border:1px solid #e7e2d8;border-radius:18px;box-shadow:0 10px 34px rgba(16,42,67,.08);overflow:hidden}
+
+.lesson-head{padding:38px 42px 28px;border-bottom:1px solid var(--line)}
+
+.lesson-head h2{font-size:clamp(30px,4vw,50px);line-height:1.05;letter-spacing:-.035em;margin:8px 0 10px}
+
+.dek{font-size:20px;color:var(--muted);max-width:760px}
+
+.content{padding:34px 42px 46px}
+
+.content h3{font-size:23px;margin:32px 0 12px;letter-spacing:-.015em}
+
+.content h3:first-child{margin-top:0}
+
+.lead{font-size:19px}
+
+.equation{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:24px 0}
+
+.metric{background:#f1f5f9;border-radius:12px;padding:18px}
+
+.metric b{display:block;font-size:25px;color:var(--blue)}
+
+.metric span{font-size:13px;color:var(--muted)}
+
+.diagram{border:1px solid var(--line);background:#fbfdff;border-radius:14px;padding:18px;margin:22px 0}
+
+.chart-title{font-weight:800;margin-bottom:14px}
+
+.chart-grid{display:grid;grid-template-columns:74px 1fr;gap:10px 12px;align-items:center}
+
+.bar{height:34px;background:#e6edf5;border-radius:8px;overflow:hidden;position:relative}
+
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--blue),#5791ff)}
+
+.bar em{position:absolute;left:12px;top:6px;color:white;font-style:normal;font-weight:800;font-size:14px}
+
+.bar .dark{color:var(--ink);left:auto;right:10px}
+
+.worked{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+
+.case{padding:20px;border:1px solid var(--line);border-radius:14px}
+
+.case.good{border-color:#a7dfd6;background:#f2fbf9}
+
+.case h4{margin:0 0 8px;font-size:18px}
+
+.number{font-size:30px;font-weight:850;letter-spacing:-.03em}
+
+.rules{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}
+
+.rule{background:var(--navy);color:#e8f0f6;padding:18px;border-radius:13px}
+
+.rule b{color:#7be5d6;display:block;margin-bottom:6px}
+
+.fact{border-left:4px solid var(--gold);background:#fff9e9;padding:16px 18px;margin:22px 0}
+
+.sources{font-size:13px;color:var(--muted);border-top:1px solid var(--line);margin-top:34px;padding-top:20px}
+
+.sources a{color:var(--blue)}
+
+.curriculum{margin-top:30px;background:white;border-radius:18px;border:1px solid #e7e2d8;padding:34px}
+
+.curriculum h2{margin-top:0;font-size:30px}
+
+.weeks{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+
+.week{border:1px solid var(--line);border-radius:13px;padding:18px}
+
+.week h3{margin:0 0 10px}
+
+.week ol{padding-left:23px;margin:0}
+
+.week li{margin:5px 0;color:var(--muted)}
+
+.week li:first-child{color:var(--ink);font-weight:750}
+
+.footer{background:var(--navy);color:#9fb3c3;padding:30px 0;font-size:13px}
+
+@media(max-width:800px){.layout{display:block}
+
+.toc{position:static;display:flex;overflow:auto;margin-bottom:18px}
+
+.toc h3{display:none}
+
+.toc a{white-space:nowrap;border-left:0;border-bottom:2px solid var(--line)}
+
+.lesson-head,.content{padding:28px 22px}
+
+.equation,.worked,.rules,.weeks{grid-template-columns:1fr}
+
+.hero{padding:48px 0}
+
+.hero h1{font-size:44px}
+
+.shell{padding:0 16px}
+
+}
+
+
+</style>
+</head>
+<body>
+<header class="top">
+<div class="shell">
+<div class="brand">COMPUTE ECONOMICS / FIELD NOTES</div>
+<div class="daypill">DAY 23 OF 30</div>
+</div>
+</header>
+<section class="hero">
+<div class="shell">
+<div class="eyebrow">For strategic finance leaders in AI infrastructure</div>
+<h1>Learn the machine behind the margin.</h1>
+<p>A developing course on the unit economics, capacity decisions, and business models that determine who wins in compute.</p>
+<div class="progress">
+<div class="rail">
+<span>
+</span>
+</div>
+<small>23 / 30 published</small>
+</div>
+</div>
+</section>
+<main class="shell layout">
+<nav class="toc">
+<h3>Course pages</h3>
+<a class="active" href="#day-23">23 · Hyperscaler model</a>
+<a href="#day-22">22 · Inventory aging</a>
+<a href="#day-21">21 · Egress economics</a>
+<a href="#day-20">20 · PUE</a>
+<a href="#day-19">19 · Power constraint</a>
+<a href="#day-18">18 · Lead times</a>
+<a href="#day-17">17 · Concentration</a>
+<a href="#day-16">16 · Take-or-pay</a>
+<a href="#day-15">15 · Commitments</a>
+<a href="#day-14">14 · Fine-tuning</a>
+<a href="#day-13">13 · Quantization</a>
+<a href="#day-12">12 · Memory</a>
+<a href="#day-11">11 · Latency</a>
+<a href="#day-10">10 · Batching</a>
+<a href="#day-9">09 · Tokens &amp; FLOPs</a>
+<a href="#day-8">08 · Training vs. inference</a>
+<a href="#day-7">07 · Cluster margin</a>
+<a href="#day-6">06 · Fabric</a>
+<a href="#day-5">05 · HBM</a>
+<a href="#day-4">04 · Depreciation</a>
+<a href="#day-3">03 · Power cost</a>
+<a href="#day-2">02 · $/GPU-hour</a>
+<a href="#day-1">01 · Utilization</a>
+<a href="#curriculum">30-day map</a>
+</nav>
+<div>
+<article class="paper" id="day-23" style="margin-bottom:30px">
+<header class="lesson-head"><div class="eyebrow" style="color:#168c7f">Day 23 &middot; Week 4 &middot; business models</div><h2>The hyperscaler: a bank that lends you its computers</h2><p class="dek">Week 4 turns from capacity to business models. Start with the incumbent: the hyperscaler pays for compute up front and rents it back by the hour. Its cloud segments earn 35-39% operating margins, while at Amazon the consolidated capex bill - which the company does not split by segment - now exceeds even AWS's entire segment operating income. This week's earnings let us read the model straight off the filings.</p></header>
+<div class="content">
+<h3>The scoreboard, three days old</h3>
+<p class="lead">All three hyperscalers reported this week, and the numbers describe the best business in technology right now. <strong>AWS grew 39% year over year to $46.0B in Q3 2026</strong> - its fastest in nearly five years - with $17.8B of operating income, a 38.7% segment margin, and a $184B annualized run rate; CEO Andy Jassy projected growth above 40% for 2027 and 2028. <strong>Google Cloud grew 103% to $30.7B</strong> with operating income of $11.1B (36.2% margin), helped by a new line: TPU systems sold as products. <strong>Microsoft's Cloud revenue grew 30% to $63.9B, with Azure up 48%</strong> - Microsoft does not disclose Azure's dollar revenue, so the 48% is a rate, not a base.</p>
+<div class="fact"><strong>Now the cash physics underneath the margins.</strong> Amazon expects roughly <strong>$220B of cash capital expenditure in 2026</strong>. Its trailing-twelve-month operating cash flow is $168.3B - and its free cash flow is <em>negative</em> $42.4B, after a $94.8B year-over-year increase in purchases of property and equipment that Amazon says primarily reflects AI investment. Microsoft added $39.4B of property and equipment in a single quarter. Amazon's consolidated capex now exceeds even AWS's standalone segment earnings: the segment's Q3 operating income of $17.8B (about $71B annualized) sits against a company-wide $220B expected capex year. Amazon does not break capex out by segment - it covers retail logistics as well as AI infrastructure - so this is a whole-company comparison, not an AWS P&amp;L. The income statement says software economics; the cash flow statement says heavy industry.</div>
+<div class="diagram"><div class="chart-title">Cloud revenue growth, Q3 2026, year over year</div><div class="chart-grid" style="grid-template-columns:118px 1fr"><div>AWS</div><div class="bar"><i style="width:37.9%"></i><em style="left:calc(37.9% + 10px);color:#33415c">+39%</em></div><div>Azure</div><div class="bar"><i style="width:46.6%"></i><em style="left:calc(46.6% + 10px);color:#33415c">+48%</em></div><div>Google Cloud</div><div class="bar"><i style="width:100%"></i><em>+103%</em></div></div><small>Shared linear scale: 0 to 103%. Same quarter, different disclosed scopes: AWS is Amazon's full AWS segment; Google Cloud includes TPU systems now sold as products, a new revenue line this year; Microsoft reports Azure's growth rate without dollar revenue, and its $63.9B "Microsoft Cloud" total includes Microsoft 365 and other services, so it is not charted here.</small></div>
+<h3>How the model actually works</h3>
+<p>Strip it down and a hyperscaler is a financing machine with a data center attached. It finances fleets from operating cash flow and a diversified corporate balance sheet, rather than borrowing against the GPUs themselves, converts that capital into fleets (Day 4's depreciation, Day 22's aging debate), and rents the fleets out at Day 2's GPU-hour prices with three structural advantages: <strong>utilization blending</strong> across millions of workloads (Day 1's math works for the operator with the deepest demand pool), <strong>commitment instruments</strong> - savings plans and reserved instances that pre-sell capacity and de-risk the build (Day 15), and the <strong>egress moat</strong> that makes leaving expensive (Day 21). The 38.7% AWS margin is what those advantages are worth, monetized per quarter.</p>
+<h3>Why margins and the buildout can both be real</h3>
+<p>The apparent contradiction - record margins, negative free cash flow - is the whole story. Reported margin is computed after depreciation on Day 22's five-to-six-year schedules; cash capex is spent this quarter, up front, at a consolidated $220B a year. If the schedules are right, the negative FCF is just growth investment and today's margins are real. If true economic life is closer to three years, both numbers are flattered: depreciation is understated and the replacement bill arrives before the revenue it was meant to serve. That is the bull-bear axis for the entire sector, and it is why Amazon's quiet 6-to-5-year schedule revision (Day 22) matters more than any single quarter's growth rate.</p>
+<div class="equation"><div class="metric"><b>$46.0B</b><span>AWS Q3 2026 revenue, +39% YoY; $17.8B operating income (38.7% margin)</span></div><div class="metric"><b>+103%</b><span>Google Cloud Q3 2026 growth to $30.7B; $11.1B operating income (36.2%)</span></div><div class="metric"><b>-$42.4B</b><span>Amazon trailing-12-month free cash flow: consolidated capex (~$220B expected 2026) outruns even $168.3B of operating cash flow</span></div></div>
+<h3>Rules of thumb</h3>
+<div class="rules"><div class="rule"><b>1 &middot; Keep segment and consolidated scopes separate.</b> AWS's 38.7% operating margin is a segment figure; Amazon's ~$220B capex and negative $42.4B free cash flow are consolidated, covering retail logistics as well as AI infrastructure. Subtracting one from the other does not yield an "AWS cash margin" - Amazon does not disclose the split. What you can say: consolidated capex now exceeds the entire AWS segment's operating income, and the company attributes the increase primarily to AI. That is a statement about capital intensity - the build now outruns even the cloud segment's earnings - not a depreciation measure; the comparison holds whatever schedule the equipment is depreciated on (Day 22).</div><div class="rule"><b>2 &middot; Treat growth projections as outlook, not backlog.</b> Jassy's above-40% for 2027-2028 is management guidance, not contracted revenue. The harder evidence of demand sits in the same release: new AWS agreements signed with Meta, NVIDIA, OpenAI and two dozen others - the release names the counterparties but not the contract terms, so their structure (reserved capacity, take-or-pay, or something looser) is not established. For the actual pre-sold share, watch disclosed backlog and remaining performance obligations, not the guidance line.</div><div class="rule"><b>3 &middot; Watch for product lines hiding in "cloud."</b> Google's 103% includes TPU systems sold as hardware - a different, lower-multiple business than renting compute. When a cloud growth rate suddenly reaccelerates, check what changed inside the segment definition before extrapolating it.</div></div>
+<h3>Sources and assumptions</h3>
+<p>AWS revenue, operating income, run rate, capex guidance, cash flow and the Jassy projection: Amazon's Q3 2026 results release (Oct 29, 2026). Google Cloud revenue, operating income, TPU commentary and segment definitions: Alphabet's Q3 2026 earnings exhibit (SEC, Oct 28, 2026). Microsoft Cloud revenue, Azure growth and property-and-equipment additions: Microsoft's FY27 Q1 release (Oct 28, 2026). Segment operating margins are computed from the disclosed figures ($17.8B/$46.0B, $11.1B/$30.7B). Microsoft does not disclose Azure dollar revenue or a cloud-segment operating margin in this release; the chart notes the scope differences.</p>
+<div class="sources"><strong>Sources:</strong> <a href="https://press.aboutamazon.com/2026/10/amazon-com-announces-third-quarter-results">Amazon: Q3 2026 results</a> &middot; <a href="https://www.sec.gov/Archives/edgar/data/1652044/000165204426000080/googexhibit991q32026.htm">Alphabet: Q3 2026 earnings exhibit (SEC)</a> &middot; <a href="https://www.microsoft.com/en-us/investor/earnings/fy-2027-q1/press-release-webcast">Microsoft: FY27 Q1 results</a></div></div></article>
+<article class="paper" id="day-22" style="margin-bottom:30px">
+<header class="lesson-head"><div class="eyebrow" style="color:#168c7f">Day 22 &middot; Week 3 &middot; capacity</div><h2>Inventory aging: a GPU dies three deaths</h2><p class="dek">Every accelerator on the balance sheet is aging on three clocks at once: physical wear, economic obsolescence, and the accounting schedule. The clocks do not agree, and the gap between them is where hundreds of billions of dollars of AI earnings quality now lives.</p></header>
+<div class="content">
+<h3>Clock one: physics</h3>
+<p class="lead">GPUs at AI-fleet utilization run hot and hard - but the sources cited here do not establish measured fleet failure lifetimes; what circulates are <strong>attributed estimates</strong>. Technical analyses gathered by Princeton's CITP estimate one to three years; one unnamed Google architect assessed that GPUs at 60-70% utilization - standard for AI workloads - survive one to two years, three at maximum, on thermal and electrical stress. Treat these as estimates about stress, not measured failure data. Chips staying in service and renting (below) is evidence of retained economic value, not of physical condition. This is the clock nobody negotiates with - and the one where the cited evidence is thinnest.</p>
+<h3>Clock two: the market</h3>
+<p>NVIDIA moved from a two-year chip cadence to an <strong>annual</strong> one in 2024 - Blackwell following Hopper, Rubin announced behind it - which makes every installed generation "last year's model" within twelve months. The H100 is the first full natural experiment. Silicon Data's market tracking shows asking rents of <strong>$7-10 per GPU-hour in 2023 falling to $2-4 by late 2025</strong> on non-hyperscale and marketplace providers, and AWS cut its H100 price roughly 30% in June 2025 once specialist providers proved the floor was lower. That is a 60-70% revenue-rate decline in about two years - while the H100 kept working. Obsolescence arrived as a price, not a failure. Note the asymmetry though: at $2-4/hr a three-year-old H100 still earns, because inference absorbs older silicon. Economic life ends at zero marginal value, not at the next launch event.</p>
+<div class="fact"><strong>Clock three: the ledger.</strong> Hyperscalers depreciate servers and computer equipment over up to six years - Google's, Oracle's and Microsoft's stated schedules, with Microsoft's own filing giving a two-to-six-year range. Note the scope: these schedules cover whole servers and equipment, not GPUs alone. Short seller Michael Burry's November 2025 broadside put the real useful life of that equipment at two to three years and called the gap an inflation of earnings. The tell: Amazon's February 2025 filing <em>shortened</em> the life of a subset of its servers from six years to five, citing "an increased pace of technology development, particularly in the area of artificial intelligence and machine learning." One of the five just blinked.</div>
+<div class="diagram"><div class="chart-title">GPU-life estimates vs server depreciation schedules, years</div><div class="chart-grid" style="grid-template-columns:118px 1fr"><div>Physical GPU stress, estimate</div><div class="bar"><i style="width:33.3%"></i><em style="left:calc(33.3% + 10px);color:#33415c">1-2 yrs</em></div><div>Equipment life, Burry critique</div><div class="bar"><i style="width:50%"></i><em>2-3 yrs</em></div><div>Amazon server schedule, revised</div><div class="bar"><i style="width:83.3%"></i><em>5 yrs</em></div><div>Hyperscaler server schedules</div><div class="bar"><i style="width:100%"></i><em>up to 6 yrs</em></div></div><small>Shared linear scale: 0 to 6 years; bars drawn at the top of each stated range. These scopes are not directly comparable: the top two rows are attributed estimates (Princeton CITP citing one unnamed Google architect at 60-70% utilization; short seller Michael Burry via CNBC) - attributed estimates, not observed failure data, which the cited sources do not establish. The bottom two are accounting depreciation schedules for servers and equipment (which include more than GPUs): Amazon reduced a subset from 6 to 5 years; Google, Oracle and Microsoft state up to 6.</small></div>
+<h3>What the gap is worth</h3>
+<p>Depreciation life is a margin dial, and the dial turns the whole equipment schedule while the debate is about the GPUs inside it. Princeton's worked example: on roughly <strong>$80B of annual AI infrastructure spend</strong>, if half goes to computing hardware with a true three-year life, the real replacement cost is about $13B a year - but depreciated over six years the reported charge is $6.5B, an apparent <strong>$6.5B annual cushion</strong> on one company's income statement. Barclays has trimmed AI earnings forecasts by up to 10% on more realistic assumptions; The Economist framed the aggregate as the "$4trn accounting puzzle." For context on scale: NVIDIA's data-center revenue went from $15B to $115B in two fiscal years, so the installed base aging on these clocks is now enormous.</p>
+<div class="equation"><div class="metric"><b>$7-10 &rarr; $2-4</b><span>H100 asking rent per GPU-hour, 2023 to late 2025 (Silicon Data)</span></div><div class="metric"><b>-30%</b><span>AWS H100 price cut, June 2025, after specialists proved lower rates</span></div><div class="metric"><b>6 &rarr; 5 yrs</b><span>Amazon's shortened server useful life, Feb 2025 filing, citing AI's pace</span></div></div>
+<h3>Underwriting inventory that melts</h3>
+<p>For a finance leader the lesson is not that the accountants are wrong - it is that the three clocks measure different things and you need all three on the page. Physics sets the maintenance curve and the failure tail. The market sets the revenue line: every model of a GPU fleet (Days 2 and 7) inherits a rental price path, and the H100 says that path can halve in two years even for the winning chip. The ledger sets reported margin and, through collateral values, the debt terms of Week 4. When a neocloud borrows against GPUs on a six-year schedule, the lender is underwriting clock two whether it says so or not.</p>
+<h3>Rules of thumb</h3>
+<div class="rules"><div class="rule"><b>1 &middot; Underwrite on the shortest clock, report on the longest.</b> If the deal only works at a six-year life, it does not work: rental markets reprice in quarters, ledgers in years. Model three-year economics and treat years four to six as upside.</div><div class="rule"><b>2 &middot; Watch the generation spread, not the headline.</b> The aging signal is last-gen rent as a share of current-gen. H100 at $2-4 against scarce new-generation supply is a healthy cascade into inference; if that spread collapses toward zero before the hardware pays back, obsolescence is winning.</div><div class="rule"><b>3 &middot; Read the useful-life footnote first.</b> Straight-line, the swing from a one-year change is $10B &divide; (life &times; life+1) per $10B of fleet: stretching five to six years shields about $330M a year, three to four years about $830M (illustrative). The later the extension, the smaller the benefit - so watch for schedules creeping to five and six, and for the direction of revisions. Amazon shortening to five is the tell; any operator still extending in 2026 deserves a harder question.</div></div>
+<h3>Sources and assumptions</h3>
+<p>Physical lifespan <em>estimates</em> (attributed, not observed) and the $6.5B Microsoft worked example: Princeton CITP, "Lifespan of AI Chips: The $300 Billion Question" (Oct 2025), citing technical analyses of 1-3 year chip life and The Economist's "$4trn accounting puzzle." Server and equipment depreciation schedules, Burry's critique, Amazon's revision and NVIDIA revenue: CNBC (Nov 2025). H100 rental history and the June 2025 AWS cut: Silicon Data's H100 rental price analysis. Annual cadence: The Verge on NVIDIA's 2024 shift to yearly architectures. Midpoint and spread figures in discussion are arithmetic on these reported ranges; fleet-level depreciation math is illustrative.</p>
+<div class="sources"><strong>Sources:</strong> <a href="https://blog.citp.princeton.edu/2025/10/15/lifespan-of-ai-chips-the-300-billion-question/">Princeton CITP: Lifespan of AI Chips - The $300 Billion Question</a> &middot; <a href="https://www.cnbc.com/2025/11/14/ai-gpu-depreciation-coreweave-nvidia-michael-burry.html">CNBC: How long before a GPU depreciates?</a> &middot; <a href="https://www.silicondata.com/blog/h100-rental-price-over-time">Silicon Data: H100 rental price over time</a> &middot; <a href="https://www.theverge.com/2024/5/22/24162860/nvidia-ai-chip-every-year-blackwell-rubin">The Verge: NVIDIA's annual chip cadence</a></div></div></article>
+<article class="paper" id="day-21" style="margin-bottom:30px">
+<header class="lesson-head"><div class="eyebrow" style="color:#168c7f">Day 21 &middot; Week 3 &middot; capacity</div><h2>Egress: the tollbooth at the cloud exit</h2><p class="dek">Data flows in free and pays to leave. That asymmetry is the quietest and largest switching cost in cloud economics - and regulators just put a ceiling on it. For AI infrastructure, where datasets are measured in petabytes, network pricing decides where compute can go.</p></header>
+<div class="content">
+<h3>The one-way door</h3>
+<p class="lead">Every hyperscaler charges the same way: <strong>ingress is free, egress is metered</strong>. AWS gives the first 100 GB a month free, then charges $0.09 per GB up to 50 TB, stepping down to $0.05 above 150 TB (US pricing example). Google Cloud's Premium tier starts at $0.12 per GiB - about $0.112 per GB - for the first 1 TiB to North America, Europe and most of Asia, easing to $0.08-0.085 per GiB above 10 TiB. Azure starts at $0.087 per GB from North America and Europe after its own free 100 GB. Traffic between regions inside one provider is not free either: $0.02 per GB across North American regions on Azure, and $0.02 to $0.14 per GiB between Google Cloud regions depending on the pair.</p>
+<div class="fact"><strong>Why it is structured this way:</strong> free ingress pulls data in; metered egress makes leaving expensive. Moving 1 PB out at AWS's headline rate costs about $90K (1M GB &times; $0.09, illustrative - tier discounts lower it at real scale). A 100 PB data estate would carry roughly $9M of exit tolls at that rate. The switching cost is not in a contract clause; it is in the price list, which is why it survives every procurement negotiation.</div>
+<div class="diagram"><div class="chart-title">Headline internet egress price, first paid tier, $ per GB (NA / Europe origins)</div><div class="chart-grid" style="grid-template-columns:118px 1fr"><div>Cloudflare R2</div><div class="bar"><i style="width:0%"></i><em style="left:calc(0% + 10px);color:#33415c">$0.00</em></div><div>Azure</div><div class="bar"><i style="width:77.8%"></i><em>$0.087</em></div><div>AWS</div><div class="bar"><i style="width:80.4%"></i><em>$0.09</em></div><div>Google Cloud Premium</div><div class="bar"><i style="width:100%"></i><em>$0.112</em></div></div><small>Shared linear scale: 0 to $0.112 per GB. Google publishes per GiB ($0.12/GiB); converted here to $0.112 per GB (1 GiB = 1.074 GB) so all four bars share one unit. First paid tier after each provider's free allowance (100 GB/month for AWS and Azure, aggregated across services; 1 GiB/month for Google on these destinations - Google's Australia, China and South America tiers carry no free allowance and higher rates). AWS rate shown is its US example; volume tiers and private pricing cut all rates at scale; Cloudflare R2 charges no egress at all.</small></div>
+<h3>The 2024 regulatory crack</h3>
+<p>In March 2024 AWS announced <strong>free data transfer out for customers moving all of their data off AWS</strong> - following Google, with Azure in the same wave - as the EU Data Act pushed providers to remove switching barriers. Read the fine print, because it defines what egress fees still are: the waiver applies to a full exit, is granted through a support request rather than automatically, and outside the EU it comes with a 180-day window to complete the move. Everyday operating traffic - serving users, feeding a second cloud, replicating checkpoints - stays fully tolled. The concession covers the one-time act of leaving, not the ongoing act of straddling.</p>
+<h3>Why this is an AI infrastructure topic</h3>
+<p>Three places network pricing touches the compute P&amp;L directly. <strong>First, training data gravity:</strong> a multi-PB training corpus is moved once into the GPU region because ingress is free, then effectively anchors there - the egress bill to relocate it rivals months of storage cost. <strong>Second, checkpoint and model movement:</strong> copying a 1 PB checkpoint store across regions at $0.02-0.14 per GB is $20K-140K per copy (illustrative), so replication strategy is a budget decision, not just an engineering one. <strong>Third, the multi-cloud arbitrage from Days 15 and 16:</strong> buying GPU-hours wherever they are cheapest only works if the data can follow. Zero-egress object storage like Cloudflare R2 - and its Bandwidth Alliance partners - exists precisely to break the anchor: keep the data outside any one cloud, pay for compute where it is cheapest, and never pay the toll.</p>
+<div class="equation"><div class="metric"><b>$0.09</b><span>AWS egress per GB, first paid tier to 50 TB, after 100 GB free monthly</span></div><div class="metric"><b>$0.00</b><span>Cloudflare R2 egress - the zero-fee wedge built for multi-cloud data</span></div><div class="metric"><b>~$9M</b><span>illustrative toll to exit a 100 PB estate at $0.09/GB (100M GB &times; $0.09)</span></div></div>
+<h3>Rules of thumb</h3>
+<div class="rules"><div class="rule"><b>1 &middot; Price the exit before the entrance.</b> Express egress-to-leave in months of storage cost (at $0.09/GB, leaving once costs roughly 4 months of S3 Standard storage at ~$0.023/GB-month). If the exit is unaffordable, the region choice is a permanent decision - treat it like one.</div><div class="rule"><b>2 &middot; Inter-region traffic is the silent line.</b> $0.02-0.14 per GB between regions taxes every checkpoint copy, replica and failover drill. Architect for data locality first; buy bandwidth second.</div><div class="rule"><b>3 &middot; The switching waiver is an exit visa, not a travel pass.</b> Free-egress programs require a full migration, a support request and a deadline. Ongoing multi-cloud designs still pay retail, so the durable answer is egress-free storage architecture, not one-time credits.</div></div>
+<h3>Sources and assumptions</h3>
+<p>AWS rates and free allowances: AWS News Blog (March 5, 2024: free data transfer out when moving out of AWS; 100 GB/month free aggregated across services; 1 TB free CloudFront; 180-day completion window for non-EU movers) and Cloudflare's summary of published AWS S3 data-transfer tiers ($0.09/GB to 50 TB, $0.07 to 150 TB, $0.05 beyond, US pricing). Google Cloud: VPC network pricing page (Premium tier $0.12/$0.11/$0.08-0.085 per GiB by volume, per-destination rates, free ingress). Azure: Microsoft bandwidth pricing page ($0.087 per GB first paid tier from NA/Europe, free ingress, $0.02 per GB inter-region NA). Zero-egress storage: Cloudflare R2 product page. Dollar figures for PB-scale moves and checkpoint copies are illustrative arithmetic from these headline rates; real bills depend on tiers, regions and negotiated pricing.</p>
+<div class="sources"><strong>Sources:</strong> <a href="https://aws.amazon.com/blogs/aws/free-data-transfer-out-to-internet-when-moving-out-of-aws/">AWS News Blog: free data transfer out when moving out of AWS</a> &middot; <a href="https://www.cloudflare.com/learning/cloud/what-is-aws-data-transfer-pricing/">Cloudflare: what is AWS data transfer pricing</a> &middot; <a href="https://cloud.google.com/vpc/network-pricing">Google Cloud: VPC network pricing</a> &middot; <a href="https://azure.microsoft.com/en-us/pricing/details/bandwidth/">Microsoft Azure: bandwidth pricing</a> &middot; <a href="https://www.cloudflare.com/products/r2/">Cloudflare R2: egress-free object storage</a></div></div></article>
+<article class="paper" id="day-20" style="margin-bottom:30px">
+<header class="lesson-head"><div class="eyebrow" style="color:#168c7f">Day 20 &middot; Week 3 &middot; capacity</div><h2>PUE: the overhead tax on every megawatt</h2><p class="dek">Power Usage Effectiveness looks like an engineering metric. For a finance leader it is two levers at once: the margin on every GPU-hour sold, and the amount of sellable compute a constrained grid connection can carry.</p></header>
+<div class="content">
+<h3>The definition, in money</h3>
+<p class="lead">Day 19 established that megawatts are the scarce input. Today: the ratio that decides how much of each megawatt you can sell. <strong>PUE = total facility energy &divide; IT energy.</strong> The metric was introduced by The Green Grid in 2007 and is now the industry's standard efficiency yardstick. A PUE of 1.0 would mean every watt from the utility meter reaches the servers - impossible, since cooling, power conversion and lighting always take a share. At PUE 1.54, every kWh of compute drags 0.54 kWh of overhead behind it; at PUE 1.09, only 0.09 kWh.</p>
+<div class="fact"><strong>The two numbers that frame the industry:</strong> Uptime Institute's 2025 global survey puts the weighted-average PUE at 1.54 - the sixth consecutive year the figure has barely moved, with legacy infrastructure and regional cooling constraints blocking further gains. Google, running one of the most engineered fleets in the world, reports a trailing-twelve-month fleet-wide PUE of 1.09 in 2025 across all its large-scale data centers - 83% less overhead energy than the industry average.</div>
+<div class="diagram"><div class="chart-title">Overhead energy per unit of IT energy (PUE &minus; 1)</div><div class="chart-grid" style="grid-template-columns:118px 1fr"><div>Google fleet 2025</div><div class="bar"><i style="width:16.7%"></i><em style="left:calc(16.7% + 10px);color:#33415c">0.09</em></div><div>Industry average 2025</div><div class="bar"><i style="width:100%"></i><em>0.54</em></div></div><small>Shared scale: 0 to 0.54 kWh of overhead per kWh of IT energy. 0.54 &divide; 0.09 = 6x. Google's 1.09 is trailing-twelve-month across its whole large-scale fleet, all seasons - a harder bar than a vendor's best site in its best month.</small></div>
+<h3>Lever 1: the electricity line</h3>
+<p>PUE multiplies every power bill. Using Day 3's figures - 1.7 kW per GPU and an $0.08/kWh industrial rate - IT electricity is $0.136 per GPU-hour. The facility-inclusive cost is <strong>$0.21/GPU-hr at PUE 1.54 versus $0.15 at PUE 1.09</strong> (illustrative). The $0.06 gap looks small until it scales: 10,000 GPUs at 60% utilization is roughly <strong>$3.2M a year of margin difference</strong> from cooling efficiency alone (illustrative). But note the trap: the industry average has been stuck near 1.54 for six years. Efficiency gains are not a trend to underwrite - legacy halls and hot climates cap what retrofits deliver, so the 1.09-class fleets got there through ground-up design, not upgrades.</p>
+<h3>Lever 2: the constrained megawatt</h3>
+<p>The bigger number is capacity. <strong>IT capacity = utility capacity &divide; PUE.</strong> A 100 MW feed delivers 65 MW of IT load at PUE 1.54, but 92 MW at PUE 1.09 - 42% more sellable compute from the same substation. Valued at Day 19's illustrative $7.8M per MW-year, that 27 MW difference is about <strong>$210M a year of revenue headroom</strong> sitting inside the efficiency design (illustrative). This is why hyperscalers spend billions on liquid cooling and siting: on a constrained grid, PUE is not a sustainability metric, it is a capacity multiplier.</p>
+<div class="equation"><div class="metric"><b>1.54</b><span>industry weighted-average PUE (Uptime, 2025)</span></div><div class="metric"><b>1.09</b><span>Google fleet-wide trailing-12-month PUE, 2025</span></div><div class="metric"><b>65%</b><span>share of facility power reaching IT at PUE 1.54 (1 &divide; 1.54)</span></div></div>
+<h3>What the six-year stall tells you</h3>
+<p>The flat trend is the story. The easy wins - hot-aisle containment, raised setpoints - are already taken, and the installed base is old. Meanwhile AI is pushing rack densities from the 10-30 kW band that Uptime still finds is the norm toward the ~120 kW racks of Day 19, which forces direct liquid cooling. Liquid cooling is why new AI builds can beat the legacy average: heat leaves the rack in water instead of air, cutting fan and chiller load. Expect bifurcation: new AI campuses reporting 1.1-class PUEs while the surveyed average stays pinned near 1.5 by the legacy estate. Underwrite facilities individually, never by the industry average.</p>
+<h3>Rules of thumb</h3>
+<div class="rules"><div class="rule"><b>1 &middot; Divide by PUE to get sellable megawatts.</b> When a developer quotes a "100 MW campus," ask whether that is utility or IT capacity. At the industry average the gap is 35% - two very different revenue models.</div><div class="rule"><b>2 &middot; Near 1.5, each 0.1 of PUE is ~7% of capacity.</b> Cutting PUE from 1.54 to 1.44 raises the IT load a fixed interconnection can carry by about 7% (1/1.44 vs 1/1.54). Price efficiency spend against grid-queue time: buying 0.1 of PUE can be cheaper than waiting years for a bigger feed.</div><div class="rule"><b>3 &middot; Check the boundary before comparing PUEs.</b> Fleet-wide trailing-twelve-month (Google's method) includes old buildings, hot summers and partial load; a nameplate PUE from a new-build deck is a different animal. When a neocloud quotes sub-1.2, ask: which sites, which months, measured or modeled?</div></div>
+<h3>Sources and assumptions</h3>
+<p>Industry average and trend: Uptime Institute Global Data Center Survey 2025 (weighted-average PUE 1.54, sixth year with little change; 10-30 kW racks the growing norm). Google figures: Google's data-center efficiency page (fleet-wide trailing-twelve-month PUE 1.09 in 2025; 83% less overhead energy than the industry average; PUE definition). The PUE metric was introduced by The Green Grid in 2007, per Uptime's survey history. GPU power draw and the electricity rate carry over from Day 3; the $0.21/$0.15 GPU-hour costs, $3.2M margin gap and $210M revenue headroom are illustrative arithmetic from those stated assumptions.</p>
+<div class="sources"><strong>Sources:</strong> <a href="https://uptimeinstitute.com/resources/research-and-reports/annual-data-center-survey-2025">Uptime Institute: Global Data Center Survey 2025</a> &middot; <a href="https://www.google.com/about/datacenters/efficiency/">Google: Data Centers Efficiency</a></div></div></article>
+<article class="paper" id="day-19" style="margin-bottom:30px">
+<header class="lesson-head"><div class="eyebrow" style="color:#168c7f">Day 19 &middot; Week 3 &middot; capacity</div><h2>Capacity is delivered in megawatts, not GPUs</h2><p class="dek">Power as the constraint: clusters are sold in GPU counts but built in megawatts. The electricity is a small line item with a veto over the whole P&amp;L.</p></header>
+<div class="content">
+<h3>The demand curve is steep and concentrating</h3>
+<p class="lead">Day 18 showed power equipment has the longest lead times. Today: why the megawatt itself became the scarce input. The IEA's Energy and AI report puts global data-centre electricity use at 415 TWh in 2024 - about 1.5% of world electricity, with the U.S. holding 45% of it - and projects it to more than double to around 945 TWh by 2030, roughly Japan's total consumption. In the U.S., data centres are set to drive nearly half of all electricity-demand growth this decade.</p>
+<div class="fact"><strong>The U.S. numbers from DOE/LBNL:</strong> data centres consumed 176 TWh in 2023, 4.4% of total U.S. electricity, up from 58 TWh in 2014. By 2028 LBNL estimates 325 to 580 TWh, or 6.7% to 12% of national consumption. Meanwhile the hardware keeps densifying: NVIDIA's DGX GB200 NVL72 rack draws approximately 120 kW for 72 GPUs - about 1.7 kW per GPU - against the roughly 10 kW of a traditional enterprise rack. The IEA also warns that about 20% of planned data-centre projects risk delays from grid strain.</div>
+<h3>What a megawatt is worth</h3>
+<p><strong>Illustrative unit math:</strong> at 1.7 kW per GPU, one megawatt powers about 590 GPUs (1,000 &divide; 1.7). At an illustrative $2.50 per GPU-hour and 60% utilization, each MW can carry about $7.8M of annual revenue (590 &times; $2.50 &times; 8,760 &times; 60%). The electricity to run it at $0.08/kWh costs about $0.7M per MW-year - roughly 9% of that revenue. Power is cheap; power <em>availability</em> is priceless. A year of delay on a 100 MW campus defers on the order of $780M of revenue, which is why operators sign power deals before they order chips.</p>
+<div class="equation"><div class="metric"><b>415 TWh</b><span>global data-centre electricity, 2024 (IEA)</span></div><div class="metric"><b>945 TWh</b><span>projected by 2030, &gt;2x (IEA)</span></div><div class="metric"><b>120 kW</b><span>NVIDIA GB200 NVL72 rack, ~1.7 kW/GPU</span></div></div>
+<div class="diagram"><div class="chart-title">U.S. data-centre electricity use, TWh (DOE/LBNL)</div><div class="chart-grid" style="grid-template-columns:118px 1fr"><div>2014</div><div class="bar"><i style="width:10%"></i><em style="left:calc(10% + 10px);color:#33415c">58</em></div><div>2023 (4.4% of U.S.)</div><div class="bar"><i style="width:30.3%"></i><em style="left:calc(30.3% + 10px);color:#33415c">176</em></div><div>2028 low est.</div><div class="bar"><i style="width:56%"></i><em>325</em></div><div>2028 high est.</div><div class="bar"><i style="width:100%"></i><em>580</em></div></div><small>Shared scale: 0 to 580 TWh. The 2028 figures are LBNL's low and high estimates, 6.7% to 12% of U.S. electricity.</small></div>
+<p>The finance translation: electricity at $0.08/kWh is about $0.14 of a $2.50 GPU-hour (1.7 kW &times; $0.08) - a 5-6% cost line, echoing Day 3. So the binding decision is not the tariff, it is the interconnection. When a single input is 5% of unit cost but gates 100% of unit revenue, you manage it as a strategic supply contract: multi-year commitments, deposits, and sometimes equity in generation - exactly the take-or-pay structures of Day 16, one layer deeper in the stack.</p>
+<h3>Rules of thumb</h3>
+<div class="rules"><div class="rule"><b>1 &middot; Buy megawatts first.</b> Capacity is delivered in MW. At ~1.7 kW per modern GPU, 1 MW &asymp; 590 GPUs; order power before silicon.</div><div class="rule"><b>2 &middot; Price power delay in revenue, not utility bills.</b> Each MW carries roughly $8M/yr of illustrative GPU revenue. A month of delay costs ~$0.65M per MW in deferral, not the ~$60K power bill.</div><div class="rule"><b>3 &middot; Availability beats tariff.</b> At 5-6% of a GPU-hour's price, a 20% cheaper rate moves margin by ~1 point. A missing megawatt moves revenue to zero. Negotiate for delivery certainty first.</div></div>
+<h3>Sources and assumptions</h3>
+<p>Global figures: IEA Energy and AI report, executive summary, April 2025. U.S. figures: DOE announcement of the 2024 LBNL U.S. Data Center Energy Usage Report, December 2024. Rack power: NVIDIA DGX GB200 User Guide. The 10 kW traditional-rack comparison is a common industry figure, not from these sources; the $2.50/GPU-hour, 60% utilization, $0.08/kWh, $7.8M/MW and $780M figures are illustrative arithmetic.</p>
+<div class="sources"><strong>Sources:</strong> <a href="https://www.iea.org/reports/energy-and-ai/executive-summary">IEA: Energy and AI, executive summary</a> &middot; <a href="https://www.energy.gov/articles/doe-releases-new-report-evaluating-increase-electricity-demand-data-centers">DOE: 2024 LBNL data-center energy report</a> &middot; <a href="https://docs.nvidia.com/dgx/dgxgb200-user-guide/hardware.html">NVIDIA DGX GB200 User Guide</a></div></div></article>
+<article class="paper" id="day-18" style="margin-bottom:30px">
+<header class="lesson-head"><div class="eyebrow" style="color:#168c7f">Day 18 &middot; Week 3 &middot; capacity</div><h2>The longest lead time sets the schedule</h2><p class="dek">Capacity planning is sequencing capital against lead times that differ by an order of magnitude: GPUs arrive in weeks, transformers take years, and the grid queue holds terawatts. The binding constraint is rarely the chip.</p></header>
+<div class="content">
+<h3>Three clocks, very different speeds</h3>
+<p class="lead">Days 16 and 17 priced committed demand. This page is about the delivery side: once the contract is signed, when can capacity actually serve it? Every capacity plan is a race between three procurement clocks, and the slowest one - usually power, not silicon - sets the revenue start date.</p>
+<div class="fact"><strong>The sourced picture:</strong> NVIDIA H100 delivery lead times fell from about 11 months in late 2023 to 8-12 weeks by April 2024 as supply eased (Digitimes via Tom's Hardware). Going the other way, the IEA reports procurement now takes two to three years for cables and up to four years for large power transformers - twice as long as in 2021 - with transformer prices up about 75% since 2019. And Lawrence Berkeley National Laboratory counts 2,061 gigawatts of generation and storage actively waiting in U.S. grid-interconnection queues at the end of 2025, down from a peak near 2,600 GW in 2023 after more than 750 GW withdrew.</p>
+<h3>Idle silicon is a depreciating asset with no revenue</h3>
+<p><strong>Illustrative sequencing cost:</strong> a 10,000-GPU cluster at an illustrative $2.50 per GPU-hour and 60% utilization generates about $11M of revenue per month once energized (10,000 &times; $2.50 &times; 730 hours &times; 60%). If the GPUs land twelve months before the site has power - a real risk when the transformer alone can take four years - that is roughly $131M of deferred revenue while the hardware burns through a year of useful life (Day 4). The GPU was the easy thing to buy; the megawatts were the schedule.</p>
+<div class="equation"><div class="metric"><b>8-12 wks</b><span>NVIDIA H100 lead time, April 2024 (was ~11 months)</span></div><div class="metric"><b>4 yrs</b><span>large power transformer procurement, IEA</span></div><div class="metric"><b>2,061 GW</b><span>waiting in U.S. interconnection queues, end of 2025</span></div></div>
+<div class="diagram"><div class="chart-title">How long each input takes (sourced figures, not to scale)</div><div class="chart-grid" style="grid-template-columns:118px 1fr"><div>H100 GPU, Apr 2024</div><div class="bar"><i style="width:52%;min-width:86px"></i><em>8-12 wks</em></div><div>Cables, IEA 2025</div><div class="bar"><i style="width:55%;min-width:92px"></i><em>2-3 years</em></div><div>Large transformers, IEA 2025</div><div class="bar"><i style="width:90%;min-width:112px"></i><em>up to 4 years</em></div></div><small>Bar lengths are indicative, not linear. Grid interconnection adds its own multi-year queue behind the equipment.</small></div>
+<p>The finance translation: a take-or-pay or reserved-capacity contract whose start date assumes GPU delivery but ignores energization converts a procurement miss into a contractual penalty. Sequence the contract clock against the power clock - delivery, energization, acceptance testing, then revenue start - and price any residual mismatch explicitly.</p>
+<h3>Rules of thumb</h3>
+<div class="rules"><div class="rule"><b>1 &middot; Order the slowest thing first.</b> Queue position, transformers, and switchgear lead the schedule; GPUs can be bought late. Silicon depreciates whether or not it has power.</div><div class="rule"><b>2 &middot; Start contracts at energization.</b> Revenue start = power plus network plus acceptance testing, not delivery. A take-or-pay start ahead of energization is a self-inflicted penalty.</div><div class="rule"><b>3 &middot; Plan on today's quote, not last year's.</b> Lead times move fast in both directions: H100 waits fell ~80% in about a year while transformer waits doubled. Re-price the schedule at every procurement cycle.</div></div>
+<h3>Sources and assumptions</h3>
+<p>GPU lead times: Tom's Hardware citing Digitimes and Dell Taiwan, April 2024. Transformer and cable lead times and price increases: IEA, February 2025. Grid queue volumes: Lawrence Berkeley National Laboratory's Queued Up 2026 edition, July 2026. The $2.50/GPU-hour rate, 10,000-GPU cluster, 60% utilization and the $11M/$131M figures are illustrative arithmetic, not market prices.</p>
+<div class="sources"><strong>Sources:</strong> <a href="https://www.tomshardware.com/pc-components/gpus/nvidias-h100-ai-gpu-shortages-ease-as-lead-times-drop-from-up-to-four-months-to-8-12-weeks">Tom's Hardware: H100 lead times, April 2024</a> &middot; <a href="https://www.iea.org/news/rising-component-prices-and-supply-chain-pressures-are-hindering-the-development-of-transmission-grid-infrastructure">IEA: grid component lead times, February 2025</a> &middot; <a href="https://emp.lbl.gov/news/backlog-power-plants-seeking-transmission-grid-connection-eased-somewhat-2025-amidst">Berkeley Lab: Queued Up 2026 edition</a></div></div></article>
+<article class="paper" id="day-17" style="margin-bottom:30px">
+<header class="lesson-head"><div class="eyebrow" style="color:#168c7f">Day 17 &middot; Week 3 &middot; capacity</div><h2>The anchor tenant is the business model</h2><p class="dek">Customer concentration: when one buyer is most of your revenue, the contract from Day 16 stops being a clause and becomes the whole company. Read it in the 10-K before the story.</p></header>
+<div class="content">
+<h3>Read concentration straight out of the filing</h3>
+<p class="lead">Day 16 priced the floor a take-or-pay contract gives a supplier. Today is the supplier-side question: what is that floor worth when one customer holds most of it? US accounting rules make this easy to check. Under ASC 280-10-50-42, if a single external customer is 10% or more of revenue, a public company must disclose the fact and the total revenue from each such customer - though not the customer's name.</p>
+<div class="fact"><strong>CoreWeave's FY2025 10-K is the live case study:</strong> approximately 67% of 2025 revenue came from its top customer, Microsoft, and no other customer reached 10%. In 2024 the top two customers were approximately 77% of revenue; in 2023 the top three were approximately 73%. Revenue grew from $229 million in 2023 to $1.9 billion in 2024 to $5.1 billion in 2025 - concentration funded the build, and it is slowly diluting as new anchors sign (an OpenAI order form from September 2025 commits up to approximately $6.5 billion through May 2031).</div>
+<h3>Backlog coverage is only as strong as the names in it</h3>
+<p>CoreWeave reported $60.7 billion of remaining performance obligations at the end of 2025, up from $15.1 billion a year earlier, with a weighted-average committed contract duration of about five years. Against $5.1 billion of 2025 revenue, that is roughly 12 years of booked business. But RPO is a promise, not cash: when 67% of current revenue is one buyer, a large share of that backlog is one buyer's credit, one buyer's roadmap, one buyer's renewal decision.</p>
+<div class="equation"><div class="metric"><b>67%</b><span>of CoreWeave FY2025 revenue from Microsoft (10-K)</span></div><div class="metric"><b>77%</b><span>from the top two customers in FY2024</span></div><div class="metric"><b>~12x</b><span>RPO coverage: $60.7B backlog vs. $5.1B revenue</span></div></div>
+<div class="diagram"><div class="chart-title">CoreWeave customer concentration by year (per its 10-K)</div><div class="chart-grid"><div>2023 &middot; top 3</div><div class="bar"><i style="width:73%"></i><em>73%</em></div><div>2024 &middot; top 2</div><div class="bar"><i style="width:77%"></i><em>77%</em></div><div>2025 &middot; top 1</div><div class="bar"><i style="width:67%"></i><em>67%</em></div></div><small>Shared scale: 0 to 100% of annual revenue. Share of revenue from the largest customers, as disclosed in CoreWeave's FY2025 Form 10-K.</small></div>
+<p><strong>Illustrative downside math:</strong> picture a neocloud with $500M revenue, 65% from one anchor, and $300M of fixed annual costs (debt service plus data-center leases). With the anchor, operating cushion is $500M - $300M = <strong>+$200M</strong>. If the anchor walks at renewal, revenue falls to 35% &times; $500M = $175M against the same $300M fixed base, a <strong>-$125M</strong> hole - a $325M swing decided by one signature. That is why lenders size neocloud debt to the anchor's balance sheet, not the operator's.</p>
+<h3>Rules of thumb</h3>
+<div class="rules"><div class="rule"><b>1 &middot; 10% is disclosed, 30%+ is priced.</b> Above 10% the 10-K must tell you. Above roughly a third from one name, treat revenue quality as contract-dependent and haircut the multiple.</div><div class="rule"><b>2 &middot; Underwrite the anchor, not the story.</b> Concentration converts customer risk into counterparty risk. The anchor's credit rating and renewal dates matter more than the vendor's growth deck.</div><div class="rule"><b>3 &middot; Watch the trend, not the level.</b> Falling top-customer share while backlog rises - CoreWeave's 77% top-two in 2024 to 67% top-one in 2025 with OpenAI added - is diversification in progress. Rising share on flat backlog is a warning.</div></div>
+<h3>Sources and assumptions</h3>
+<p>CoreWeave figures are from its FY2025 Form 10-K filed with the SEC. The 10% disclosure rule is ASC 280-10-50-42 as quoted in Deloitte's Roadmap. The $500M neocloud, its 65% anchor, and $300M fixed costs are an illustrative example; the 30% pricing threshold is a heuristic, not a standard.</p>
+<div class="sources"><strong>Sources:</strong> <a href="https://www.sec.gov/Archives/edgar/data/1769628/000176962826000104/crwv-20251231.htm">CoreWeave FY2025 Form 10-K (SEC)</a> &middot; <a href="https://dart.deloitte.com/USDART/home/codification/presentation/asc280-10/roadmap-segment-reporting/chapter-5-entity-wide-disclosures/5-7-information-about-major-customers">Deloitte Roadmap: ASC 280 major-customer disclosures</a></div></div></article>
+<article class="paper" id="day-16" style="margin-bottom:30px">
+<header class="lesson-head"><div class="eyebrow" style="color:#168c7f">Day 16 &middot; Week 3 &middot; capacity</div><h2>Take-or-pay turns volume risk into a floor</h2><p class="dek">A take-or-pay clause makes the customer pay for a minimum volume whether or not it uses it. The supplier gets a revenue floor. The customer gets a lower price and a fixed obligation.</p></header>
+<div class="content">
+<h3>Who holds the volume risk</h3><p class="lead">Day 15 asked what you still owe if demand falls. Take-or-pay is the contract that answers it. The customer either takes the product or pays anyway, up to an agreed ceiling. Wikipedia describes it as common in energy, especially gas sales. For a GPU supplier, the same structure supports financing a build. For a buyer, it is <strong>debt-like spending in an operating-expense wrapper</strong>.</p>
+<div class="fact"><strong>The classic shape:</strong> Wikipedia's example: the customer pays $50 per ton for product it takes, and up to a ceiling pays a lower "penalty" price, say $40 per ton, on product it does not take. The supplier trades some price for volume certainty. Wikipedia also notes that outside oil and gas, courts often examine such terms as possible penalties, while US gas courts tend to treat the shortfall payment as an alternative way to perform. Enforceability depends on jurisdiction and drafting. Ask counsel.</div>
+<h3>The bill has a floor, not a slope</h3><p><strong>Illustrative GPU contract:</strong> 100,000 contracted GPU-hours per month at $2.50, with a minimum of 80% (80,000 hours) payable regardless of use. The bill is $2.50 &times; the larger of actual hours or 80,000. The floor is <strong>$200,000/month</strong>. Full use costs $250,000. Assume a $3.50 on-demand alternative with the same hardware and availability.</p>
+<div class="equation"><div class="metric"><b>80%</b><span>illustrative minimum take</span></div><div class="metric"><b>$200K</b><span>monthly floor, paid at any usage</span></div><div class="metric"><b>57%</b><span>usage where on-demand costs the same</span></div></div>
+<div class="diagram"><div class="chart-title">Monthly bill by hours actually used (illustrative)</div><div class="chart-grid"><div>50k hours</div><div class="bar"><i style="width:80%"></i><em>$200K floor</em></div><div>80k hours</div><div class="bar"><i style="width:80%"></i><em>$200K</em></div><div>100k hours</div><div class="bar"><i style="width:100%"></i><em>$250K</em></div></div><small>Shared scale: $0 to $250K. Below 80,000 hours the bill is flat. Above it, each extra hour costs $2.50.</small></div>
+<p>The floor matters most when usage falls short. At 50,000 hours the effective price is $200,000 &divide; 50,000 = <strong>$4.00 per used hour</strong>, above the $3.50 on-demand rate. At 80,000 hours it is $2.50. The break-even against on-demand is $200,000 &divide; $3.50 = <strong>57,143 hours, or 57% of the contract</strong>. Below that, the discount was a bad trade.</p>
+<h3>Rules of thumb</h3><div class="rules"><div class="rule"><b>1 &middot; Floor = minimum % &times; rate.</b>Model the shortfall bill, not the headline rate. It is the number the CFO signs.</div><div class="rule"><b>2 &middot; Test the downside.</b>Run usage at 50%, not the forecast. If the floor breaks the margin, the take level is too high.</div><div class="rule"><b>3 &middot; Read the escape clauses.</b>Check make-up rights, force majeure, supplier delivery failure, resale or assignment, and what counts as a shortfall.</div></div>
+<h3>Question for the CFO table</h3><p>If the supplier delivers late or the hardware is superseded, do we still owe the floor? Tomorrow: customer concentration, the revenue-side mirror of this obligation.</p>
+<div class="sources"><strong>Sources and assumptions, checked October 2, 2026.</strong> Take-or-pay definition, the $50 and $40 per-ton example, energy-industry usage, and enforceability notes: <a href="https://en.wikipedia.org/wiki/Take-or-pay_contract">Wikipedia, Take-or-pay contract</a>. The contract size, $2.50 and $3.50 rates, 80% minimum, usage levels, and every bill and break-even are illustrative assumptions or arithmetic, not a real GPU contract or market price. The GPU-supply financing comment is an interpretation, not a sourced claim. Not legal advice.</div>
+</div></article>
+<article class="paper" id="day-15" style="margin-bottom:30px">
+<header class="lesson-head"><div class="eyebrow" style="color:#168c7f">Day 15 &middot; Week 3 &middot; capacity</div><h2>A discount is a utilization bet</h2><p class="dek">Reserved vs. on-demand pricing: a lower hourly rate can buy a higher total bill. Commit the demand floor, not the demand forecast.</p></header>
+<div class="content">
+<h3>Price flexibility as an asset</h3><p class="lead">On-demand buys the right to stop paying when usage stops. A commitment trades that option for a lower rate. After Day 14's adaptation payback, the next question is whether recurring demand is stable enough to underwrite the serving capacity. Separate <strong>the discount, the payment obligation, and the capacity guarantee</strong>; they are different products.</p>
+<div class="fact"><strong>Real contract shapes:</strong> AWS lists Compute Savings Plans at up to 66% off On-Demand and EC2 Instance Savings Plans at up to 72%, with 1- or 3-year terms. These are advertised ceilings, not GPU quotes. Savings Plans commit dollars per hour and cannot be cancelled during the term. They do not reserve capacity. AWS regional Reserved Instances also do not reserve capacity; zonal Reserved Instances reserve it in the specified Availability Zone.</div>
+<h3>The break-even is usage, not the headline discount</h3><p><strong>Illustrative single-GPU contract:</strong> on-demand costs $4 per used hour; a dedicated commitment costs $2.40 for every hour in a 30-day month, whether used or idle. Assume identical hardware and performance, no upfront fee, and no other costs. The commitment costs $2.40 &times; 720 = <strong>$1,728/month</strong>. On-demand costs $4 &times; 720 &times; utilization. They tie at <strong>60% utilization</strong>.</p>
+<div class="equation"><div class="metric"><b>40%</b><span>illustrative hourly discount</span></div><div class="metric"><b>60%</b><span>break-even paid usage</span></div><div class="metric"><b>$1,728</b><span>fixed monthly GPU bill</span></div></div>
+<div class="diagram"><div class="chart-title">Monthly bill at each paid-usage level (illustrative)</div><div class="chart-grid"><div>30% OD</div><div class="bar"><i style="width:30%"></i><em class="dark">$864</em></div><div>60% OD</div><div class="bar"><i style="width:60%"></i><em class="dark">$1,728</em></div><div>90% OD</div><div class="bar"><i style="width:90%"></i><em>$2,592</em></div><div>Commit</div><div class="bar"><i style="width:60%;background:#13b5a4"></i><em class="dark">$1,728</em></div></div><small>OD = on-demand. Shared scale: $0 to $2,880. The commitment bill is fixed at every usage level. The utilization here is hours you would otherwise buy, not GPU kernel occupancy or billable customer utilization.</small></div>
+<p>At 30% usage, the discounted commitment costs twice as much as on-demand. At 90%, it saves $864/month. Its effective cost per used hour is $2.40 &divide; utilization: <strong>$8 at 30%</strong>, versus about <strong>$2.67 at 90%</strong>. The simple threshold is committed rate &divide; on-demand rate. Add upfront fees, financing, performance differences, or residual resale value before applying it to a real deal.</p>
+<h3>Rules of thumb</h3><div class="rules"><div class="rule"><b>1 &middot; Commit the floor.</b>Use durable minimum demand for commitments; leave uncertain peaks on flexible capacity. Averages hide idle months.</div><div class="rule"><b>2 &middot; Match the exit risk.</b>Test a model migration, customer loss, and region change against what the discount actually covers.</div><div class="rule"><b>3 &middot; Price access separately.</b>A billing discount does not prove GPUs will be available. Verify SKU, region, start date, and capacity rights.</div></div>
+<h3>Question for the CFO table</h3><p>If demand falls below the threshold or moves to different hardware, what do we still owe, and can we use the commitment elsewhere? Tomorrow: take-or-pay makes that obligation explicit.</p>
+<div class="sources"><strong>Sources and assumptions, checked October 1, 2026.</strong> Discount ceilings, term options, cancellation restriction, and absence of capacity reservation: <a href="https://docs.aws.amazon.com/savingsplans/latest/userguide/sp-ris.html">AWS, Savings Plans vs. Reserved Instances</a>. Regional vs. zonal capacity rights: <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/reserved-instances-scope.html">AWS, Reserved Instance scope</a>. All rates, utilization levels, month length, dollar amounts, and break-even calculations are illustrative assumptions or arithmetic, not AWS GPU pricing. The dedicated-GPU example is not the dollar-per-hour pooling mechanism of an AWS Savings Plan.</div>
+</div></article>
+
+<article class="paper" id="day-14" style="margin-bottom:30px">
+<header class="lesson-head"><div class="eyebrow" style="color:#168c7f">Day 14 &middot; Week 2 &middot; workloads</div><h2>Fine-tuning needs a payback case</h2><p class="dek">Adaptation is a fixed investment. The business case is the recurring value of better answers, shorter prompts, or a smaller serving model, after evaluation and upkeep.</p></header>
+<div class="content">
+<h3>Buy a behavior, not a training run</h3><p class="lead">Day 13 reduced the bytes in a replica. Today changes what that replica does. Full fine-tuning updates the base model's weights. LoRA freezes those weights and trains small low-rank updates instead. QLoRA combines a frozen, quantized base with trainable LoRA updates. Less trainable state lowers the adaptation burden; it does <strong>not</strong> remove the base model from the serving bill.</p>
+<div class="fact"><strong>A real memory boundary:</strong> the QLoRA paper reports fine-tuning a <strong>65B-parameter model on one 48 GB GPU</strong>, versus more than 780 GB for regular 16-bit fine-tuning in its comparison. That is a research configuration, not a promise that any dataset, sequence length, or training stack fits the same GPU. LoRA's original GPT-3 175B comparison reports 10,000&times; fewer trainable parameters but only 3&times; lower GPU memory requirements. Trainable parameter count and total memory are different denominators.</div>
+<h3>The fixed cost must earn its way back</h3><p><strong>Illustrative assumptions, not vendor prices:</strong> a project uses 24 GPU-hours at $3/hour ($72), plus $4,000 of data and engineering work and $1,000 of evaluation. Total upfront investment is <strong>$5,072</strong>. If the accepted-output cost falls from $0.020 to $0.012 per task at unchanged quality, the saving is $0.008 per task. Assume $200/month for upkeep and 100,000 tasks/month.</p>
+<div class="equation"><div class="metric"><b>$5,072</b><span>upfront project investment</span></div><div class="metric"><b>$600</b><span>monthly net saving</span></div><div class="metric"><b>8.45 months</b><span>simple payback, no discounting</span></div></div>
+<div class="diagram"><div class="chart-title">Monthly net saving by task volume (illustrative)</div><div class="chart-grid"><div>50k</div><div class="bar"><i style="width:14.3%"></i><em class="dark">$200</em></div><div>100k</div><div class="bar"><i style="width:42.9%"></i><em class="dark">$600</em></div><div>200k</div><div class="bar"><i style="width:100%"></i><em>$1,400</em></div></div><small>Net saving = monthly tasks &times; $0.008 minus $200 upkeep. Assumes constant accepted-output quality, linear unit savings, and no extra serving overhead. The operating break-even is 25,000 tasks/month; recovering the upfront investment takes longer.</small></div>
+<p>At 100,000 tasks/month: ($0.020 &minus; $0.012) &times; 100,000 &minus; $200 = $600. Payback = $5,072 &divide; $600. GPU rental is only about <strong>1.4% of this illustrative upfront budget</strong>. A cheap training run can still be an expensive experiment if labels, failed trials, evaluation, or maintenance dominate. A shorter prompt or smaller model counts as savings only when the held-out task evaluation still passes.</p>
+<h3>Rules of thumb</h3><div class="rules"><div class="rule"><b>1 &middot; Benchmark the cheapest baseline.</b>Compare against prompting and retrieval before funding adaptation. Use the same tasks and acceptance test.</div><div class="rule"><b>2 &middot; Budget the lifecycle.</b>Include data work, failed runs, regression tests, retraining, and any added serving cost. Version the adapter and base together.</div><div class="rule"><b>3 &middot; Underwrite volume and useful life.</b>Ask whether the model or workflow will change before payback. Quality gains may earn revenue rather than save tokens; measure that separately.</div></div>
+<h3>Question for the CFO table</h3><p>What measured improvement pays back the complete adaptation budget before the next model migration, and who owns the recurring evaluation bill?</p>
+<div class="sources"><strong>Sources and assumptions.</strong> Frozen weights, low-rank updates, and the GPT-3 175B comparison (10,000&times; trainable-parameter reduction; 3&times; GPU-memory reduction): <a href="https://arxiv.org/abs/2106.09685">Hu et al., LoRA</a>. Quantized-base adaptation, 65B on one 48 GB GPU, and the &gt;780 GB regular 16-bit comparison: <a href="https://arxiv.org/abs/2305.14314">Dettmers et al., QLoRA</a>. These are paper-specific results, not current pricing or universal production benchmarks. All dollar amounts, task volumes, GPU-hours, savings, percentages, and payback figures are labeled illustrative assumptions or arithmetic from them.</div>
+</div></article>
+
+<article class="paper" id="day-13" style="margin-bottom:30px">
+<header class="lesson-head"><div class="eyebrow" style="color:#168c7f">Day 13 &middot; Week 2 &middot; workloads</div><h2>Quantization changes the replica</h2><p class="dek">Compression is not a free speed button. It is a way to move a model across a hardware boundary, then test whether lower precision pays after quality, cache, and serving overhead.</p></header>
+<div class="content">
+<h3>From bits to the bill</h3><p class="lead">Yesterday's 70B model needs roughly <strong>140 GB of BF16 weight memory</strong>. At idealized FP8, its weights shrink to about 70 GB; at idealized 4-bit weight precision, 35 GB. These are <em>weight-only lower bounds</em>. Scales, metadata, activations, and KV cache consume additional memory, and the storage format may not match the arithmetic exactly. NVIDIA's TensorRT-LLM guide says lower precision can improve throughput and latency, but output quality must be checked.</p>
+<div class="equation"><div class="metric"><b>140 GB</b><span>70B at 16 bits, weights only</span></div><div class="metric"><b>70 GB</b><span>70B at 8 bits, idealized</span></div><div class="metric"><b>35 GB</b><span>70B at 4 bits, idealized</span></div></div>
+<div class="diagram"><div class="chart-title">70B model weight memory by precision (illustrative)</div><div class="chart-grid"><div>BF16</div><div class="bar"><i style="width:100%"></i><em>140 GB &middot; 2 H100 floor</em></div><div>FP8</div><div class="bar"><i style="width:50%"></i><em class="dark">70 GB &middot; 1 H100 floor*</em></div><div>4-bit</div><div class="bar"><i style="width:25%"></i><em class="dark">35 GB &middot; 1 H100 floor*</em></div></div><small>*Floor counts only weights relative to an 80 GB H100 SXM. FP8 leaves nominally 10 GB for all other memory, often too little at target context and concurrency. Four-bit weights offer more room, but scale overhead and kernel support matter. Neither floor proves a practical single-GPU serving design.</small></div>
+<h3>The gain is discrete, the tradeoff is continuous</h3><p>Take an illustrative $2/H100-hour rental rate. If a working BF16 replica needs two H100s, its GPU floor is $4/hour. If a quantized implementation <em>fits with the required context and concurrency</em> on one H100, its GPU floor is $2/hour: $48/day rather than $96/day for 24-hour operation. This is a conditional 50% hardware-floor cut, not a promised production saving. Throughput, quality, serving software, and actual utilization decide cost per <em>accepted</em> token. FP8's 70 GB of weights may still leave too little cache to satisfy the workload; four-bit compression buys more headroom but is not automatically faster on every kernel.</p>
+<div class="diagram"><div class="chart-title">Conditional replica GPU floor at $2/H100-hour (illustrative)</div><div class="chart-grid"><div>BF16 &middot; 2 GPUs</div><div class="bar"><i style="width:100%"></i><em>$4/hour</em></div><div>Quantized &middot; 1 GPU</div><div class="bar"><i style="width:50%"></i><em class="dark">$2/hour</em></div></div><small>Assumes a working one-H100 quantized configuration, identical $2 GPU-hour pricing, and excludes all other costs. Check live fit, quality, and achieved tokens/hour before using this for a purchase or forecast.</small></div>
+<p>There is measured upside, but not a universal multiplier. In one NVIDIA TensorRT-LLM Llama 3.3 70B case study distributed over <strong>four H100 SXM 80GB GPUs</strong>, tuned FP16 throughput was 2,474 tokens/s and tuned FP8 throughput 6,049 tokens/s, about 2.44&times;. Its FP8 KV cache change separately raised a reported baseline from 3,390 to 5,300 tokens/s, about 1.56&times;. Different tuned configurations, workloads, and quality gates can give different answers. That benchmark is evidence that quantization can materially change realized economics, <em>not</em> proof that a 70B model will meet this lesson's illustrative single-H100 case.</p>
+<div class="fact"><strong>Do not compress only the weights on a spreadsheet.</strong> NVIDIA's guide notes that its KV cache is not quantized by default; enabling FP8 KV-cache quantization may improve throughput but raises quality risk. Memory freed in weights can be spent on longer contexts or more parallel requests, which may be more valuable than removing a GPU.</div>
+<h3>Rules of thumb</h3><div class="rules"><div class="rule"><b>1 &middot; Model the step function.</b>Ask which precision crosses a feasible GPU-per-replica boundary with enough cache left over.</div><div class="rule"><b>2 &middot; Gate on answer quality.</b>A cheaper token that fails your evaluation or needs a retry is not a cheaper useful answer.</div><div class="rule"><b>3 &middot; Measure cost per accepted token.</b>Use the real workload's context, batch, quality pass rate, and achieved throughput, not the format's theoretical compression ratio.</div></div>
+<h3>Questions for the CFO table</h3><ul><li>Which precision gives us the best measured cost per accepted output on our actual prompts?</li><li>Does the compressed model really fit one GPU at target concurrency, or did the KV cache consume the savings?</li><li>Could the same freed HBM produce more revenue as longer context or higher batch capacity?</li></ul>
+<div class="sources"><strong>Sources and assumptions.</strong> 70B parameter count: <a href="https://arxiv.org/abs/2407.21783">Meta, The Llama 3 Herd of Models</a>. H100 SXM 80 GB: <a href="https://www.nvidia.com/en-us/data-center/h100/">NVIDIA H100 specifications</a>. Quantization quality caveats, four-GPU Llama 3.3 70B performance table (2,474 vs. 6,049 tokens/s), FP8 KV-cache table (3,390 vs. 5,300 tokens/s rounded), and default cache behavior: <a href="https://nvidia.github.io/TensorRT-LLM/performance/performance-tuning-guide/fp8-quantization.html">NVIDIA TensorRT-LLM FP8 quantization guide</a>. Format support and the memory tradeoff: <a href="https://docs.vllm.ai/en/latest/features/quantization/">vLLM quantization documentation</a>. Weight bytes, percentages, GPU floors, daily costs, and ratios are arithmetic; $2/GPU-hour and single-GPU feasibility are illustrative assumptions, not benchmarks.</div>
+</div></article>
+
+<article class="paper" id="day-12" style="margin-bottom:30px">
+<header class="lesson-head"><div class="eyebrow" style="color:#168c7f">Day 12 &middot; Week 2 &middot; workloads</div><h2>Model size is a fleet decision</h2><p class="dek">Parameter count becomes a memory bill before it becomes an intelligence claim. If the weights do not fit, the serving plan changes: more GPUs per replica, less room for concurrent requests, or a smaller representation.</p></header>
+<div class="content">
+<h3>Translate parameters into hardware</h3>
+<p class="lead">A simple first pass: <strong>weight memory = parameters &times; bytes per parameter.</strong> At BF16, each parameter takes 2 bytes. Meta's Llama 3 family spans 8B, 70B, and 405B parameters. Their <em>weights alone</em> would occupy about 16, 140, and 810 decimal GB. This is a lower bound, not a deployment requirement: KV cache, activations, runtime buffers, and fragmentation need extra HBM.</p>
+<div class="equation"><div class="metric"><b>2 bytes</b><span>per BF16 parameter</span></div><div class="metric"><b>80 GB</b><span>H100 SXM GPU memory</span></div><div class="metric"><b>141 GB</b><span>H200 SXM GPU memory</span></div></div>
+<div class="diagram"><div class="chart-title">BF16 weight footprint vs. one 80 GB H100 (weights only)</div><div class="chart-grid"><div>8B</div><div class="bar"><i style="width:2%"></i><em class="dark">16 GB &middot; 0.2 H100</em></div><div>70B</div><div class="bar"><i style="width:17.3%"></i><em class="dark">140 GB &middot; 1.75 H100s</em></div><div>405B</div><div class="bar"><i style="width:100%"></i><em>810 GB &middot; 10.1 H100s</em></div></div><small>Bar lengths scale to the 405B footprint; the H100 multiples divide weight bytes by nominal 80 GB. They are <em>not</em> a practical GPU count. The integer weight-only floors are 1, 2, and 11 H100s; real serving needs headroom and compatible sharding.</small></div>
+<p>A 70B BF16 model cannot fit on one 80 GB H100; it crosses the two-GPU floor before serving a request. It nominally fits in a 141 GB H200 with only 1 GB left for everything else, so that is not a viable one-GPU serving design as stated. This is the trap in sizing a fleet from parameter count alone. The 405B model needs at least 11 H100s or 6 H200s just for weights, before any serving headroom, and practical tensor parallelism may require a different count.</p>
+<h3>Memory speed becomes output speed</h3>
+<p>During single-stream autoregressive decode, weights are repeatedly accessed to generate tokens. A rough <em>optimistic</em> roofline is memory bandwidth divided by model weight bytes, not a throughput guarantee. On an H100 SXM with 3.35 TB/s and an 8B BF16 model with 16 GB of weights: 3,350 &divide; 16 &asymp; <strong>209 tokens/second</strong>. On an H200 SXM, 4,800 &divide; 140 &asymp; <strong>34 tokens/second</strong> for 70B BF16 <em>if it could fit with headroom</em>. It cannot as a full serving stack on nominal 141 GB, so this second figure isolates bandwidth only, not a deployable configuration. Actual speed is lower and depends on implementation, context, batching, and interconnect.</p>
+<div class="diagram"><div class="chart-title">Illustrative single-stream weight-read ceilings</div><div class="chart-grid"><div>8B &middot; H100</div><div class="bar"><i style="width:100%"></i><em>&le;209 tok/s</em></div><div>70B &middot; H200</div><div class="bar"><i style="width:16.3%"></i><em class="dark">&le;34 tok/s*</em></div></div><small>*Bandwidth-only arithmetic for 70B on one H200; no KV-cache headroom, not a serving benchmark or feasible full configuration. Decimal GB and TB/s. Batch processing amortizes weight reads across requests, so aggregate tokens/s can exceed these <em>single-stream</em> estimates.</small></div>
+<div class="fact"><strong>Why H200 exists:</strong> NVIDIA specifies 141 GB at 4.8 TB/s for H200 SXM against H100 SXM's 80 GB at 3.35 TB/s. That is 76% more memory capacity and 43% more bandwidth by the cited specifications. NVIDIA reports 1.9&times; Llama 2 70B inference speed in its highlighted comparison, but that vendor benchmark is workload-specific. More HBM is a product feature with a direct effect on replica economics, not just a spec-sheet trophy.</div>
+<h3>Worked fleet floor</h3><p><strong>Illustrative GPU rental assumption: $2 per GPU-hour.</strong> At 70B BF16, two H100s start at $4 per replica-hour, or $96 per continuous day, before networking, CPU, energy, reserved slack, and cache. A single H200 is not the $2 alternative for an uncompressed 70B model without room for cache. The finance question is not "how big is the model?" but "what is the cheapest <em>working</em> replica with our context and concurrency?" Tomorrow's quantization lesson changes that threshold.</p>
+<div class="rules"><div class="rule"><b>1 &middot; Fit weights plus working memory.</b>Nominal capacity is not usable serving capacity. Reserve space for context and concurrency before declaring a one-GPU design.</div><div class="rule"><b>2 &middot; Count whole replicas.</b>A model that crosses an HBM boundary can double the minimum GPUs per serving replica. Price the discrete step, not only gigabytes.</div><div class="rule"><b>3 &middot; Separate stream and fleet rates.</b>Bandwidth caps single-stream decode; batching shares the same reads. Measure achieved aggregate tokens per dollar for fleet plans.</div></div>
+<h3>Questions for the CFO table</h3><ul><li>What is the smallest <em>working</em> GPU configuration for our model at target context length and concurrency?</li><li>At our actual batch and stream mix, are we buying HBM capacity, HBM bandwidth, or compute?</li><li>How much of the budget disappears when a model upgrade crosses a GPU-per-replica boundary?</li></ul>
+<div class="sources"><strong>Sources and assumptions.</strong> 8B/70B/405B model sizes: <a href="https://arxiv.org/abs/2407.21783">Meta, The Llama 3 Herd of Models</a>. H100 SXM 80 GB and 3.35 TB/s: <a href="https://www.nvidia.com/en-us/data-center/h100/">NVIDIA H100 specifications</a>. H200 SXM 141 GB, 4.8 TB/s, and vendor Llama 2 benchmark: <a href="https://www.nvidia.com/en-us/data-center/h200/">NVIDIA H200 specifications</a>. BF16's 2 bytes per parameter, model weight footprints, ratios, integer GPU floors, and bandwidth ceilings are arithmetic from those inputs. All footprints omit overhead; the $2/GPU-hour rate and fleet floor are illustrative, not a market quote.</div>
+</div></article>
+
+<article class="paper" id="day-11" style="margin-bottom:30px">
+<header class="lesson-head">
+<div class="eyebrow" style="color:#168c7f">Day 11 &middot; Week 2 &middot; workloads</div>
+<h2>Latency as a paid feature</h2>
+<p class="dek">Day 10 bought throughput with waiting. The market sells the reverse: the same tokens, faster, at a premium. A latency SLA is a cost commitment with a price tag on both sides.</p>
+</header>
+<div class="content">
+<h3>One model, three prices, set by the clock</h3>
+<p class="lead">
+<strong>Anthropic's price list already sells time.</strong> Opus 5 costs $5 / $25 per million input / output tokens at standard speed. Its fast mode, a research preview promising significantly faster output, costs exactly double: $10 / $50. Its Batch API, which processes asynchronously, costs exactly half. Same model, same tokens: a 4&times; price band set purely by when the answer arrives.</p>
+<div class="diagram">
+<div class="chart-title">Price per million output tokens by speed tier (Anthropic Opus 5)</div>
+<div class="chart-grid">
+<div>Batch &middot; async</div><div class="bar"><i style="width:25%"></i><em class="dark">$12.50 &middot; 0.5&times;</em></div>
+<div>Standard</div><div class="bar"><i style="width:50%"></i><em class="dark">$25 &middot; 1&times;</em></div>
+<div>Fast mode</div><div class="bar"><i style="width:100%"></i><em>$50 &middot; 2&times;</em></div>
+</div>
+<small>Anthropic list prices: fast mode is a research preview on Opus 5 and 4.8; Batch API pricing is 50% off standard. The 2&times; and 0.5&times; multipliers are the market's current read on what speed and delay are worth.</small>
+</div>
+<p>Customers pay for speed because latency converts to money on their side too. A Google and Deloitte study of mobile commerce found a 0.1-second speed improvement lifted retail conversions 8.4% and travel conversions 10.1%. Interactive AI products sit on the same curve: time-to-first-token decides whether a chat product feels alive, and stream rate decides whether a coding assistant keeps a developer in flow.</p>
+<h3>Why speed is expensive to sell</h3>
+<p>Speed is unbatched capacity. Day 10 showed the cost of a single stream can run 50&times; a full batch; a fast lane is a promise to keep batches small and accelerators reserved, which means sacrificing the throughput that made serving cheap. The provider's math: illustrative cost of $1.14 per million output tokens in a standard mixed regime becomes roughly $3&ndash;4 in a small-batch fast lane. The price doubles while cost triples off a small base, so the speed premium is mostly margin for whoever owns the scheduler. The batch discount runs the other way: half price for requests that fill idle off-peak capacity, turning Day 1's utilization problem into a product.</p>
+<div class="fact">
+<strong>Time-to-first-token and stream rate are different products.</strong> TTFT is set by prefill and queue depth; tokens-per-second is set by decode, which is memory-bandwidth bound (Day 12). A latency SLA should say which one it buys, because they cost different things.</div>
+<h3>Rules of thumb</h3>
+<div class="rules">
+<div class="rule">
+<b>1 &middot; Price speed from sacrificed throughput.</b>A fast tier costs what the lost batching cost. Never set a latency SLA before you know its fleet footprint.</div>
+<div class="rule">
+<b>2 &middot; Sell waiting.</b>A 50% async discount costs little if it fills hours that would idle anyway. Discounting delay is utilization management wearing a price tag.</div>
+<div class="rule">
+<b>3 &middot; Route by latency need, not by model habit.</b>Chat needs TTFT; nightly jobs need nothing. Sending delay-tolerant traffic through the fast lane is pure cost with no revenue attached.</div>
+</div>
+<h3>Questions for the CFO table</h3>
+<ul>
+<li>Which of our traffic actually pays a latency premium, and what multiple of standard price does it carry?</li>
+<li>What would our latency SLA cost in sacrificed throughput and reserved fleet if every customer exercised it at once?</li>
+<li>What share of volume could move to async batch at half price, and what would that do to off-peak utilization?</li>
+</ul>
+<div class="sources">
+<strong>Sources and assumptions.</strong> Opus 5 standard ($5/$25 per million input/output tokens), fast mode ($10/$50, research preview on Opus 5 and 4.8), Batch API 50% discount, and cache reads at 0.1&times; input price: <a href="https://platform.claude.com/docs/en/about-claude/pricing">Anthropic API pricing</a>. Latency-to-conversion evidence (0.1s mobile speed improvement: retail conversions +8.4%, travel +10.1%): <a href="https://www2.deloitte.com/ie/en/pages/consulting/articles/milliseconds-make-millions.html">Deloitte and Google, Milliseconds Make Millions (2020)</a>. The fast-lane cost figures ($1.14 standard, $3&ndash;4 small-batch per million output tokens) are illustrative calculations built on Day 9's floor and Day 10's regimes, not benchmarks.</div>
+</div>
+</article>
+
+<article class="paper" id="day-10" style="margin-bottom:30px">
+<header class="lesson-head">
+<div class="eyebrow" style="color:#168c7f">Day 10 &middot; Week 2 &middot; workloads</div>
+<h2>Batching and throughput</h2>
+<p class="dek">An unbatched GPU is a truck hauling one box at a time. Batching multiplies the tokens each GPU-hour produces, and unit cost is just the hourly price divided by that number.</p>
+</header>
+<div class="content">
+<h3>The biggest lever in serving cost</h3>
+<p class="lead">
+<strong>Day 9 gave the formula: cost per million tokens = $/GPU-hour &divide; achieved tokens per hour.</strong> Batching is how you move the denominator. A GPU serving one request spends most of each second waiting on memory; serving many requests in the same pass keeps it fed. The serving stack learned this twice over. Orca introduced iteration-level scheduling in 2022, batching at every generation step instead of every request, and showed a 36.9&times; throughput gain over NVIDIA FasterTransformer on GPT-3 175B at the same latency. vLLM's PagedAttention then attacked the memory side, cutting KV-cache waste to under 4% and delivering up to 24&times; the throughput of HuggingFace Transformers.</p>
+<div class="equation">
+<div class="metric">
+<b>36.9&times;</b>
+<span>Orca throughput gain at equal latency (OSDI 2022, GPT-3 175B)</span>
+</div>
+<div class="metric">
+<b>up to 24&times;</b>
+<span>vLLM vs. HuggingFace Transformers throughput</span>
+</div>
+<div class="metric">
+<b>&lt;4%</b>
+<span>KV-cache memory waste with PagedAttention</span>
+</div>
+</div>
+<div class="fact">
+<strong>Memory sets the batch, the batch sets the cost.</strong> How many requests can share one GPU is capped by KV-cache space in HBM (Day 5), not by compute. That is why the serving stack spends its cleverness on memory management: every sequence squeezed in is throughput gained at zero extra hardware cost.</div>
+<h3>Worked example: one GPU, three regimes</h3>
+<p>Illustrative inputs: a 70B model on one H100 at $2.00 per hour. Serve it three ways: a single interactive stream at 30 tokens per second, a modest batch at 300, and a full continuous batch at 1,500. Same GPU, same model, same hourly price. Only the achieved throughput changes.</p>
+<div class="diagram">
+<div class="chart-title">Cost per million tokens by serving regime (illustrative)</div>
+<div class="chart-grid">
+<div>Single stream &middot; 30 tok/s</div><div class="bar"><i style="width:100%"></i><em>$18.50</em></div>
+<div>Modest batch &middot; 300 tok/s</div><div class="bar"><i style="width:10%"></i><em class="dark">$1.85</em></div>
+<div>Full batch &middot; 1,500 tok/s</div><div class="bar"><i style="width:2%;min-width:3px"></i><em class="dark">$0.37</em></div>
+</div>
+<small>Calculations: $2.00 &divide; (tokens/s &times; 3,600), scaled to a million tokens. Throughput figures are illustrative serving regimes, not benchmarks; the shape, a 50&times; cost swing on one GPU, is the point.</small>
+</div>
+<p>A 50&times; cost swing with zero change in hardware, model, or price list. This is why two providers can sell the same open model at very different prices and both be rational: they are running different batch regimes, and the cheaper one has the traffic to keep batches full. Throughput economics favor the busy, a serving-side echo of Day 1's utilization lesson.</p>
+<h3>Rules of thumb</h3>
+<div class="rules">
+<div class="rule">
+<b>1 &middot; Price the achieved, not the peak.</b>Serving unit cost is hourly price divided by achieved tokens per hour. Benchmarks give peaks; production gives the number that belongs in the model.</div>
+<div class="rule">
+<b>2 &middot; Batch what can wait.</b>Evals, extraction, summaries, and overnight jobs belong in throughput mode. Every request that tolerates delay is cheaper to serve; Day 11 prices the ones that cannot.</div>
+<div class="rule">
+<b>3 &middot; Full batches need full order books.</b>Batching gains only exist with enough concurrent demand. A quiet cluster in throughput mode is just an idle cluster: utilization first, batching second.</div>
+</div>
+<h3>Questions for the CFO table</h3>
+<ul>
+<li>What achieved tokens per second per GPU do we get in production, by model, and how far is that from the assumption in our unit-cost model?</li>
+<li>What share of our traffic is delay-tolerant and could shift into high-throughput serving or off-peak batch windows?</li>
+<li>When we quote $/million tokens internally, which batching regime produced the number, and would it survive losing our largest customer's traffic?</li>
+</ul>
+<div class="sources">
+<strong>Sources and assumptions.</strong> Orca iteration-level scheduling and selective batching, 36.9&times; throughput over FasterTransformer on GPT-3 175B at equal latency: <a href="https://www.usenix.org/conference/osdi22/presentation/yu">Orca: A Distributed Serving System for Transformer-Based Generative Models (OSDI 2022)</a>. vLLM up to 24&times; HuggingFace Transformers and 3.5&times; TGI throughput, PagedAttention KV-cache waste under 4%: <a href="https://blog.vllm.ai/2023/06/20/vllm.html">vLLM: Easy, Fast, and Cheap LLM Serving with PagedAttention</a> and the <a href="https://arxiv.org/abs/2309.06180">PagedAttention paper</a>. The $2.00/GPU-hour input is the illustrative Day 2 rate; the 30 / 300 / 1,500 tokens-per-second regimes and resulting per-token costs are illustrative calculations, not benchmarks.</div>
+</div>
+</article>
+
+<article class="paper" id="day-9" style="margin-bottom:30px">
+<header class="lesson-head">
+<div class="eyebrow" style="color:#168c7f">Day 09 &middot; Week 2 &middot; workloads</div>
+<h2>Tokens, FLOPs, and finance translation</h2>
+<p class="dek">Product speaks tokens, infrastructure speaks GPU-hours, finance speaks dollars. The conversion is three multiplications and one leak called MFU.</p>
+</header>
+<div class="content">
+<h3>The translation chain</h3>
+<p class="lead">
+<strong>Every AI P&amp;L is the same conversion done twice, once for training and once for serving.</strong> Tokens of demand become FLOPs of compute (about 2 &times; parameters per token, from Day 8), FLOPs become GPU-seconds (through the chip's peak rate, discounted by efficiency), and GPU-seconds become dollars (at the $/GPU-hour from Day 2). Get the chain right and a product forecast drops straight into a capacity plan and a cost line.</p>
+<div class="equation">
+<div class="metric">
+<b>2N</b>
+<span>FLOPs per token: 2 &times; parameter count (dense models, Day 8)</span>
+</div>
+<div class="metric">
+<b>990</b>
+<span>dense BF16 TFLOPS peak per H100</span>
+</div>
+<div class="metric">
+<b>38&ndash;43%</b>
+<span>MFU Meta achieved training Llama 3 405B: the leak between peak and delivered</span>
+</div>
+</div>
+<div class="fact">
+<strong>Never price off datasheet peak.</strong> Model FLOPs utilization is the share of peak compute a real workload actually extracts. Meta's flagship training run converted only 38&ndash;43% of peak; the rest went to communication, memory stalls, and restarts. A cost model built on peak specs understates cost by more than 2&times;.</div>
+<h3>Worked example: the serving side</h3>
+<p>Product asks: what does a billion tokens a day of 405B-class serving cost? Work the chain with illustrative inputs. One token costs 2 &times; 405 billion = 8.1 &times; 10<sup>11</sup> FLOPs, so a billion tokens a day is 8.1 &times; 10<sup>20</sup> FLOPs daily. An H100 at 40% MFU delivers about 1.43 &times; 10<sup>18</sup> FLOPs per hour, so the workload needs about 568 GPU-hours a day, or 24 H100s running around the clock. At $2.00 per GPU-hour that is roughly $1,140 a day, or <strong>$1.14 per million tokens</strong>.</p>
+<div class="diagram">
+<div class="chart-title">Serving cost floor per million tokens by model size (illustrative)</div>
+<div class="chart-grid">
+<div>8B model</div><div class="bar"><i style="width:2%;min-width:3px"></i><em class="dark">$0.02</em></div>
+<div>70B model</div><div class="bar"><i style="width:18%"></i><em class="dark">$0.20</em></div>
+<div>405B model</div><div class="bar"><i style="width:100%"></i><em>$1.14</em></div>
+</div>
+<small>Calculations: $2.00 per H100-hour &divide; (990 TFLOPS &times; 40% MFU &times; 3,600 s &divide; 2N FLOPs per token). FLOP-floor only: real decode is memory-bandwidth bound (Day 12), so treat these as lower bounds that model routing and quantization (Day 13) push down.</small>
+</div>
+<p>Sanity-check the floor against the market: Anthropic sells Haiku 4.5 at $1 per million input tokens and Sonnet 5 at $2. The floor and the price list live in the same neighborhood, which is the point: frontier-class serving costs measure in single dollars per million tokens, and small models in cents.</p>
+<h3>Worked example: the training side</h3>
+<p>The same chain runs backward from a training budget. Llama 3 405B used 3.8 &times; 10<sup>25</sup> FLOPs. At 40% MFU on 990-TFLOPS H100s that is about 26 million H100-hours; at $2.00 per GPU-hour, roughly $53 million of compute, with Meta's disclosed 38&ndash;43% MFU putting the range near $50 to $56 million. That is the conversion Day 8's amortization example needs before training cost can be spread over served tokens: budget FLOPs, translate to GPU-hours, then to dollars, then to $ per million tokens at the volume you forecast.</p>
+<h3>Rules of thumb</h3>
+<div class="rules">
+<div class="rule">
+<b>1 &middot; Speak one unit.</b>Convert GPU-hours, FLOPs, and list prices into $ per million tokens before comparing anything. It is the only unit product, infrastructure, and finance all recognize.</div>
+<div class="rule">
+<b>2 &middot; Apply MFU before money.</b>Peak specs overstate delivered compute by 2&times; or more. Anchor on about 40% for frontier training, then stack Day 1 utilization on top.</div>
+<div class="rule">
+<b>3 &middot; Parameters are the cost dial.</b>Per-token cost scales linearly with model size. Halving the model halves the floor; routing small queries to small models is a margin decision, not an engineering nicety.</div>
+</div>
+<h3>Questions for the CFO table</h3>
+<ul>
+<li>Who owns the tokens-to-GPU-hours conversion in our planning model, what MFU does it assume, and when was that assumption validated against the fleet?</li>
+<li>What is our actual served cost per million tokens by model, and how does it compare to the prices we charge per million?</li>
+<li>If product volume grows 10&times;, does our cost per million tokens fall, hold, or rise, and which term in the chain moves it?</li>
+</ul>
+<div class="sources">
+<strong>Sources and assumptions.</strong> H100 dense BF16 peak (~990 TFLOPS): <a href="https://en.wikipedia.org/wiki/Hopper_(microarchitecture)">Hopper microarchitecture specifications</a>. Llama 3 405B (15.6T training tokens, 3.8 &times; 10<sup>25</sup> FLOPs, 38&ndash;43% MFU): <a href="https://arxiv.org/abs/2407.21783">The Llama 3 Herd of Models (Meta, 2024)</a>. Market price reference (Haiku 4.5 $1/$5, Sonnet 5 $2/$10 per million input/output tokens): <a href="https://platform.claude.com/docs/en/about-claude/pricing">Anthropic API pricing</a>. The 2N FLOPs-per-token rule is the dense-model heuristic from Day 8. The 40% MFU and $2.00/GPU-hour inputs are illustrative anchors (Meta's reported range and Day 2 rates); all per-token costs, GPU-hour totals, and dollar figures are calculations from those inputs, rounded.</div>
+</div>
+</article>
+
+<article class="paper" id="day-8" style="margin-bottom:30px">
+<header class="lesson-head">
+<div class="eyebrow" style="color:#168c7f">Day 08 &middot; Week 2 begins: workloads</div>
+<h2>Training vs. inference economics</h2>
+<p class="dek">Training is a factory you pay for once. Inference is a meter that never stops running. Which one dominates is a volume question, and volume is a forecast.</p>
+</header>
+<div class="content">
+<h3>Two cost shapes, one model</h3>
+<p class="lead">
+<strong>A model's cost comes in two shapes.</strong> Training is a lump: Meta pretrained Llama 3 405B on 15.6 trillion tokens using 3.8 &times; 10<sup>25</sup> FLOPs of compute on more than 16,000 H100 GPUs; at the 38&ndash;43% MFU Meta reports, that is roughly 25 million H100 GPU-hours. Inference is a stream: every token a customer generates costs compute, forever, at a volume that grows with the product. The money has already flipped. Managed inference was $23.1 billion of AI platform infrastructure spend in 2025 against $16.3 billion for training, an inversion from 2022, when training held 74%. Futurum's 2030 base case puts inference at $106.8 billion, 71.7% of the total.</p>
+<div class="diagram">
+<div class="chart-title">Inference share of AI platform infrastructure spend (Futurum)</div>
+<div class="chart-grid">
+<div>2022</div><div class="bar"><i style="width:26%"></i><em class="dark">26% &middot; $1.2B</em></div>
+<div>2025</div><div class="bar"><i style="width:59%"></i><em>59% &middot; $23.1B</em></div>
+<div>2030 forecast</div><div class="bar"><i style="width:72%"></i><em>72% &middot; $106.8B</em></div>
+</div>
+<small>Futurum Group 1H 2026 AI Platforms forecast, managed inference vs. training. Training was 73.9% of the CY2022 split, fell to 41.4% by CY2025, and is projected at 28.3% in CY2030. Inference compounds at 35.8% a year, training at 21.0%.</small>
+</div>
+<div class="fact">
+<strong>Training behaves like capex, inference like cost of goods sold.</strong> Training is lumpy, sunk, and financed. Inference is per-unit, recurring, and tied to revenue. The same model is a capital story on the way in and a volume story on the way out.</div>
+<h3>The rule of thumb that links them</h3>
+<p>A standard scaling heuristic for dense models: training a model costs about 6 &times; parameters &times; training tokens of compute, and serving it costs about 2 &times; parameters per generated token. Set them equal and model size cancels: one training run equals the serving compute of 3&times; its training tokens. For Llama 3 405B, trained on 15.6 trillion tokens, that crossover is about 47 trillion served tokens. Check the arithmetic: 6 &times; 405 billion &times; 15.6 trillion &asymp; 3.8 &times; 10<sup>25</sup> FLOPs, exactly the training compute Meta reports for the run.</p>
+<div class="equation">
+<div class="metric">
+<b>6ND</b>
+<span>training FLOPs: 6 &times; parameters &times; tokens trained</span>
+</div>
+<div class="metric">
+<b>2N</b>
+<span>serving FLOPs per generated token</span>
+</div>
+<div class="metric">
+<b>3&times;</b>
+<span>served vs. trained tokens where the two compute totals are equal</span>
+</div>
+</div>
+<h3>What the meter charges, and where it is heading</h3>
+<p>Published API prices put the meter in dollars. Anthropic's list prices run from Haiku 4.5 at $1 / $5 per million input / output tokens, through Sonnet 5 at $2 / $10, up to Opus 5 at $5 / $25, with cache reads at 10% of input price and batch jobs at half price. Meanwhile the floor keeps moving: Stanford's AI Index found the cost of querying a GPT-3.5-level model fell from $20 per million tokens in November 2022 to $0.07 by October 2024, a 280-fold drop in 18 months, with per-task declines of 9 to 900&times; per year. Training runs the other way: Epoch AI estimates frontier training costs have grown about 2.4&times; per year since 2016, passing $1 billion for the largest runs by 2027, with hardware at 47&ndash;67% of model development cost, R&amp;D staff at 29&ndash;49%, and energy at 2&ndash;6%.</p>
+<div class="equation">
+<div class="metric">
+<b>$20 &rarr; $0.07</b>
+<span>price per million tokens, GPT-3.5-level, Nov 2022 to Oct 2024 (Stanford AI Index)</span>
+</div>
+<div class="metric">
+<b>2.4&times;/yr</b>
+<span>frontier training cost growth since 2016 (Epoch AI)</span>
+</div>
+<div class="metric">
+<b>$1B+</b>
+<span>largest training runs by 2027 (Epoch AI)</span>
+</div>
+</div>
+<p>Read those two curves together: the fixed side inflates while the variable side deflates. Margin accrues to whoever buys training efficiently and rides the inference deflation curve without locking yesterday's prices into tomorrow's contracts.</p>
+<h3>Worked example: amortizing one training run</h3>
+<p>Illustrative inputs: Meta's model card reports 7.7 million cumulative H100 GPU-hours for pretraining the Llama 3 8B and 70B models; at $2.00 per GPU-hour (Day 2 rates) that is about $15.4 million of compute, before staff, experiments, and failed attempts. All-in development cost is a multiple of that; Epoch's breakdown implies hardware is roughly half the total. Spread the $15.4 million over lifetime served tokens:</p>
+<div class="diagram">
+<div class="chart-title">Amortized training cost per million tokens served (illustrative)</div>
+<div class="chart-grid">
+<div>4.7T served</div><div class="bar"><i style="width:100%"></i><em>$3.28</em></div>
+<div>47T served</div><div class="bar"><i style="width:10%"></i><em class="dark">$0.33</em></div>
+<div>470T served</div><div class="bar"><i style="width:1%;min-width:3px"></i><em class="dark">$0.03</em></div>
+</div>
+<small>Calculations: $15.4M divided by lifetime served tokens. the 3&times; crossover for a 15T-token training run is about 45 trillion served tokens.</small>
+</div>
+<p>At 4.7 trillion tokens served, the amortized training run alone costs $3.28 per million tokens, two-thirds of Haiku 4.5's entire $5 output price. At 470 trillion, it is $0.03, noise against Sonnet 5's $10. Same run, same model. Volume decides whether the business lives in the training budget or the serving budget.</p>
+<h3>Rules of thumb</h3>
+<div class="rules">
+<div class="rule">
+<b>1 &middot; Never recover training in the token price.</b>The run is sunk once spent. Price serving off marginal cost and market, and recover training in the volume plan.</div>
+<div class="rule">
+<b>2 &middot; Contract along the deflation curve.</b>A multi-year fixed token price signed against today's serving cost looks rich next year. Index, reprice, or keep terms short.</div>
+<div class="rule">
+<b>3 &middot; Know your crossover volume.</b>Below roughly 3&times; training tokens served, the training run is the bigger compute line. Above it, serving dominates. The crossover says whether you are managing a factory or a meter.</div>
+</div>
+<h3>Questions for the CFO table</h3>
+<ul>
+<li>What is the crossover volume for each model we run, and which side of it are our current contracts on?</li>
+<li>Which token contracts are fixed-price beyond a year, and what happens to them if serving costs fall another 10&times; during the term?</li>
+<li>When we amortize training into unit cost, what served volume does each model need to clear its own economics?</li>
+</ul>
+<div class="sources">
+<strong>Sources and assumptions.</strong> Llama 3 405B trained on 15.6T tokens with 3.8 &times; 10<sup>25</sup> FLOPs, 405B parameters, 38&ndash;43% MFU: <a href="https://arxiv.org/abs/2407.21783">The Llama 3 Herd of Models (Meta, 2024)</a>; 16K H100 cluster and 15T+ tokens: <a href="https://ai.meta.com/blog/meta-llama-3-1/">Meta's Llama 3.1 announcement</a>; 7.7M cumulative H100 GPU-hours for Llama 3 8B and 70B pretraining: <a href="https://github.com/meta-llama/llama3/blob/main/MODEL_CARD.md">Llama 3 model card</a>. Infrastructure spend split ($23.1B inference vs. $16.3B training in CY2025; 73.9% training in CY2022; $106.8B and 71.7% inference by CY2030; 35.8% vs. 21.0% CAGRs): <a href="https://futurumgroup.com/press-release/inference-climbs-to-71-7-of-ai-platforms-infrastructure-spend-by-2030/">Futurum Group, 1H 2026 AI Platforms forecast</a>. Token prices (Haiku 4.5 $1/$5, Sonnet 5 $2/$10, Opus 5 $5/$25 per million input/output tokens; 0.1&times; cache reads; 50% batch discount): <a href="https://platform.claude.com/docs/en/about-claude/pricing">Anthropic API pricing</a>. Inference cost decline ($20 to $0.07 per million tokens, Nov 2022 to Oct 2024; 9&ndash;900&times; per year): <a href="https://hai.stanford.edu/news/ai-index-2025-state-of-ai-in-10-charts">Stanford AI Index 2025</a>. Training cost growth (2.4&times;/yr since 2016; $1B+ runs by 2027; hardware 47&ndash;67%, staff 29&ndash;49%, energy 2&ndash;6%): <a href="https://epoch.ai/publications/how-much-does-it-cost-to-train-frontier-ai-models">Epoch AI</a>. The 6ND / 2N compute heuristic is a standard scaling approximation for dense transformers (MoE, quantization, and utilization overhead shift the constants, not the shape). The $2.00/GPU-hour rate is the illustrative Day 2 price; the $15.4M run cost and amortization tiers are calculations from it.</div>
+</div>
+</article>
+
+<article class="paper" id="day-7" style="margin-bottom:30px">
+<header class="lesson-head">
+<div class="eyebrow" style="color:#168c7f">Day 07 &middot; Putting the unit together</div>
+<h2>Cluster-level contribution margin</h2>
+<p class="dek">Week 1 in one line: price times utilization, minus the costs that run whether or not anyone is billing. A 70% gross margin can still be a loss.</p>
+</header>
+<div class="content">
+<h3>Three margins, three different businesses</h3>
+<p class="lead">
+<strong>GPU clouds look like software above the line and like utilities below it.</strong> In fiscal 2025 CoreWeave booked $5.13 billion of revenue against $1.45 billion of reported cost of revenue, a 72% gross margin. Adjusted EBITDA was $3.09 billion, a 60% margin. Then depreciation and amortization took $2.45 billion and net interest took $1.23 billion. GAAP operating income was a $46 million loss, and the net loss was $1.17 billion.</p>
+<div class="equation">
+<div class="metric">
+<b>60%</b>
+<span>adjusted EBITDA margin, FY2025</span>
+</div>
+<div class="metric">
+<b>48%</b>
+<span>of revenue went to depreciation and amortization</span>
+</div>
+<div class="metric">
+<b>24%</b>
+<span>of revenue went to net interest</span>
+</div>
+</div>
+<div class="diagram">
+<div class="chart-title">CoreWeave FY2025, share of revenue</div>
+<div class="chart-grid">
+<div>Cost of revenue</div><div class="bar"><i style="width:28%"></i><em class="dark">28%</em></div>
+<div>Adj. EBITDA</div><div class="bar"><i style="width:60%"></i><em>60%</em></div>
+<div>D&amp;A</div><div class="bar"><i style="width:48%"></i><em>48%</em></div>
+<div>Net interest</div><div class="bar"><i style="width:24%"></i><em class="dark">24%</em></div>
+<div>Net loss</div><div class="bar"><i style="width:23%;background:#c0492f"></i><em class="dark">&minus;23%</em></div>
+</div>
+<small>Calculated from CoreWeave's FY2025 results release ($ millions: revenue 5,131; cost of revenue 1,453; adjusted EBITDA 3,093; D&amp;A 2,454; interest expense, net 1,229; net loss 1,167). Adjusted EBITDA is non-GAAP.</small>
+</div>
+<div class="fact">
+<strong>Read the stack, not the headline:</strong> EBITDA answers "does the cluster cover its running costs?" Operating income answers "does it pay back the hardware?" Net income answers "does it pay back the lenders too?" In AI infrastructure those can be three different answers.</div>
+<h3>Worked example: one billable GPU-hour</h3>
+<p>Stack the Week 1 lessons into a single cluster P&amp;L. All inputs are illustrative: $2.99 realized price (Day 2), 75% billable utilization (Day 1), $0.50 per billable hour for power, colocation, and site operations (Day 3 showed GPU power alone is a floor), $45,000 all-in capex per GPU including its share of servers and fabric (Days 5 and 6), a 6-year life (Day 4), and 9% interest on the full balance, as in an early contract year.</p>
+<div class="worked">
+<div class="case">
+<h4>Contribution before capital</h4>
+<div class="number">$2.49/hr</div>
+<p>$2.99 price minus $0.50 of running costs. 83% margin. This is what the cluster earns each billable hour once it exists.</p>
+</div>
+<div class="case good">
+<h4>After capital and financing</h4>
+<div class="number">$0.73/hr</div>
+<p>Minus $1.14 depreciation ($45,000 &divide; 6 years &divide; 6,570 billable hours) and $0.62 interest ($4,050 a year &divide; 6,570 hours). 24% margin.</p>
+</div>
+</div>
+<div class="diagram">
+<div class="chart-title">Margin per billable GPU-hour after depreciation and interest (illustrative)</div>
+<div class="chart-grid">
+<div>60% utilized</div><div class="bar"><i style="width:15%"></i><em class="dark">$0.17 &middot; 6%</em></div>
+<div>75% utilized</div><div class="bar"><i style="width:66%"></i><em>$0.73 &middot; 24%</em></div>
+<div>90% utilized</div><div class="bar"><i style="width:100%"></i><em>$1.11 &middot; 37%</em></div>
+</div>
+<small>Same illustrative inputs. Running costs, depreciation, and interest all accrue on installed hours, so each is divided by fewer billable hours as utilization falls. Break-even is about 57% utilization.</small>
+</div>
+<p>The shape matters more than the numbers. About 78% of the cost stack in this example is depreciation and interest, fixed the day the GPU is bought and financed. That is why a 30-point swing in utilization moves the margin from 6% to 37%, and why the backlog matters so much: CoreWeave reported a $66.8 billion revenue backlog at year-end 2025, about 13 times its annual revenue. Contracted hours are what turn the 75% case from an assumption into a forecast.</p>
+<h3>Rules of thumb</h3>
+<div class="rules">
+<div class="rule">
+<b>1 &middot; Margin is a utilization function.</b>Quote cluster margin as a curve over utilization, never as a single point. Know the break-even percentage.</div>
+<div class="rule">
+<b>2 &middot; EBITDA flatters capital-heavy compute.</b>When depreciation plus interest runs near 70% of revenue, a 60% EBITDA margin can coexist with a net loss.</div>
+<div class="rule">
+<b>3 &middot; Contract before you build.</b>With most costs fixed at purchase, the committed contract, not the spot price, sets the real return.</div>
+</div>
+<h3>Questions for the CFO table</h3>
+<ul>
+<li>What is each cluster's break-even utilization after depreciation and interest, and how far above it are we running?</li>
+<li>Which margin do we manage to: contribution, EBITDA, operating, or after financing? Does the board see all four?</li>
+<li>How much of next year's installed capacity is already covered by committed contracts at known prices?</li>
+<li>If realized price fell 20% on contract renewal, which clusters would drop below break-even?</li>
+</ul>
+<div class="sources">
+<strong>Sources and assumptions.</strong> CoreWeave FY2025 revenue ($5,131M), cost of revenue ($1,453M), adjusted EBITDA ($3,093M, 60% margin), depreciation and amortization ($2,454M), interest expense, net ($1,229M), operating loss ($46M), net loss ($1,167M), and $66.8B revenue backlog: <a href="https://investors.coreweave.com/news/news-details/2026/CoreWeave-Reports-Strong-Fourth-Quarter-and-Fiscal-Year-2025-Results/">CoreWeave Q4 and FY2025 results release</a>; full statements in the <a href="https://www.sec.gov/Archives/edgar/data/1769628/000176962826000104/crwv-20251231.htm">CoreWeave 2025 10-K</a>. Percent-of-revenue figures and the 13x backlog multiple are calculations from those numbers. The $2.99 price, 75% utilization, $0.50 running cost, $45,000 capex, 6-year life, and 9% interest rate are illustrative assumptions; the per-hour margins and 57% break-even are calculations from them, rounded.</div>
+</div>
+</article>
+
+<article class="paper" id="day-6" style="margin-bottom:30px">
+<header class="lesson-head">
+<div class="eyebrow" style="color:#168c7f">Day 06 &middot; Interconnect economics</div>
+<h2>NVLink, fabric, and stranded compute</h2>
+<p class="dek">A GPU you cannot connect is revenue you cannot book. Interconnect turns chips into clusters; fragmentation turns clusters back into chips.</p>
+</header>
+<div class="content">
+<h3>Three tiers of bandwidth</h3>
+<p class="lead">
+<strong>Sellable capacity is defined by the fabric, not the chip count.</strong> Inside a server, NVLink moves data between GPUs at 900 GB/s, seven times PCIe Gen5's 128 GB/s. Across a rack, systems like GB200 NVL72 fuse 72 GPUs into one NVLink domain with 130 TB/s of aggregate bandwidth. Across the data center, InfiniBand or RoCE Ethernet ties thousands of those islands into a training fleet.</p>
+<div class="equation">
+<div class="metric">
+<b>128 GB/s</b>
+<span>PCIe Gen5 per GPU</span>
+</div>
+<div class="metric">
+<b>900 GB/s</b>
+<span>NVLink per GPU, 7x PCIe</span>
+</div>
+<div class="metric">
+<b>130 TB/s</b>
+<span>aggregate NVLink inside one NVL72 rack</span>
+</div>
+</div>
+<div class="diagram">
+<div class="chart-title">Per-GPU interconnect bandwidth (NVLink = 100)</div>
+<div class="chart-grid">
+<div>PCIe Gen5</div><div class="bar"><i style="width:14%"></i><em class="dark">128 GB/s</em></div>
+<div>NVLink 4</div><div class="bar"><i style="width:100%"></i><em>900 GB/s</em></div>
+</div>
+<small>NVIDIA H200 spec sheet figures. Scale-out fabrics (InfiniBand, RoCE) are the third tier, linking racks at hundreds of gigabits per GPU.</small>
+</div>
+<h3>Worked example: available is not sellable</h3>
+<div class="worked">
+<div class="case">
+<h4>Fragmented fleet</h4>
+<div class="number">600 free, 0 sellable</div>
+<p>A cloud has 600 H100s free, scattered across fabric islands of 300 or fewer. A customer wants 512 tightly coupled GPUs for a two-week training run. Illustrative result: the job cannot be placed, and the 600 GPUs are stranded for that workload.</p>
+</div>
+<div class="case good">
+<h4>Fused rack</h4>
+<div class="number">72 as 1</div>
+<p>A GB200 NVL72 presents its 72 GPUs as a single NVLink domain that "acts as a single, massive GPU." One placement decision sells the whole rack, and trillion-parameter inference jobs fit inside it.</p>
+</div>
+</div>
+<div class="fact">
+<strong>The goodput tax:</strong> when the fabric is slow, GPUs wait on communication instead of computing. Every percentage point of step time spent waiting on all-reduce is a percentage point of GPU capex burned, at fleet scale, forever.</div>
+<h3>What Meta's two clusters tell us</h3>
+<p>Meta built two 24k clusters of 24,576 H100 GPUs each for Llama 3 training: one on RoCE Ethernet, one on InfiniBand. At an illustrative $30,000 per GPU, that is roughly $737 million of GPUs per cluster, before switches, optics, and cabling. Running both fabrics side by side was a deliberate hedge: at this scale the interconnect choice is a nine-figure bet, and the largest buyer in the room paid to keep both options alive. Smaller buyers do not get to hedge. They pick one fabric and live with it.</p>
+<h3>Rules of thumb</h3>
+<div class="rules">
+<div class="rule">
+<b>1 &middot; Sell domains, not GPUs.</b>The unit of training inventory is the largest contiguous fabric domain, not the fleet total.</div>
+<div class="rule">
+<b>2 &middot; Track stranded capacity separately.</b>Idle GPUs that cannot host the jobs in your pipeline are not inventory; they are deferred revenue with a power bill.</div>
+<div class="rule">
+<b>3 &middot; Fabric is a structural bet.</b>Ethernet vs InfiniBand vs NVLink domain size locks in which workloads you can serve for the life of the cluster.</div>
+</div>
+<h3>Questions for the CFO table</h3>
+<ul>
+<li>What is our largest sellable contiguous domain, and how does it compare with the jobs our customers actually bring?</li>
+<li>What share of GPU-hours is lost to communication wait, and who measures goodput rather than uptime?</li>
+<li>Which customer jobs pay a premium for NVLink-domain placement, and do we price that scarcity?</li>
+<li>What is the switching cost if our fabric bet (Ethernet vs InfiniBand) is wrong for the next model generation?</li>
+</ul>
+<div class="sources">
+<strong>Sources and assumptions.</strong> NVLink 900 GB/s and PCIe Gen5 128 GB/s per GPU: <a href="https://www.nvidia.com/en-us/data-center/h200/">NVIDIA H200 specifications</a>. NVL72 rack (36 Grace CPUs, 72 Blackwell GPUs, one 72-GPU NVLink domain, "acts as a single, massive GPU"): <a href="https://www.nvidia.com/en-us/data-center/gb200-nvl72/">NVIDIA GB200 NVL72</a>; 130 TB/s aggregate NVLink bandwidth: <a href="https://developer.nvidia.com/blog/unlock-exascale-performance-on-nvidia-gb200-nvl72-with-slurm-topology-aware-job-scheduling/">NVIDIA developer blog</a>. Meta's two 24k GPU clusters for Llama 3 training: <a href="https://engineering.fb.com/2024/03/12/data-center-engineering/building-metas-genai-infrastructure/">Engineering at Meta</a>; 24,576 H100s per cluster: <a href="https://www.sdxcentral.com/news/meta-reveals-details-of-two-new-24k-gpu-ai-clusters/">SDxCentral</a>; Meta's RoCE fabric work at tens of thousands of GPUs: <a href="https://engineering.fb.com/2024/08/05/data-center-engineering/roce-network-distributed-ai-training-at-scale/">Engineering at Meta, RoCE</a>. The 600-GPU fragmentation example, $30,000 GPU price, and cluster capex math are illustrative calculations from stated inputs.</div>
+</div>
+</article>
+
+<article class="paper" id="day-5" style="margin-bottom:30px">
+<header class="lesson-head">
+<div class="eyebrow" style="color:#168c7f">Day 05 &middot; Memory economics</div>
+<h2>HBM capacity and bandwidth</h2>
+<p class="dek">On a modern AI accelerator the binding constraint is often memory, not compute. Capacity decides what fits. Bandwidth decides how fast it answers. Both are priced into every GPU-hour.</p>
+</header>
+<div class="content">
+<h3>Two numbers that gate the business</h3>
+<p class="lead">
+<strong>Gigabytes decide which models you can serve; terabytes per second decide how fast.</strong> NVIDIA's H100 to H200 upgrade changed almost nothing except memory: same 700W envelope, nearly double the capacity and 1.4x the bandwidth, and roughly 2x LLM inference throughput on Llama2 70B.</p>
+<div class="equation">
+<div class="metric">
+<b>80 GB / 3.35 TB/s</b>
+<span>H100 SXM: HBM3 capacity / bandwidth</span>
+</div>
+<div class="metric">
+<b>141 GB / 4.8 TB/s</b>
+<span>H200 SXM: HBM3e capacity / bandwidth</span>
+</div>
+<div class="metric">
+<b>~2x</b>
+<span>NVIDIA's claimed Llama2 70B inference gain, H100 to H200</span>
+</div>
+</div>
+<h3>Worked example: one 70B model</h3>
+<div class="worked">
+<div class="case">
+<h4>Capacity is a hard gate</h4>
+<div class="number">2 GPUs or 1</div>
+<p>70B parameters at FP16 is about 140 GB of weights: it does not fit on one 80 GB H100, so you buy two GPUs or quantize. At FP8 it is about 70 GB: tight on an H100 once the KV cache lands, comfortable on one 141 GB H200.</p>
+</div>
+<div class="case good">
+<h4>Bandwidth is the speed limit</h4>
+<div class="number">48 vs 68 tok/s</div>
+<p>Decoding re-reads the weights for every token. Simplified single-stream roofline: 3.35 TB/s &divide; 70 GB &asymp; 48 tokens/s on an H100; 4.8 TB/s &divide; 70 GB &asymp; 68 on an H200. Same model, about 1.4x faster from memory alone.</p>
+</div>
+</div>
+<div class="fact">
+<strong>Why the rental premium:</strong> an H200 costs more per hour than an H100 not because its math units are faster, but because its memory lets one GPU do what used to take two, and serve each token faster. Memory upgrades convert directly into throughput and capacity revenue.</div>
+<div class="diagram">
+<div class="chart-title">One generation, mostly a memory upgrade (H100 = 100)</div>
+<div class="chart-grid">
+<div>H100 capacity</div><div class="bar"><i style="width:57%"></i><em>80 GB</em></div>
+<div>H200 capacity</div><div class="bar"><i style="width:100%"></i><em>141 GB</em></div>
+<div>H100 bandwidth</div><div class="bar"><i style="width:70%"></i><em>3.35 TB/s</em></div>
+<div>H200 bandwidth</div><div class="bar"><i style="width:100%"></i><em>4.8 TB/s</em></div>
+</div>
+<small>Bar lengths indexed to the H200. Same 700W configurable TDP on both parts.</small>
+</div>
+<h3>Why HBM costs what it costs</h3>
+<p>HBM is stacked DRAM packaged next to the compute die, and it is now the most expensive ingredient in an AI accelerator. One bill-of-materials model puts HBM at about $1,350 of an H100's roughly $3,320 manufacturing cost, and 30-64% of manufacturing cost across flagship parts, with HBM3e contract pricing near $17 per GB. Supply is an oligopoly: Counterpoint's Q2 2025 HBM revenue shares are SK hynix 64%, Micron 21%, and Samsung 15%. And it is largely presold: Micron has said its calendar-2026 HBM supply is fully committed under price-and-volume agreements. When the memory is the margin, the memory market is your market.</p>
+<h3>Rules of thumb</h3>
+<div class="rules">
+<div class="rule">
+<b>1 &middot; Capacity before bandwidth.</b>If model plus KV cache does not fit, you are buying a second GPU. Quantization is usually the cheaper lever.</div>
+<div class="rule">
+<b>2 &middot; Bandwidth sets decode speed.</b>Tokens per second per stream &asymp; bandwidth &divide; model bytes. Batch requests to amortize each weight read.</div>
+<div class="rule">
+<b>3 &middot; Watch HBM like a commodity input.</b>It is the largest single cost line in the GPU and is contracted years ahead; price moves flow straight into future hardware cost.</div>
+</div>
+<h3>Questions for the CFO table</h3>
+<ul>
+<li>For our target models, how many GPUs does the capacity gate force at FP16 vs FP8, and what does that do to unit cost?</li>
+<li>What is our achieved tokens/s per GPU against the bandwidth roofline, and how much paid-for headroom sits idle?</li>
+<li>In multi-year hardware deals, who bears HBM price moves, the buyer or the vendor?</li>
+<li>Does the next platform upgrade buy us capacity, bandwidth, or both, and which one actually binds our workload?</li>
+</ul>
+<div class="sources">
+<strong>Sources and assumptions.</strong> H100 SXM (80 GB HBM3, 3.35 TB/s): <a href="https://resources.nvidia.com/en-us-data-center-overview/nvidia-tensor-core-gpu-datasheet">NVIDIA H100 GPU datasheet</a>. H200 SXM (141 GB HBM3e, 4.8 TB/s, 700W TDP, 2x Llama2 70B inference claim): <a href="https://www.nvidia.com/en-us/data-center/h200/">NVIDIA H200 specifications</a>. HBM cost estimates ($1,350 of ~$3,320 H100 manufacturing cost, 30-64% share, ~$17/GB HBM3e): <a href="https://siliconanalysts.com/data/ai-chip-costs">Silicon Analysts accelerator cost model</a> (an estimate drawing on Epoch AI, Raymond James, and TrendForce). Supplier shares (Q2 2025 HBM revenue): <a href="https://counterpointresearch.com/en/insights/global-dram-and-hbm-market-share">Counterpoint Research</a>. Micron's sold-out 2026 HBM supply and ~$8B HBM run-rate, reported via Reuters: <a href="https://www.astutegroup.com/news/general/sk-hynix-holds-62-of-hbm-micron-overtakes-samsung-2026-battle-pivots-to-hbm4/">Astute Group summary</a>. The 70B model sizes and tokens/s rooflines are simplified calculations from the stated inputs; real throughput depends on batch size, attention, and software.</div>
+</div>
+</article>
+
+<article class="paper" id="day-4" style="margin-bottom:30px">
+<header class="lesson-head">
+<div class="eyebrow" style="color:#168c7f">Day 04 · Capital recovery</div>
+<h2>Depreciation and useful life</h2>
+<p class="dek">One accounting assumption quietly decides how much capital cost lands in every GPU-hour you sell. Recently, every hyperscaler has moved it, in both directions.</p>
+</header>
+<div class="content">
+<h3>The assumption that moves billions</h3>
+<p class="lead">
+<strong>Depreciation is a non-cash charge, but the useful-life estimate behind it is a pricing decision.</strong> Spread a server over more years and each year's reported cost falls; shorten the life and the bill arrives sooner. The hardware, the workload, and the cash are identical. Only the P&amp;L changes.</p>
+<div class="equation">
+<div class="metric">
+<b>&minus;$3.9B</b>
+<span>Alphabet 2023 depreciation after moving servers to 6 years</span>
+</div>
+<div class="metric">
+<b>&minus;$2.92B</b>
+<span>Meta 2025 depreciation after moving to 5.5 years</span>
+</div>
+<div class="metric">
+<b>+$1.4B</b>
+<span>Amazon 2025 depreciation after shortening a subset to 5 years</span>
+</div>
+</div>
+<h3>Worked example: one GPU, three accountants</h3>
+<div class="worked">
+<div class="case">
+<h4>Same GPU, 3-year life</h4>
+<div class="number">$1.14/hr</div>
+<p>$30,000 &divide; (3 &times; 8,760 hours), straight-line to zero salvage.</p>
+</div>
+<div class="case good">
+<h4>Same GPU, 6-year life</h4>
+<div class="number">$0.57/hr</div>
+<p>$30,000 &divide; (6 &times; 8,760 hours). The metal and the cash did not change.</p>
+</div>
+</div>
+<div class="fact">
+<strong>Utilization bridge:</strong> at an illustrative 75% billable utilization, the 6-year assumption prices capital at about $0.76 per billable GPU-hour; the 3-year assumption prices the same GPU at $1.52. A one-line change in an accounting policy note doubles the reported capital cost per sold hour.</div>
+<div class="diagram">
+<div class="chart-title">Capital cost per billable GPU-hour by assumed useful life (illustrative $30,000 GPU, 75% billable utilization)</div>
+<div class="chart-grid">
+<div>3 years</div><div class="bar"><i style="width:100%"></i><em>$1.52</em></div>
+<div>4 years</div><div class="bar"><i style="width:75%"></i><em>$1.14</em></div>
+<div>5 years</div><div class="bar"><i style="width:60%"></i><em>$0.91</em></div>
+<div>6 years</div><div class="bar"><i style="width:50%"></i><em>$0.76</em></div>
+</div>
+<small>Calculations from the stated illustrative inputs. Hours per year: 8,760. Billable hours divide installed hours by utilization.</small>
+</div>
+<h3>Accounting life vs. economic life</h3>
+<p>The extension wave is real: Microsoft went from 4 to 6 years in 2022, Alphabet from 4 to 6 in 2023, and Meta to 5.5 in 2025. CoreWeave, a pure-play GPU cloud, depreciates its technology equipment straight-line over 6 years. The bulls point to retention evidence: CoreWeave's CEO says its 2020-vintage A100s are fully booked, and 2022 H100s that rolled off a contract were immediately rebooked at about 95% of their original price. Skeptics, including short seller Michael Burry, argue the extensions understate how fast AI chips actually lose value. Amazon is the counter-signal: in 2025 it shortened a subset of servers from 6 years back to 5, citing "the increased pace of technology development, particularly in the area of artificial intelligence and machine learning."</p>
+<h3>Rules of thumb</h3>
+<div class="rules">
+<div class="rule">
+<b>1 &middot; Cash left on day one.</b>Depreciation allocates a past outlay across years; it never spends anything. Read capex and free cash flow alongside the P&amp;L charge.</div>
+<div class="rule">
+<b>2 &middot; Ask for the life first.</b>A margin or floor price quoted without its depreciation life is not comparable across providers.</div>
+<div class="rule">
+<b>3 &middot; Match life to evidence.</b>Contract tenor, rebooking rates, and resale prices are the audit trail for how long a GPU really earns.</div>
+</div>
+<h3>Questions for the CFO table</h3>
+<ul>
+<li>What useful life is embedded in our $/GPU-hour floor, and how much does the floor move if the life shortens by one year?</li>
+<li>What rebooking and resale evidence supports the life we claim, and is it current-generation data or last cycle's?</li>
+<li>Are customer contract tenors longer or shorter than the depreciation life, and who absorbs the mismatch?</li>
+<li>If we followed Amazon's reversal, what is the hit to earnings, covenants, and pricing?</li>
+</ul>
+<div class="sources">
+<strong>Sources and assumptions.</strong> Alphabet's 2023 10-K discloses the move to 6-year server lives and the $3.9B depreciation reduction ($3.0B net income): <a href="https://www.sec.gov/Archives/edgar/data/1652044/000165204424000022/R10.htm">Alphabet 10-K, accounting policies note</a>. Meta's 2025 10-K discloses the 5.5-year life effective January 1, 2025 and the $2.92B depreciation reduction ($2.59B net income, $1.00 per diluted share): <a href="https://www.sec.gov/Archives/edgar/data/1326801/000162828026003942/meta-20251231.htm">Meta 2025 10-K</a>. Amazon's 2025 10-K discloses shortening a subset of servers from 6 to 5 years and the added $1.4B of depreciation: <a href="https://www.sec.gov/Archives/edgar/data/1018724/000101872426000004/amzn-20251231.htm">Amazon 2025 10-K</a>. CoreWeave's 6-year straight-line life for technology equipment: <a href="https://www.sec.gov/Archives/edgar/data/1769628/000176962826000104/crwv-20251231.htm">CoreWeave 2025 10-K</a>. Rebooking evidence and the skeptic case: <a href="https://www.cnbc.com/2025/11/14/ai-gpu-depreciation-coreweave-nvidia-michael-burry.html">CNBC on the GPU depreciation debate</a>. Microsoft's 2022 extension: <a href="https://finance.yahoo.com/news/meta-accounting-move-ai-servers-124059775.html">Bloomberg via Yahoo Finance</a>. The $30,000 GPU cost and 75% utilization are illustrative; hourly figures are calculations from those inputs, rounded.</div>
+</div>
+</article>
+
+<article class="paper" id="day-3" style="margin-bottom:30px">
+<header class="lesson-head">
+<div class="eyebrow" style="color:#168c7f">Day 03 · Power economics</div>
+<h2>Power cost per GPU-hour</h2>
+<p class="dek">The GPU's watts are only the first meter. The facility multiplies them, and utilization decides how many billable hours absorb the bill.</p>
+</header>
+<div class="content">
+<h3>Three layers, three denominators</h3>
+<p class="lead">
+<strong>Chip power is not facility power, and facility power is not power cost per billable hour.</strong> Start with IT load, apply PUE for facility overhead, then divide by billable utilization to connect electricity spend to revenue-producing hours.</p>
+<div class="equation">
+<div class="metric">
+<b>0.70 kW</b>
+<span>H100 SXM max TDP</span>
+</div>
+<div class="metric">
+<b>× 1.09 PUE</b>
+<span>illustrative efficient facility</span>
+</div>
+<div class="metric">
+<b>= 0.763 kW</b>
+<span>facility load per GPU at this bound</span>
+</div>
+</div>
+<div class="diagram">
+<div class="chart-title">From wall power to billable power</div>
+<div style="display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:10px;align-items:center;text-align:center">
+<div class="metric">
+<b>700W</b>
+<span>GPU IT load</span>
+</div>
+<b>→</b>
+<div class="metric">
+<b>763W</b>
+<span>with 1.09 PUE</span>
+</div>
+<b>→</b>
+<div class="metric">
+<b>1.017 kWh</b>
+<span>per billable GPU-hour at 75% utilization</span>
+</div>
+</div>
+<small>This is a simplified lower bound: it applies fleet PUE to GPU TDP only. CPUs, memory, storage, and networking add IT load before PUE.</small>
+</div>
+<h3>Worked example: one H100 for one month</h3>
+<div class="worked">
+<div class="case">
+<h4>GPU electricity only</h4>
+<div class="number">$43.44/mo</div>
+<p>0.70 kW × 720 hours × 8.62¢/kWh.</p>
+</div>
+<div class="case good">
+<h4>GPU plus facility overhead</h4>
+<div class="number">$47.35/mo</div>
+<p>0.70 kW × 1.09 PUE × 720 hours × 8.62¢/kWh.</p>
+</div>
+</div>
+<div class="fact">
+<strong>Utilization bridge:</strong> at an illustrative 75% billable utilization, that 0.763 kWh of facility energy per installed hour becomes 1.017 kWh, or about 8.76¢, per billable GPU-hour. The power bill follows installed time; revenue follows billable time.</div>
+<h3>What the simple formula misses</h3>
+<ul>
+<li>
+<strong>Other IT load:</strong> CPUs, DRAM, NICs, switches, storage, and fans draw power too.</li>
+<li>
+<strong>Demand and capacity charges:</strong> many contracts charge for peak kW or reserved MW, not only consumed kWh.</li>
+<li>
+<strong>Load shape:</strong> TDP is a ceiling, not measured average workload power.</li>
+<li>
+<strong>Location and contract:</strong> EIA's national industrial average is a reference point, not a data-center tariff.</li>
+</ul>
+<h3>Rules of thumb</h3>
+<div class="rules">
+<div class="rule">
+<b>1 · Use PUE on total IT load.</b>Applying PUE to GPU watts alone is a floor. Build the server and network power budget first.</div>
+<div class="rule">
+<b>2 · Keep kW and kWh separate.</b>kW is instantaneous capacity; kWh is energy over time. Capacity procurement often binds before energy cost does.</div>
+<div class="rule">
+<b>3 · Divide by utilization last.</b>Electricity per installed hour can look small; per billable hour rises as idle capacity increases.</div>
+</div>
+<h3>Questions for the CFO table</h3>
+<ul>
+<li>What is measured average kW per GPU by workload, not nameplate TDP?</li>
+<li>Which charges are energy, demand, transmission, capacity reservation, or pass-through?</li>
+<li>Is PUE measured at the same boundary across sites, and at what load level?</li>
+<li>Who bears curtailment risk when power is available but compute cannot run?</li>
+</ul>
+<div class="sources">
+<strong>Sources and assumptions.</strong> NVIDIA lists H100 SXM at up to 700W configurable TDP: <a href="https://www.nvidia.com/en-us/data-center/h100/">NVIDIA H100 specifications</a>. Google's 2025 fleet-wide PUE was 1.09: <a href="https://www.google.com/about/datacenters/efficiency/">Google data-center efficiency</a>. EIA reports 2025 U.S. industrial electricity at 8.62¢/kWh: <a href="https://www.eia.gov/electricity/monthly/epm_table_grapher.php?t=table_5_03">EIA Table 5.3</a>. The 75% utilization is illustrative; Google's PUE is an efficiency reference, not assumed to describe every provider. All dollar and energy figures are calculations from these stated inputs and are rounded.</div>
+</div>
+</article>
+
+<article class="paper" id="day-2" style="margin-bottom:30px">
+<header class="lesson-head">
+<div class="eyebrow" style="color:#168c7f">Day 02 · Unit economics</div>
+<h2>Anatomy of $/GPU-hour</h2>
+<p class="dek">The customer sees one price. Finance sees a revenue meter sitting on top of a cost stack.</p>
+</header>
+<div class="content">
+<h3>Start with two different dollars</h3>
+<p class="lead">
+<strong>Quoted $/GPU-hour is a rate. Realized $/installed-GPU-hour is a yield.</strong> Multiply the quoted rate by billable utilization before comparing it with costs. Otherwise the numerator is full while the denominator quietly assumes every hour sells.</p>
+<div class="equation">
+<div class="metric">
+<b>$3.99</b>
+<span>posted H100 SXM on-demand rate</span>
+</div>
+<div class="metric">
+<b>× 75%</b>
+<span>illustrative billable utilization</span>
+</div>
+<div class="metric">
+<b>= $2.99</b>
+<span>realized revenue per installed hour</span>
+</div>
+</div>
+<div class="diagram">
+<div class="chart-title">Where one customer dollar has to go</div>
+<div style="display:flex;height:62px;border-radius:10px;overflow:hidden;color:white;font-weight:800;text-align:center">
+<div style="width:38%;background:#2463eb;padding:18px 4px">GPU capital</div>
+<div style="width:21%;background:#168c7f;padding:18px 4px">Power + facility</div>
+<div style="width:16%;background:#536b7a;padding:18px 4px">Network</div>
+<div style="width:13%;background:#8b63d3;padding:18px 4px">Ops</div>
+<div style="width:12%;background:#f0a93b;padding:9px 4px;line-height:1.2">Contribution<br>margin</div>
+</div>
+<small>Conceptual stack only. Widths are illustrative, not benchmarks. Actual mix depends on hardware price and life, utilization, power contract, topology, support, and workload.</small>
+</div>
+<h3>Worked example: rate → monthly yield</h3>
+<div class="worked">
+<div class="case">
+<h4>Full-rate ceiling</h4>
+<div class="number">$2,873/mo</div>
+<p>$3.99 × 720 installed hours. This is the maximum monthly billings per GPU if every hour sells.</p>
+</div>
+<div class="case good">
+<h4>At 75% billable utilization</h4>
+<div class="number">$2,154/mo</div>
+<p>$3.99 × 720 × 75%. Idle capacity removes about $718 from the full-rate ceiling.</p>
+</div>
+</div>
+<div class="fact">
+<strong>Power floor:</strong> NVIDIA lists H100 SXM at up to 700W configurable TDP. At EIA's 2025 U.S. industrial average of 8.62¢/kWh, 720 hours at full TDP equals about 504 kWh and $43.44 of GPU electricity. That is not total facility power: cooling, networking, CPUs, storage, and conversion losses sit outside this simple bound.</div>
+<h3>The cost stack finance should model</h3>
+<ul>
+<li>
+<strong>GPU capital:</strong> depreciation or lease expense, financing cost, and obsolescence risk.</li>
+<li>
+<strong>Power + facility:</strong> GPU electricity plus host, cooling, power conversion, rent, and capacity charges.</li>
+<li>
+<strong>Network + storage:</strong> fabric, switches, egress, local storage, and checkpoint traffic.</li>
+<li>
+<strong>Operations:</strong> support, maintenance, spares, orchestration, and credits for downtime.</li>
+</ul>
+<h3>Rules of thumb</h3>
+<div class="rules">
+<div class="rule">
+<b>1 · Normalize the denominator.</b>Compare revenue and costs per installed GPU-hour, not a mix of billable and available hours.</div>
+<div class="rule">
+<b>2 · Separate floors from allocation.</b>Metered power is observable. Depreciation depends on purchase price, useful life, residual value, and accounting policy.</div>
+<div class="rule">
+<b>3 · Bridge rate to yield first.</b>A 25% idle rate turns $3.99 quoted into $2.99 realized before a single cost is deducted.</div>
+</div>
+<h3>Questions for the CFO table</h3>
+<ul>
+<li>Which costs scale with billable hours, installed capacity, reserved megawatts, or customers?</li>
+<li>Does the quoted rate include storage, egress, support, and committed-use discounts?</li>
+<li>What share of margin variance comes from price, utilization, power, or depreciation?</li>
+</ul>
+<div class="sources">
+<strong>Sources and assumptions.</strong> Lambda posts H100 SXM on-demand at $3.99/GPU-hour: <a href="https://lambda.ai/pricing">Lambda pricing</a>. NVIDIA lists H100 SXM at up to 700W configurable TDP: <a href="https://www.nvidia.com/en-us/data-center/h100/">NVIDIA H100 specifications</a>. EIA reports 2025 U.S. industrial electricity at 8.62¢/kWh: <a href="https://www.eia.gov/electricity/monthly/epm_table_grapher.php?t=table_5_03">EIA Table 5.3</a>. The 75% utilization and cost-stack widths are explicitly illustrative. $2.99, $2,873, $2,154, $718, 504 kWh, and $43.44 are calculations from those stated inputs; displayed values are rounded.</div>
+</div>
+</article>
+
+<article class="paper" id="day-1">
+<header class="lesson-head">
+<div class="eyebrow" style="color:#168c7f">Day 01 · Capacity economics</div>
+<h2>Utilization: the bridge from price to profit</h2>
+<p class="dek">A GPU does not earn because it exists. It earns when a customer is running billable work on it.</p>
+</header>
+<div class="content">
+<h3>The concept</h3>
+<p class="lead">
+<strong>Utilization is the percentage of available GPU time that becomes billable GPU time.</strong> Headline price per GPU-hour tells you the yield when occupied. Utilization tells you how often you collect it. Together they create realized revenue per installed GPU.</p>
+<div class="equation">
+<div class="metric">
+<b>Price</b>
+<span>revenue per billable GPU-hour</span>
+</div>
+<div class="metric">
+<b>× Utilization</b>
+<span>billable hours ÷ available hours</span>
+</div>
+<div class="metric">
+<b>= Yield</b>
+<span>revenue per installed GPU-hour</span>
+</div>
+</div>
+<div class="diagram">
+<div class="chart-title">Illustrative monthly revenue per H100</div>
+<div class="chart-grid">
+<span>35% util.</span>
+<div class="bar">
+<i style="width:35%">
+</i>
+<em>$1,552</em>
+<span class="dark">idle 65%</span>
+</div>
+<span>60% util.</span>
+<div class="bar">
+<i style="width:60%">
+</i>
+<em>$2,661</em>
+<span class="dark">idle 40%</span>
+</div>
+<span>85% util.</span>
+<div class="bar">
+<i style="width:85%">
+</i>
+<em>$3,769</em>
+</div>
+</div>
+<small>Illustration assumes a 30-day month and Lambda's posted $6.16/GPU-hour H100 price for a 16-GPU reserved cluster. Revenue = 24 × 30 × utilization × $6.16. <a href="https://lambda.ai/pricing">Source</a>
+</small>
+</div>
+<h3>Worked example: price can lose to occupancy</h3>
+<div class="worked">
+<div class="case">
+<h4>Provider A · premium price, weak demand</h4>
+<div class="number">$1,552/mo</div>
+<p>$6.16/hour × 720 available hours × 35% utilization.</p>
+</div>
+<div class="case good">
+<h4>Provider B · 15% lower price, stronger demand</h4>
+<div class="number">$3,203/mo</div>
+<p>$5.24/hour × 720 available hours × 85% utilization.</p>
+</div>
+</div>
+<div class="fact">
+<strong>Finance lens:</strong> the lower-priced provider produces about 2.1× the monthly revenue per installed GPU in this illustration. Pricing power without demand density is cosmetic.</div>
+<h3>Why contracts matter</h3>
+<p>Reserved-capacity contracts can shift utilization risk from the provider to the customer. In exchange, the customer usually expects a discount, priority access, or both. The provider gives up some spot-price upside but gains revenue visibility and better fixed-cost absorption. The strategic question is not “spot or contract?” It is how much capacity to lock, for how long, and with how much customer concentration.</p>
+<h3>Rules of thumb</h3>
+<div class="rules">
+<div class="rule">
+<b>1 · Track yield, not rate.</b>Pair quoted $/GPU-hour with realized utilization. Neither metric is decision-useful alone.</div>
+<div class="rule">
+<b>2 · Price cuts need elasticity.</b>A 10% price cut must lift occupied hours by more than 11.1% to grow revenue per installed GPU.</div>
+<div class="rule">
+<b>3 · Segment the denominator.</b>Separate available, maintenance, reserved-but-unused, and billable hours. A blended utilization rate can hide the actual constraint.</div>
+</div>
+<h3>Questions for the CFO table</h3>
+<ul>
+<li>What is utilization by GPU type, region, customer cohort, and contract form?</li>
+<li>What share of idle time is demand-driven versus deployment, networking, maintenance, or power?</li>
+<li>At what utilization does each cluster cover power, hosting, support, and depreciation?</li>
+<li>How much contracted demand is take-or-pay, and how concentrated is it?</li>
+</ul>
+<div class="sources">
+<strong>Sources and assumptions.</strong> Posted H100 price: Lambda, “GPU Cloud Pricing,” accessed Sep. 17, 2026, <a href="https://lambda.ai/pricing">lambda.ai/pricing</a>. All utilization rates, the 15% discount, and Provider A/B cases are clearly labeled illustrations, not market benchmarks. A 30-day month contains 720 hours by arithmetic (24 × 30). “About 2.1×” and “11.1%” are calculations from the stated illustration.</div>
+</div>
+</article>
+<section class="curriculum" id="curriculum">
+<div class="eyebrow" style="color:#168c7f">The cumulative map</div>
+<h2>30 days from rack to return</h2>
+<div class="weeks">
+<div class="week">
+<h3>Week 1 · The unit</h3>
+<ol>
+<li>Utilization</li>
+<li>Anatomy of $/GPU-hour</li>
+<li>Power cost per GPU-hour</li>
+<li>Depreciation and useful life</li>
+<li>HBM capacity and bandwidth</li>
+<li>NVLink, fabric, and stranded compute</li>
+<li>Cluster-level contribution margin</li>
+</ol>
+</div>
+<div class="week">
+<h3>Week 2 · Workloads</h3>
+<ol start="8">
+<li>Training vs. inference economics</li>
+<li>Tokens, FLOPs, and finance translation</li>
+<li>Batching and throughput</li>
+<li>Latency as a paid feature</li>
+<li>Model size and memory footprint</li>
+<li>Quantization economics</li>
+<li>Fine-tuning and adaptation</li>
+</ol>
+</div>
+<div class="week">
+<h3>Week 3 · Capacity</h3>
+<ol start="15">
+<li>Reserved vs. on-demand pricing</li>
+<li>Take-or-pay contracts</li>
+<li>Customer concentration</li>
+<li>Capacity planning and lead times</li>
+<li>Power as the constraint</li>
+<li>Data-center PUE</li>
+<li>Network and egress economics</li>
+<li>Inventory aging and obsolescence</li>
+</ol>
+</div>
+<div class="week">
+<h3>Week 4 · Business models</h3>
+<ol start="23">
+<li>Hyperscaler economics</li>
+<li>Neocloud economics</li>
+<li>Inference-platform economics</li>
+<li>Serverless and autoscaling</li>
+<li>Software margin on hardware</li>
+<li>Build, lease, or partner</li>
+<li>Capital structure and financing</li>
+<li>Putting it together: IC memo</li>
+</ol>
+</div>
+</div>
+</section>
+</div>
+</main>
+<footer class="footer">
+<div class="shell">One page a day. Numbers sourced. Economics first.</div>
+</footer>
+</body>
+                                                                                                                                                                                                                             </html>
