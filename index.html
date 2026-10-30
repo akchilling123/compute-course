@@ -36,7 +36,7 @@ body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 Inter,ui-s
 
 .rail{height:8px;background:#31506a;border-radius:8px;flex:1;overflow:hidden}
 
-.rail span{display:block;width:73%;height:100%;background:linear-gradient(90deg,var(--cyan),#83f3df)}
+.rail span{display:block;width:77%;height:100%;background:linear-gradient(90deg,var(--cyan),#83f3df)}
 
 .layout{display:grid;grid-template-columns:250px minmax(0,1fr);gap:34px;padding-top:44px;padding-bottom:80px}
 
@@ -155,7 +155,7 @@ article[id]{scroll-margin-top:112px}
 <header class="top">
 <div class="shell">
 <div class="brand">COMPUTE ECONOMICS / FIELD NOTES</div>
-<div class="daypill">DAY 22 OF 30</div>
+<div class="daypill">DAY 23 OF 30</div>
 </div>
 </header>
 <section class="hero">
@@ -168,14 +168,15 @@ article[id]{scroll-margin-top:112px}
 <span>
 </span>
 </div>
-<small>22 / 30 published</small>
+<small>23 / 30 published</small>
 </div>
 </div>
 </section>
 <main class="shell layout">
 <nav class="toc">
 <h3>Course pages</h3>
-<a class="active" href="#day-22">22 · Inventory aging</a>
+<a class="active" href="#day-23">23 · Hyperscaler model</a>
+<a href="#day-22">22 · Inventory aging</a>
 <a href="#day-21">21 · Egress economics</a>
 <a href="#day-20">20 · PUE</a>
 <a href="#day-19">19 · Power constraint</a>
@@ -200,6 +201,23 @@ article[id]{scroll-margin-top:112px}
 <a href="#curriculum">30-day map</a>
 </nav>
 <div>
+<article class="paper" id="day-23" style="margin-bottom:30px">
+<header class="lesson-head"><div class="eyebrow" style="color:#168c7f">Day 23 &middot; Week 4 &middot; business models</div><h2>The hyperscaler: a bank that lends you its computers</h2><p class="dek">Week 4 turns from capacity to business models. Start with the incumbent: the hyperscaler converts capital expenditure into rented compute at 35-39% operating margins, then pours the entire proceeds - and more - into the next build. This week's earnings let us read the model straight off the filings.</p></header>
+<div class="content">
+<h3>The scoreboard, three days old</h3>
+<p class="lead">All three hyperscalers reported this week, and the numbers describe the best business in technology right now. <strong>AWS grew 39% year over year to $46.0B in Q3 2026</strong> - its fastest in nearly five years - with $17.8B of operating income, a 38.7% segment margin, and a $184B annualized run rate; CEO Andy Jassy projected growth above 40% for 2027 and 2028. <strong>Google Cloud grew 103% to $30.7B</strong> with operating income of $11.1B (36.2% margin), helped by a new line: TPU systems sold as products. <strong>Microsoft's Cloud revenue grew 30% to $63.9B, with Azure up 48%</strong> - Microsoft does not disclose Azure's dollar revenue, so the 48% is a rate, not a base.</p>
+<div class="fact"><strong>Now the cash physics underneath the margins.</strong> Amazon expects roughly <strong>$220B of cash capital expenditure in 2026</strong>. Its trailing-twelve-month operating cash flow is $168.3B - and its free cash flow is <em>negative</em> $42.4B, after a $94.8B year-over-year increase in purchases of property and equipment that Amazon says primarily reflects AI investment. Microsoft added $39.4B of property and equipment in a single quarter. The hyperscaler prints operating income at 35-39% margins and then spends more than all of it on the next fleet. The income statement says software economics; the cash flow statement says heavy industry.</div>
+<div class="diagram"><div class="chart-title">Cloud revenue growth, Q3 2026, year over year</div><div class="chart-grid" style="grid-template-columns:118px 1fr"><div>AWS</div><div class="bar"><i style="width:37.9%"></i><em style="left:calc(37.9% + 10px);color:#33415c">+39%</em></div><div>Azure</div><div class="bar"><i style="width:46.6%"></i><em style="left:calc(46.6% + 10px);color:#33415c">+48%</em></div><div>Google Cloud</div><div class="bar"><i style="width:100%"></i><em>+103%</em></div></div><small>Shared linear scale: 0 to 103%. Same quarter, different disclosed scopes: AWS is Amazon's full AWS segment; Google Cloud includes TPU systems now sold as products, a new revenue line this year; Microsoft reports Azure's growth rate without dollar revenue, and its $63.9B "Microsoft Cloud" total includes Microsoft 365 and other services, so it is not charted here.</small></div>
+<h3>How the model actually works</h3>
+<p>Strip it down and a hyperscaler is a financing machine with a data center attached. It borrows against its balance sheet at rates no neocloud can touch, converts that capital into fleets (Day 4's depreciation, Day 22's aging debate), and rents the fleets out at Day 2's GPU-hour prices with three structural advantages: <strong>utilization blending</strong> across millions of workloads (Day 1's math works for the operator with the deepest demand pool), <strong>commitment instruments</strong> - savings plans and reserved instances that pre-sell capacity and de-risk the build (Day 15), and the <strong>egress moat</strong> that makes leaving expensive (Day 21). The 38.7% AWS margin is what those advantages are worth, monetized per quarter.</p>
+<h3>Why margins and the buildout can both be real</h3>
+<p>The apparent contradiction - record margins, negative free cash flow - is the whole story. Reported margin is computed after depreciation on Day 22's five-to-six-year schedules; cash capex is spent this quarter, up front, at $220B a year. If the schedules are right, the negative FCF is just growth investment and today's margins are real. If true economic life is closer to three years, both numbers are flattered: depreciation is understated and the replacement bill arrives before the revenue it was meant to serve. That is the bull-bear axis for the entire sector, and it is why Amazon's quiet 6-to-5-year schedule revision (Day 22) matters more than any single quarter's growth rate.</p>
+<div class="equation"><div class="metric"><b>$46.0B</b><span>AWS Q3 2026 revenue, +39% YoY; $17.8B operating income (38.7% margin)</span></div><div class="metric"><b>+103%</b><span>Google Cloud Q3 2026 growth to $30.7B; $11.1B operating income (36.2%)</span></div><div class="metric"><b>-$42.4B</b><span>Amazon trailing-12-month free cash flow: $220B/yr capex outruns even these margins</span></div></div>
+<h3>Rules of thumb</h3>
+<div class="rules"><div class="rule"><b>1 &middot; Read margin and capex as one number.</b> Operating margin minus capex-as-share-of-revenue is the cash margin. AWS: 38.7% operating margin against an Amazon-level capex program consuming more than the segment earns. The gap between the two margins is exactly the Day 22 depreciation question, restated in cash.</div><div class="rule"><b>2 &middot; Growth above 40% at a $184B run rate requires pre-sold demand.</b> Nobody builds $220B of capacity on spec. Jassy's 2027-2028 growth projection rests on multi-year commitments like the OpenAI and Meta agreements - the take-or-pay structures of Day 16, one layer up.</div><div class="rule"><b>3 &middot; Watch for product lines hiding in "cloud."</b> Google's 103% includes TPU systems sold as hardware - a different, lower-multiple business than renting compute. When a cloud growth rate suddenly reaccelerates, check what changed inside the segment definition before extrapolating it.</div></div>
+<h3>Sources and assumptions</h3>
+<p>AWS revenue, operating income, run rate, capex guidance, cash flow and the Jassy projection: Amazon's Q3 2026 results release (Oct 29, 2026). Google Cloud revenue, operating income, TPU commentary and segment definitions: Alphabet's Q3 2026 earnings exhibit (SEC, Oct 28, 2026). Microsoft Cloud revenue, Azure growth and property-and-equipment additions: Microsoft's FY27 Q1 release (Oct 28, 2026). Segment operating margins are computed from the disclosed figures ($17.8B/$46.0B, $11.1B/$30.7B). Microsoft does not disclose Azure dollar revenue or a cloud-segment operating margin in this release; the chart notes the scope differences.</p>
+<div class="sources"><strong>Sources:</strong> <a href="https://press.aboutamazon.com/2026/10/amazon-com-announces-third-quarter-results">Amazon: Q3 2026 results</a> &middot; <a href="https://www.sec.gov/Archives/edgar/data/1652044/000165204426000080/googexhibit991q32026.htm">Alphabet: Q3 2026 earnings exhibit (SEC)</a> &middot; <a href="https://www.microsoft.com/en-us/investor/earnings/fy-2027-q1/press-release-webcast">Microsoft: FY27 Q1 results</a></div></div></article>
 <article class="paper" id="day-22" style="margin-bottom:30px">
 <header class="lesson-head"><div class="eyebrow" style="color:#168c7f">Day 22 &middot; Week 3 &middot; capacity</div><h2>Inventory aging: a GPU dies three deaths</h2><p class="dek">Every accelerator on the balance sheet is aging on three clocks at once: physical wear, economic obsolescence, and the accounting schedule. The clocks do not agree, and the gap between them is where hundreds of billions of dollars of AI earnings quality now lives.</p></header>
 <div class="content">
